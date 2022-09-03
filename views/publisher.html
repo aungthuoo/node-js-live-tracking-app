@@ -1,0 +1,31 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.slim.js"></script>
+<script type="text/javascript">
+    var longlats = [
+        [1, 16.82693891513995, 96.17375649588146],
+        [1, 16.82701079758431, 96.17407836260564],
+        [1, 16.82708268133046, 96.17427148333566],
+        [1, 16.827103219681415, 96.17431439915721],
+        [1, 16.827267520455955, 96.17502250961266]
+    ];
+
+    const socket = io({ transports: ['websocket'] });
+    var count = 1;
+
+    setInterval(function() {
+        console.log(count);
+        if (count < 10000){
+        
+            var item = {};
+            item.Coordinate = {};
+            item.User = {};
+
+            item.User.id = longlats[count][0];
+            item.Coordinate.Latitude = longlats[count][1];
+            item.Coordinate.Longitude = longlats[count][2];
+            
+            count++;
+            console.log('step 1'); 
+            socket.emit('lastKnownLocation', item);
+        }
+    }, 1000);
+</script>

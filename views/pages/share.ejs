@@ -1,0 +1,37 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>OpenStreetMap &amp; OpenLayers - Multiple marker</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <link  rel="stylesheet"   href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css"/>
+    <script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
+
+  </head>
+  <body>
+    <div>
+        User id : <%= id %>, 
+        Latitude : <%= latitude %>, 
+        Longitude : <%= longitude %>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.slim.js"></script>
+
+    <script type="text/javascript">
+        const socket = io({ transports: ['websocket'] });
+
+        var item = {};
+        item.Coordinate = {};
+        item.User = {};
+
+        item.User.id = "<%= id %>";
+        item.Coordinate.Latitude = "<%= latitude %>";
+        item.Coordinate.Longitude = "<%= longitude %>";
+
+        socket.emit('lastKnownLocation', item);
+    </script>
+    
+</body>
+</html>
