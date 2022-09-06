@@ -52,6 +52,41 @@ app.get('/publish', function (req, res) {
     });
 });
 
+
+
+
+//Serve a Publisher HTML
+app.get('/set-redis', function (req, res) {
+    //https://www.sitepoint.com/using-redis-node-js/
+    /*
+    client.set('framework', 'ReactJS', function(err, reply) {
+        console.log(reply); // OK
+    });
+    */
+
+
+    client.hmset('frameworks_hash', {
+        'javascript': 'ReactJS',
+        'css': 'TailwindCSS',
+        'node': 'Express'
+    });
+
+    client.hgetall('frameworks_hash', function(err, object) {
+        console.log(object); // { javascript: 'ReactJS', css: 'TailwindCSS', node: 'Express' }
+    });
+
+});
+
+
+
+//Serve a Publisher HTML
+app.get('/get-redis', function (req, res) {
+    client.get('framework', function(err, reply) {
+        console.log(reply); // ReactJS
+    });
+});
+
+
 app.get('/share', function (req, res) {
     /*
     var userId = req.query.id ?? 0 ;
@@ -68,13 +103,16 @@ app.get('/share', function (req, res) {
         root: __dirname
     });
     */
-    var userId = req.query.id ?? 0 ;
+    var id = req.query.id ?? 0 ;
+    var name = req.query.name ?? 0 ;
     var latitude = req.query.lat ?? 0.0 ;
     var longitude = req.query.long ?? 0.0 ;
+    
 
     res.render('pages/share', {
         root: __dirname,
-        id : userId, 
+        id : id, 
+        name : name, 
         latitude : latitude, 
         longitude : longitude
     });
@@ -85,6 +123,7 @@ var redis = require('redis');
 const { DefaultDeserializer } = require('v8');
 var redisSubscriber = redis.createClient();
 var redisPublisher = redis.createClient();
+var client = redis.createClient();
 
 redisSubscriber.on('subscribe', function (channel, count) {
     console.log('client subscribed to ' + channel + ', ' + count + ' total subscriptions');
