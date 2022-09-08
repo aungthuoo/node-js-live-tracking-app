@@ -47,7 +47,7 @@
       var map ; 
       function initialize_map() {
         
-        map = L.map('map').setView([16.82693891513995,96.17375649588146,], 18);
+        map = L.map('map').setView([16.82693891513995,96.17375649588146,], 16);
         mapLink = 
               '<a href="http://openstreetmap.org">OpenStreetMap</a>';
         L.tileLayer(
@@ -97,7 +97,6 @@
         }
 
         function moveMarker(message){
-          debugger; 
             //var marker = markers.2342fc7f; // or markers['2342fc7']
             
             var id  = parseInt(message.User.id) ?? 0; 
@@ -107,7 +106,6 @@
 
             var marker = markers[ id ]; 
 
-            debugger; 
             if(marker){
               var newLatLng = new L.LatLng(lat, lng);
               marker.setLatLng(newLatLng); 

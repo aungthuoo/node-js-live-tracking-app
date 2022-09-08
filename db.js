@@ -1,11 +1,12 @@
+/*
 const mongoClient = require('mongodb').MongoClient;
-const mongoDbUrl = 'mongodb://127.0.0.1:27017';
+const mongoDbUrl = 'mongodb://127.0.0.1:27017/';
 let mongodb;
 
 function connect(callback){
     mongoClient.connect(mongoDbUrl, (err, db) => {
         mongodb = db;
-        callback();
+        //callback();
     });
 }
 function get(){
@@ -21,3 +22,28 @@ module.exports = {
     get,
     close
 };
+
+*/
+
+let mongoose = require('mongoose');
+
+const server = '127.0.0.1:27017'; // REPLACE WITH YOUR DB SERVER
+const database = 'live_tracking';      // REPLACE WITH YOUR DB NAME
+
+class Database {
+  constructor() {
+    this._connect()
+  }
+  
+_connect() {
+     mongoose.connect(`mongodb://${server}/${database}`)
+       .then(() => {
+         console.log('Database connection successful')
+       })
+       .catch(err => {
+         console.error('Database connection error')
+       })
+  }
+}
+
+module.exports = new Database()

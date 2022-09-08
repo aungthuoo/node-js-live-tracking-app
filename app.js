@@ -4,6 +4,19 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 const axios = require("axios");
+
+
+
+var redis = require('redis');
+const { DefaultDeserializer } = require('v8');
+var redisSubscriber = redis.createClient();
+var redisPublisher = redis.createClient();
+var client = redis.createClient();
+
+
+let UserModel = require('./models/user')
+
+var routes = require('./routes');
 const db = require('./db');
 
 app.set('view engine', 'ejs');
@@ -108,7 +121,8 @@ app.get('/tracking', function (req, res) {
      var name = req.query.name ?? "" ;
      var latitude = req.query.lat ?? 0.0 ;
      var longitude = req.query.long ?? 0.0 ;
-     
+
+
 
      res.render('pages/tracking', {
          root: __dirname,
@@ -119,11 +133,12 @@ app.get('/tracking', function (req, res) {
      });
 });
 
-db.connect(() => {
-    http.listen(process.env.PORT || 3000, function () {
-        console.log('Server Started. Listening on :3000');
-    });
+app.use('/', routes);
+
+http.listen(process.env.PORT || 3000, function () {
+    console.log('Server Started. Listening on :3000');
 });
+
 
 
 
@@ -133,11 +148,7 @@ db.connect(() => {
 
 
 
-var redis = require('redis');
-const { DefaultDeserializer } = require('v8');
-var redisSubscriber = redis.createClient();
-var redisPublisher = redis.createClient();
-var client = redis.createClient();
+
 
 redisSubscriber.on('subscribe', function (channel, count) {
     console.log('client subscribed to ' + channel + ', ' + count + ' total subscriptions');
@@ -161,7 +172,22 @@ io.on('connection', function (socket) {
       console.log('Got disconnect!');
     });
     socket.on('lastKnownLocation', function (data) {
-        console.log('step 2'); 
+        debugger; 
+        let user = new UserModel({
+            id : data.User.id, 
+            name: data.User.name, 
+            latitude : data.Coordinate.Latitude,
+            longitude : data.Coordinate.Longitude
+        }); 
+        user.save()
+            .then(doc => {
+                console.log(doc)
+            })
+            .catch(err => {
+                console.error(err)
+            })
+        
+
         var location = JSON.stringify(data);
         redisPublisher.publish('locationUpdateABC', location);
     });
