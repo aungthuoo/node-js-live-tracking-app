@@ -15,6 +15,7 @@ var client = redis.createClient();
 
 
 let UserModel = require('./models/user')
+let LocationModel = require('./models/location')
 
 var routes = require('./routes');
 const db = require('./db');
@@ -173,13 +174,15 @@ io.on('connection', function (socket) {
     });
     socket.on('lastKnownLocation', function (data) {
         debugger; 
-        let user = new UserModel({
-            id : data.User.id, 
+        let locationModel = new LocationModel({
+            //id : data.User.id, 
+            user_id : data.User.id, 
             name: data.User.name, 
             latitude : data.Coordinate.Latitude,
-            longitude : data.Coordinate.Longitude
+            longitude : data.Coordinate.Longitude, 
+            created_at : new Date()
         }); 
-        user.save()
+        locationModel.save()
             .then(doc => {
                 console.log(doc)
             })
