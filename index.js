@@ -4,15 +4,9 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 const axios = require("axios");
+const db = require('./db');
 
-var port = process.env.PORT || 3000;
 app.set('view engine', 'ejs');
-
-// Start the Server
-http.listen(port, function () {
-    console.log('Server Started. Listening on *:' + port);
-});
-
 // Express Middleware
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({
@@ -35,9 +29,6 @@ app.get('/', function(req, res) {
     });
 });
 
-
-
-
 // Render Main HTML file
 app.get('/maps', function (req, res) {
     redisSubscriber.subscribe('locationUpdateABC');
@@ -53,45 +44,7 @@ app.get('/publish', function (req, res) {
     });
 });
 
-
-
-
-
-//Serve a Publisher HTML
-app.get('/check-in', function (req, res) {
-
-    client.hmset('way-1', {
-        name: 'Ko Ko ',
-        latLng: [16.82693891513995,96.17375649588146],
-        id: 1
-    });
-
-    client.hmset('way-2', {
-        name: 'Mg Mg ',
-        latLng: [16.82701079758431,96.17407836260564],
-        id: 2
-    });
-
-    client.hmset('way-3', {
-        name: 'Hla Hla',
-        latLng: [16.82708268133046,96.17427148333566],
-        id: 3
-    });
-
-    client.sadd(['ways', 'way-1', 'way-2', 'way-3'], function(err, reply) {
-        console.log(reply); // 2
-    });
-
-
-    client.hgetall('ways', function(err, object) {
-        console.log(object); // { javascript: 'ReactJS', css: 'TailwindCSS', node: 'Express' }
-    });
-
-});
-
-
-
-app.get("/jobs", (req, res) => {
+app.get("/test_cache", (req, res) => {
     const searchTerm = req.query.search;
     try {
         client.get(searchTerm, async (err, jobs) => {
@@ -116,13 +69,6 @@ app.get("/jobs", (req, res) => {
     } catch(err) {
         res.status(500).send({message: err.message});
     }
-});
-
-//Serve a Publisher HTML
-app.get('/get-redis', function (req, res) {
-    client.get('framework', function(err, reply) {
-        console.log(reply); // ReactJS
-    });
 });
 
 //https://stackoverflow.com/questions/59443078/how-can-i-add-an-array-to-hash-with-hmset-in-redis
@@ -163,7 +109,7 @@ app.get('/tracking', function (req, res) {
      var latitude = req.query.lat ?? 0.0 ;
      var longitude = req.query.long ?? 0.0 ;
      
- 
+
      res.render('pages/tracking', {
          root: __dirname,
          id : id, 
@@ -171,7 +117,18 @@ app.get('/tracking', function (req, res) {
          latitude : latitude, 
          longitude : longitude
      });
- });
+});
+
+db.connect(() => {
+    http.listen(process.env.PORT || 3000, function () {
+        console.log('Server Started. Listening on :3000');
+    });
+});
+
+
+
+
+
  
 
 
