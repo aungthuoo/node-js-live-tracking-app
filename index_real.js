@@ -56,6 +56,28 @@ app.get('/publish', function (req, res) {
 
 
 
+//Serve a Publisher HTML
+app.get('/set-redis', function (req, res) {
+    //https://www.sitepoint.com/using-redis-node-js/
+    /*
+    client.set('framework', 'ReactJS', function(err, reply) {
+        console.log(reply); // OK
+    });
+    */
+
+
+    client.hmset('frameworks_hash', {
+        'javascript': 'ReactJS',
+        'css': 'TailwindCSS',
+        'node': 'Express'
+    });
+
+    client.hgetall('frameworks_hash', function(err, object) {
+        console.log(object); // { javascript: 'ReactJS', css: 'TailwindCSS', node: 'Express' }
+    });
+
+});
+
 
 //Serve a Publisher HTML
 app.get('/check-in', function (req, res) {
@@ -89,6 +111,17 @@ app.get('/check-in', function (req, res) {
 
 });
 
+
+//https://dev.to/pharzad/a-practical-introduction-to-redis-for-the-node-js-developers-m39
+app.get('/redis', function (req, res) {
+    // client.set("foo", "bar", redis.print);
+    // client.get("foo", redis.print);
+    // client.sadd('daysOfWeek', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday');
+    // client.smembers('daysOfWeek', (err, value)=>console.log(value))
+
+
+    
+});
 
 
 app.get("/jobs", (req, res) => {
@@ -125,24 +158,25 @@ app.get('/get-redis', function (req, res) {
     });
 });
 
-//https://stackoverflow.com/questions/59443078/how-can-i-add-an-array-to-hash-with-hmset-in-redis
-/*
-You can add it as another field in the same hash key, but stringify the array.
-
-await redis.hset(`role-${roleId}`, 'mandatories', JSON.stringify(mandatories))
-This way you can still HGETALL the whole role object data. But then, you have to manage the array of IDs as a whole.
-
-Or, you can flatten out the array to a list, set, or sorted set. For example, to add as set, you can do:
-
-await redis.sadd(`role-${roleId}-mandatories`, mandatories)
-Note we are adding '-mandatories' to the key name. Here you are passing the array to the node.js redis sadd function. It will add each array item as a member in the set. This allows you to manipulate the set of mandatories directly (SPOP, SREM, SISMEMBER, etc).
-*/
-
 
 app.get('/share', function (req, res) {
-   debugger; 
+    /*
+    var userId = req.query.id ?? 0 ;
+    var latitude = req.query.lat ?? 0.0 ;
+    var longitude = req.query.long ?? 0.0 ;
+
+    res.render('views/share', {
+        root: __dirname,
+        id : userId, 
+        latitude : latitude, 
+        longitude : longitude
+    }); 
+    res.sendFile('views/share', {
+        root: __dirname
+    });
+    */
     var id = req.query.id ?? 0 ;
-    var name = req.query.name ?? "" ;
+    var name = req.query.name ?? 0 ;
     var latitude = req.query.lat ?? 0.0 ;
     var longitude = req.query.long ?? 0.0 ;
     
@@ -155,9 +189,6 @@ app.get('/share', function (req, res) {
         longitude : longitude
     });
 });
-
-
-
 
 
 var redis = require('redis');

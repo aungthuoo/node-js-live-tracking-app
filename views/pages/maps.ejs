@@ -44,12 +44,13 @@
       ];
       // Add an object to save markers
       var markers = {};
+      var map ; 
       function initialize_map() {
         
-        var map = L.map('map').setView([16.82693891513995,96.17375649588146,], 18);
-          mapLink = 
+        map = L.map('map').setView([16.82693891513995,96.17375649588146,], 18);
+        mapLink = 
               '<a href="http://openstreetmap.org">OpenStreetMap</a>';
-          L.tileLayer(
+        L.tileLayer(
               'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
               attribution: '&copy; ' + mapLink + ' Contributors',
               maxZoom: 18,
@@ -59,7 +60,7 @@
           var person = data[i];
           // Create and save a reference to each marker
           // markers[person.id] = L.marker(person.latLng).addTo(map);
-
+          
           markers[person.id] = L.marker(person.latLng, {
               icon: new L.DivIcon({
                   className: 'my-div-icon',
@@ -98,11 +99,31 @@
         function moveMarker(message){
           debugger; 
             //var marker = markers.2342fc7f; // or markers['2342fc7']
-            var marker = markers[ message.User.id ]; 
-            var lat = message.Coordinate.Latitude; 
-            var lng = message.Coordinate.Longitude;  
-            var newLatLng = new L.LatLng(lat, lng);
-            marker.setLatLng(newLatLng); 
+            
+            var id  = parseInt(message.User.id) ?? 0; 
+            var name = message.User.name ?? ""; 
+            var lat = message.Coordinate.Latitude ?? 0.0; 
+            var lng = message.Coordinate.Longitude ?? 0.0;  
+
+            var marker = markers[ id ]; 
+
+            debugger; 
+            if(marker){
+              var newLatLng = new L.LatLng(lat, lng);
+              marker.setLatLng(newLatLng); 
+            }else{
+              console.log('todo ws'); 
+              markers[id] = null; 
+              markers[id] = L.marker([ lat, lng ], {
+                  icon: new L.DivIcon({
+                      className: 'my-div-icon',
+                      html: '<img class="my-div-image" width="auto" height="35px" src="http://maps.google.com/mapfiles/ms/micons/blue-pushpin.png"/>'+
+                            '<div class="my-div-span" style="width:100px;text-align:left;">'+ name +'</div>'
+                  })
+              }).addTo(map);
+              
+            }
+
         }
 
     </script>
