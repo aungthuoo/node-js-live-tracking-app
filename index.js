@@ -156,7 +156,23 @@ app.get('/share', function (req, res) {
     });
 });
 
-
+app.get('/tracking', function (req, res) {
+    debugger; 
+     var id = req.query.id ?? 0 ;
+     var name = req.query.name ?? "" ;
+     var latitude = req.query.lat ?? 0.0 ;
+     var longitude = req.query.long ?? 0.0 ;
+     
+ 
+     res.render('pages/tracking', {
+         root: __dirname,
+         id : id, 
+         name : name, 
+         latitude : latitude, 
+         longitude : longitude
+     });
+ });
+ 
 
 
 

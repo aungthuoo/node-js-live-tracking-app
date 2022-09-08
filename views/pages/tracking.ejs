@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>OpenStreetMap &amp; Tracking</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <link  rel="stylesheet"   href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css"/>
+    <script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
+
+  </head>
+  <body>
+    <div>
+        User id : <%= id %>, 
+        User name : <%= name %>, 
+        Latitude : <%= latitude %>, 
+        Longitude : <%= longitude %>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.slim.js"></script>
+
+    <script type="text/javascript">
+        const socket = io({ transports: ['websocket'] });
+
+        var latLongs =
+        [
+          [16.829732218302638, 96.17261925626285],
+          [16.829701410660043, 96.1723724891368],
+          [16.829711680880752, 96.17207207737705],
+          [16.829629525361565, 96.17173947856135],
+          [16.82953709993576, 96.17135323525125],
+
+          [16.829393326261677, 96.17084897386792],
+          [16.829321439571313, 96.17074168451902],
+          [16.82731889553953, 96.17087044020018],
+          [16.82715458450009, 96.17090262729475],
+
+          [16.827082698367906, 96.17090262754289],
+          [16.827072428986817, 96.17092408522804],
+          [16.826897848602272, 96.17099918752007],
+          [16.826671920903053, 96.17106356098326],
+
+          [16.826517879250012, 96.17110647654451],
+          [16.82640491538551, 96.17114939195623],
+          [16.826404915692752, 96.1713317813688],
+          [16.826476801984242, 96.17150344196128],
+
+
+          [16.826569226860606, 96.17183603464561],
+          [16.826558957178307, 96.17196478019662],
+          [16.826661650747265, 96.17228664452657],
+          [16.826754073926494, 96.17268361095302],
+
+
+          [16.826856763262622, 96.17338098543578],
+          [16.82694918551576, 96.17367066516634],
+          [16.826990260229636, 96.17394961594142],
+          [16.827082681893742, 96.17422856781309],
+
+
+          [16.827010799403833, 96.17392815846439],
+          [16.827021067175536, 96.17406763386376],
+          [16.82706214311235, 96.17421783865063],
+          [16.82703133500204, 96.17419638047618],
+
+
+          [16.827010799403833, 96.17392815846439],
+          [16.827021067175536, 96.17406763386376],
+          [16.82706214311235, 96.17421783865063],
+          [16.82703133500204, 96.17419638047618],
+      ];
+        var count = 0 ; 
+        var item = {};
+        item.Coordinate = {};
+        item.User = {};
+        
+        item.User.id = "<%= id %>";
+        item.User.name = "<%= name %>";
+        //item.Coordinate.Latitude = "<%= latitude %>";
+        //item.Coordinate.Longitude = "<%= longitude %>";
+
+        setInterval(function() {
+          debugger; 
+          item.Coordinate.Latitude = latLongs[count][0];
+          item.Coordinate.Longitude = latLongs[count][1];
+          count++;
+          //updateCoordinate(item);
+          socket.emit('lastKnownLocation', item);
+        }, 1000);
+
+    </script>
+    
+</body>
+</html>
