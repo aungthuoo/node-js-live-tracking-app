@@ -16,6 +16,7 @@
         User name : <%= name %>, 
         Latitude : <%= latitude %>, 
         Longitude : <%= longitude %>
+        Longitude : <%= status %>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.slim.js"></script>
@@ -77,6 +78,7 @@
         
         item.User.id = "<%= id %>";
         item.User.name = "<%= name %>";
+        item.User.status = "<%= status %>";
         //item.Coordinate.Latitude = "<%= latitude %>";
         //item.Coordinate.Longitude = "<%= longitude %>";
 

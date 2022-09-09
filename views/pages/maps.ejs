@@ -46,7 +46,6 @@
       var markers = {};
       var map ; 
       function initialize_map() {
-        
         map = L.map('map').setView([16.82693891513995,96.17375649588146,], 16);
         mapLink = 
               '<a href="http://openstreetmap.org">OpenStreetMap</a>';
@@ -55,6 +54,7 @@
               attribution: '&copy; ' + mapLink + ' Contributors',
               maxZoom: 18,
               }).addTo(map);
+        /*
         // Loop through the data
         for (var i = 0; i < data.length; i++) {
           var person = data[i];
@@ -70,6 +70,7 @@
           }).addTo(map);
 
         }
+        */
       }
     </script>
     <script src='/socket.io/socket.io.js'></script>
@@ -100,9 +101,11 @@
             //var marker = markers.2342fc7f; // or markers['2342fc7']
             
             var id  = parseInt(message.User.id) ?? 0; 
+            var status  = parseInt(message.User.status) ?? 1; 
             var name = message.User.name ?? ""; 
             var lat = message.Coordinate.Latitude ?? 0.0; 
-            var lng = message.Coordinate.Longitude ?? 0.0;  
+            var lng = message.Coordinate.Longitude ?? 0.0; 
+            var markerIcon ;  
 
             var marker = markers[ id ]; 
 
@@ -110,12 +113,17 @@
               var newLatLng = new L.LatLng(lat, lng);
               marker.setLatLng(newLatLng); 
             }else{
-              console.log('todo ws'); 
+              console.log('todo ws');
+              if(status == 1 )
+                markerIcon  =  "http://maps.google.com/mapfiles/ms/micons/motorcycling.png"; 
+              else if(status == 2 )
+                markerIcon  =  "http://maps.google.com/mapfiles/ms/micons/red-pushpin.png"; 
+
               markers[id] = null; 
               markers[id] = L.marker([ lat, lng ], {
                   icon: new L.DivIcon({
                       className: 'my-div-icon',
-                      html: '<img class="my-div-image" width="auto" height="35px" src="http://maps.google.com/mapfiles/ms/micons/blue-pushpin.png"/>'+
+                      html: '<img class="my-div-image" width="auto" height="35px" src="'+ markerIcon +'"/>'+
                             '<div class="my-div-span" style="width:100px;text-align:left;">'+ name +'</div>'
                   })
               }).addTo(map);

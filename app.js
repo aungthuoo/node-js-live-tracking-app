@@ -58,6 +58,14 @@ app.get('/publish', function (req, res) {
     });
 });
 
+//Serve a Publisher HTML
+app.get('/history', function (req, res) {
+    res.render('pages/history', {
+        root: __dirname
+    });
+});
+
+
 app.get("/test_cache", (req, res) => {
     const searchTerm = req.query.search;
     try {
@@ -122,7 +130,7 @@ app.get('/tracking', function (req, res) {
      var name = req.query.name ?? "" ;
      var latitude = req.query.lat ?? 0.0 ;
      var longitude = req.query.long ?? 0.0 ;
-
+     var status = req.query.status ?? 1 ;
 
 
      res.render('pages/tracking', {
@@ -130,7 +138,8 @@ app.get('/tracking', function (req, res) {
          id : id, 
          name : name, 
          latitude : latitude, 
-         longitude : longitude
+         longitude : longitude,
+         status : status 
      });
 });
 
