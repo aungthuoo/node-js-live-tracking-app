@@ -45,6 +45,7 @@
       // Add an object to save markers
       var markers = {};
       var map ; 
+      
       function initialize_map() {
         map = L.map('map').setView([16.82693891513995,96.17375649588146,], 16);
         mapLink = 
@@ -53,7 +54,7 @@
               'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
               attribution: '&copy; ' + mapLink + ' Contributors',
               maxZoom: 18,
-              }).addTo(map);
+          }).addTo(map);
         /*
         // Loop through the data
         for (var i = 0; i < data.length; i++) {
@@ -115,7 +116,7 @@
             }else{
               console.log('todo ws');
               if(status == 1 )
-                markerIcon  =  "http://maps.google.com/mapfiles/ms/micons/motorcycling.png"; 
+                markerIcon  =  "http://maps.google.com/mapfiles/ms/micons/blue-pushpin.png"; 
               else if(status == 2 )
                 markerIcon  =  "http://maps.google.com/mapfiles/ms/micons/red-pushpin.png"; 
 
