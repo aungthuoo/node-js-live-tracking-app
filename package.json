@@ -1,18 +1,24 @@
 {
-  "name": "realtimetracking",
-  "version": "0.0.1",
-  "description": "A realtime GPS tracking using redis, nodejs and websockets",
+  "name": "socket_io_chat_server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
   "dependencies": {
     "axios": "^0.27.2",
-    "body-parser": "^1.15.2",
+    "body-parser": "^1.20.0",
     "ejs": "^3.1.8",
     "express": "^4.18.1",
+    "http": "^0.0.1-security",
     "mongodb": "^4.9.1",
-    "mongoose": "^6.5.5",
-    "redis": "^2.8.0",
-    "socket.io": "^1.7.4",
+    "mongoose": "^6.6.0",
+    "nodemon": "^2.0.19",
+    "redis": "^4.3.1",
+    "socket.io": "^4.5.2",
     "validator": "^13.7.0"
-  },
-  "main": "index.js",
-  "author": ""
+  }
 }

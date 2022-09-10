@@ -71,25 +71,25 @@
           [16.82706214311235, 96.17421783865063],
           [16.82703133500204, 96.17419638047618],
       ];
-        var count = 0 ; 
-        var item = {};
-        item.Coordinate = {};
-        item.User = {};
-        
-        item.User.id = "<%= id %>";
-        item.User.name = "<%= name %>";
-        item.User.status = "<%= status %>";
-        //item.Coordinate.Latitude = "<%= latitude %>";
-        //item.Coordinate.Longitude = "<%= longitude %>";
+      var count = 0 ; 
+      var item = {};
+      item.Coordinate = {};
+      item.User = {};
+      
+      item.User.id = "<%= id %>";
+      item.User.name = "<%= name %>";
+      item.User.status = "<%= status %>";
+      //item.Coordinate.Latitude = "<%= latitude %>";
+      //item.Coordinate.Longitude = "<%= longitude %>";
 
-        setInterval(function() {
-          debugger; 
-          item.Coordinate.Latitude = latLongs[count][0];
-          item.Coordinate.Longitude = latLongs[count][1];
-          count++;
-          //updateCoordinate(item);
-          socket.emit('lastKnownLocation', item);
-        }, 1000);
+      setInterval(function() {
+        debugger; 
+        item.Coordinate.Latitude = latLongs[count][0];
+        item.Coordinate.Longitude = latLongs[count][1];
+        count++;
+        //updateCoordinate(item);
+        socket.emit('message', item);
+      }, 1000);
 
     </script>
     
