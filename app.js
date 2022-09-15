@@ -71,7 +71,7 @@ socketIO.on('connection', function (client) {
     let locationModel = new LocationModel({
         //id : data.User.id, 
         user_id : data.id, 
-        name: data.User.username, 
+        name: data.username, 
         latitude : data.latitude,
         longitude : data.longitude, 
         created_at : new Date()
