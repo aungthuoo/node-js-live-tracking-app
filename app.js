@@ -19,6 +19,22 @@ let LocationModel = require('./models/location')
 var routes = require('./routes');
 const db = require('./db');
 
+
+
+
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'OPTIONS, GET, PUT, POST, DELETE');
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+
+
+
+
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({
