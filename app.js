@@ -3,9 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const http = require('http').Server(app);
-const socketIO = require('socket.io')(http, {
-  'origins': 'watch.foodmallmm.com:*'
-})
+const socketIO = require('socket.io')(http)
 const axios = require("axios");
 
 const redis = require('redis');
