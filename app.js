@@ -3,7 +3,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const http = require('http').Server(app);
-const socketIO = require('socket.io')(http)
+const socketIO = require('socket.io')(http, {
+  cors: {
+      origin: "*",
+      methods: ["GET", "POST"],
+      credentials: true
+  }
+})
 const axios = require("axios");
 
 const redis = require('redis');
