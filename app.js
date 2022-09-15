@@ -67,8 +67,25 @@ socketIO.on('connection', function (client) {
     item.Coordinate.Longitude = data.longitude;
 
     socketIO.emit('locationUpdate', data);
-    socketIO.emit('message', data);
-  })
+
+    let locationModel = new LocationModel({
+        //id : data.User.id, 
+        user_id : data.id, 
+        name: data.User.username, 
+        latitude : data.latitude,
+        longitude : data.longitude, 
+        created_at : new Date()
+    }); 
+    locationModel.save()
+        .then(doc => {
+            console.log(doc)
+        })
+        .catch(err => {
+            console.error(err)
+        })
+
+      socketIO.emit('message', data);
+    })
 
 
 
