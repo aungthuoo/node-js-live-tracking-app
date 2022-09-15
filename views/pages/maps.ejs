@@ -79,8 +79,10 @@
         var socket = io();
 
         socket.on('locationUpdate', function(data) {
-            var message = JSON.parse(data); 
-            moveMarker( message ); 
+          debugger; 
+          console.log("locationUpdate@maps "); 
+            //var message = JSON.parse(data); 
+            moveMarker( data ); 
         });
         socket.on('time', function(data) {
             addMessage(data.time);
@@ -99,13 +101,21 @@
         }
 
         function moveMarker(message){
+          debugger; 
             //var marker = markers.2342fc7f; // or markers['2342fc7']
-            
+            /*
             var id  = parseInt(message.User.id) ?? 0; 
             var status  = parseInt(message.User.status) ?? 1; 
             var name = message.User.name ?? ""; 
             var lat = message.Coordinate.Latitude ?? 0.0; 
             var lng = message.Coordinate.Longitude ?? 0.0; 
+            */
+            var id  = parseInt(message.id) ?? 0; 
+            //var status  = parseInt(message.status) ?? 1; 
+            var status  = 1; 
+            var name = message.username ?? ""; 
+            var lat = message.latitude ?? 0.0; 
+            var lng = message.longitude ?? 0.0; 
             var markerIcon ;  
 
             var marker = markers[ id ]; 

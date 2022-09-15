@@ -88,7 +88,8 @@
         item.Coordinate.Longitude = latLongs[count][1];
         count++;
         //updateCoordinate(item);
-        socket.emit('message', item);
+        //socket.emit('message', item);
+        socket.emit('locationUpdate', item);
       }, 1000);
 
     </script>

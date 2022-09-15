@@ -34,7 +34,23 @@ socketIO.on('connection', function (client) {
 
 //listens for new messages coming in
   client.on('message', function name(data) {
+    console.log("i am message"); 
     console.log(data);
+    var location = JSON.stringify(data);
+    //redisPublisher.publish('locationUpdateABC', location);
+
+
+    var item = {};
+    item.Coordinate = {};
+    item.User = {};
+    
+    item.User.id = data.id;
+    item.User.name = data.username;
+    item.User.status = 1;
+    item.Coordinate.Latitude = data.latitude;
+    item.Coordinate.Longitude = data.longitude;
+
+    socketIO.emit('locationUpdate', data);
     socketIO.emit('message', data);
   })
 
