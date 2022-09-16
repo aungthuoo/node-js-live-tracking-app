@@ -189,6 +189,35 @@ app.get('/save', function (req, res) {
 
 });
 
+const User = require('./models/user');
+app.get('/users', (req, res) => {
+  //find all books
+  /*
+  UserModel.User.find({}, (err, allBooks) => {
+      if (err) console.error(err);
+
+      res.render('pages/user/index', { item });
+  });
+  */
+  User.find({}, (err, items) => {
+    if (err) console.error(err);
+    res.render('pages/user/index', { items });
+  });
+});
+
+
+
+
+app.get('/users/:id', (req, res) => {
+  var id = req.params.id;
+  console.log( id ); 
+  UserModel.findOne({ _id: id }, (err, item) => {
+      if (err) console.error(err);
+      console.log( item ); 
+      res.render('pages/user/show', { item });
+  });
+});
+
 
 app.get("/test_cache", (req, res) => {
   const searchTerm = req.query.search;
@@ -253,10 +282,6 @@ app.get('/tracking', function (req, res) {
          status : status 
      });
 });
-
-
-
-
 
 
 var port = process.env.PORT || 3000;
