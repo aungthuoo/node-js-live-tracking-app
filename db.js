@@ -27,7 +27,7 @@ module.exports = {
 
 let mongoose = require('mongoose');
 
-const server = '178.128.98.174:27017'; // REPLACE WITH YOUR DB SERVER
+const server = '127.0.0.1:27017'; // REPLACE WITH YOUR DB SERVER
 const database = 'live_tracking';      // REPLACE WITH YOUR DB NAME
 
 class Database {
