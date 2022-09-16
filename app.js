@@ -15,6 +15,7 @@ const client = redis.createClient();
 
 let UserModel = require('./models/user')
 let LocationModel = require('./models/location')
+let TestModel = require('./models/test')
 
 var routes = require('./routes');
 const db = require('./db');
@@ -146,7 +147,6 @@ app.get('/', function(req, res) {
 });
 
 
-// Render Main HTML file
 app.get('/maps', function (req, res) {
   redisSubscriber.subscribe('locationUpdateABC');
   res.render('pages/maps', {
@@ -154,18 +154,39 @@ app.get('/maps', function (req, res) {
   });
 });
 
-//Serve a Publisher HTML
 app.get('/publish', function (req, res) {
   res.sendFile('views/publisher.html', {
       root: __dirname
   });
 });
 
-//Serve a Publisher HTML
 app.get('/history', function (req, res) {
   res.render('pages/history', {
       root: __dirname
   });
+});
+
+app.get('/save', function (req, res) {
+
+  let testModel = new TestModel({
+    //id : data.User.id, 
+    id : 1, 
+    name: "ATO", 
+    latitude : 16.00,
+    longitude : 96.00, 
+    created_at : new Date()
+  }); 
+  testModel.save()
+      .then(doc => {
+          console.log(doc)
+      })
+      .catch(err => {
+          console.error(err)
+      });
+  res.render('pages/transaction_index', {
+      root: __dirname
+  });
+
 });
 
 
