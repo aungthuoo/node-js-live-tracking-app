@@ -1,4 +1,14 @@
-let mongoose = require('mongoose')
+//let mongoose = require('mongoose')
+const mongoose = require('mongoose');
+  
+// Database Connection
+mongoose.connect('mongodb://127.0.0.1:27017/live_tracking',{
+    useNewUrlParser: true,
+    //useCreateIndex: true,
+    useUnifiedTopology: true
+});
+
+
 let validator = require('validator')
 
 let testSchema = new mongoose.Schema({
