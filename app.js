@@ -204,7 +204,7 @@ app.get('/save', function (req, res) {
 
 //const User = require('./models/user');
 app.get('/users', (req, res) => {
-  UserModel.find({}, (err, items) => {
+  TestModel.find({}, (err, items) => {
     if (err) console.error(err);
     res.render('pages/user/index', { items });
   });
