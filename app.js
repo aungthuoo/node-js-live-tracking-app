@@ -166,6 +166,19 @@ app.get('/history', function (req, res) {
   });
 });
 
+
+//ToDo: Login 
+// app.get('/register', function (req, res) {
+//   res.render('pages/login/register', {
+//       root: __dirname
+//   });
+// });
+
+
+
+
+
+//TESTING
 app.get('/save', function (req, res) {
 
   let testModel = new TestModel({
