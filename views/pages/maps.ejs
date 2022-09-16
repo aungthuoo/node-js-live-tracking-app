@@ -4,6 +4,9 @@
     <meta charset="utf-8">
     <title>OpenStreetMap &amp; OpenLayers - Multiple marker</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <link  rel="stylesheet"   href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
@@ -17,7 +20,7 @@
     </header>
 
     <main>
-      <div id="map" style="width: 100vw; height: 100vh;"></div>
+      <div id="map" style="width: 100vw; height: calc(100vh - 120px) ;"></div>
     </main>
 
     <footer>
@@ -26,6 +29,7 @@
   
     <script>
       // Create or retrieve the data
+      /*
       var data = [
           {
             name: 'Ko Ko ',
@@ -43,19 +47,20 @@
             id: 3
           }, 
       ];
+      */
       // Add an object to save markers
       var markers = {};
       var map ; 
       
       function initialize_map() {
         debugger; 
-        map = L.map('map').setView([16.8387371,96.1781961], 16);
+        map = L.map('map').setView([16.8387371,96.1781961], 14);
         mapLink = 
               '<a href="http://openstreetmap.org">OpenStreetMap</a>';
         L.tileLayer(
               'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
               attribution: '&copy; ' + mapLink + ' Contributors',
-              maxZoom: 18,
+              maxZoom: 20,
           }).addTo(map);
         /*
         // Loop through the data
