@@ -204,14 +204,6 @@ app.get('/save', function (req, res) {
 
 const User = require('./models/user');
 app.get('/users', (req, res) => {
-  //find all books
-  /*
-  UserModel.User.find({}, (err, allBooks) => {
-      if (err) console.error(err);
-
-      res.render('pages/user/index', { item });
-  });
-  */
   User.find({}, (err, items) => {
     if (err) console.error(err);
     res.render('pages/user/index', { items });
