@@ -5,6 +5,7 @@ const app = express();
 const http = require("http").Server(app);
 const socketIO = require("socket.io")(http);
 const axios = require("axios");
+const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const flash = require("connect-flash");
 
@@ -34,12 +35,16 @@ app.use(function (req, res, next) {
   next();
 });
 
+// creating 24 hours from milliseconds
+const oneDay = 1000 * 60 * 60 * 24;
+
 app.use(flash());
 app.use(
   session({
     secret: "secret",
     resave: true,
     saveUninitialized: true,
+    cookie: { maxAge: oneDay },
   })
 );
 
@@ -53,6 +58,7 @@ app.use(
     extended: true,
   })
 );
+app.use(cookieParser());
 
 socketIO.on("connection", function (client) {
   console.log("Connected...", client.id);
