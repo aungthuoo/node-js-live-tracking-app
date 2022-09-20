@@ -20,7 +20,7 @@ let TestModel = require('./models/test')
 var routes = require('./routes');
 const db = require('./db');
 
-
+const authRoutes = require('./routes/auth');
 
 
 app.use(function(req, res, next) {
@@ -128,7 +128,7 @@ socketIO.on('connection', function (client) {
 
 
 
-
+app.use('/auth', authRoutes);
 
 
 // index page
