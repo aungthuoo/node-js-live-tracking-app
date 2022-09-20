@@ -26,9 +26,10 @@ module.exports = {
 */
 
 let mongoose = require('mongoose');
+require('dotenv').config()  
 
-const server = '127.0.0.1:27017'; // REPLACE WITH YOUR DB SERVER
-const database = 'live_tracking';      // REPLACE WITH YOUR DB NAME
+const dbServerIp = process.env.DB_SERVER_IP;
+const database = process.env.DATABASE;
 
 class Database {
   constructor() {
@@ -36,7 +37,7 @@ class Database {
   }
   
 _connect() {
-     mongoose.connect(`mongodb://${server}/${database}`)
+     mongoose.connect(`mongodb://${dbServerIp}/${database}`)
        .then(() => {
          console.log('Database connection successful')
        })

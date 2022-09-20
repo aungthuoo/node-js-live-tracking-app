@@ -5,6 +5,8 @@ const app = express();
 const http = require('http').Server(app);
 const socketIO = require('socket.io')(http)
 const axios = require("axios");
+require('dotenv').config()  
+
 
 const redis = require('redis');
 const { DefaultDeserializer } = require('v8');
@@ -21,7 +23,7 @@ var routes = require('./routes');
 const db = require('./db');
 
 const authRoutes = require('./routes/auth');
-
+const userRoutes = require('./routes/user');
 
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
@@ -129,6 +131,7 @@ socketIO.on('connection', function (client) {
 
 
 app.use('/auth', authRoutes);
+app.use('/user', userRoutes);
 
 
 // index page
