@@ -1,49 +1,37 @@
-/*
-const mongoClient = require('mongodb').MongoClient;
-const mongoDbUrl = 'mongodb://127.0.0.1:27017/';
-let mongodb;
+let mongoose = require("mongoose");
+let mysql = require("mysql2");
 
-function connect(callback){
-    mongoClient.connect(mongoDbUrl, (err, db) => {
-        mongodb = db;
-        //callback();
-    });
-}
-function get(){
-    return mongodb;
-}
-
-function close(){
-    mongodb.close();
-}
-
-module.exports = {
-    connect,
-    get,
-    close
-};
-
-*/
-
-let mongoose = require('mongoose');
-
-const server = '127.0.0.1:27017'; // REPLACE WITH YOUR DB SERVER
-const database = 'live_tracking';      // REPLACE WITH YOUR DB NAME
+const server = "localhost:27017"; // REPLACE WITH YOUR DB SERVER
+const database = "live_tracking"; // REPLACE WITH YOUR DB NAME
 
 class Database {
   constructor() {
-    this._connect()
+    this.mysql = this.connectMySQL();
+    this._connect();
   }
-  
-_connect() {
-     mongoose.connect(`mongodb://${server}/${database}`)
-       .then(() => {
-         console.log('Database connection successful')
-       })
-       .catch(err => {
-         console.error('Database connection error')
-       })
+
+  _connect() {
+    mongoose
+      .connect(`mongodb://${server}/${database}`)
+      .then(() => {
+        console.log("Database connection successful");
+      })
+      .catch((err) => {
+        console.log(err);
+        console.error("Database connection error");
+      });
+  }
+  async connectMySQL() {
+    const connection = mysql.createConnection({
+      host: "localhost",
+      user: "root",
+      password: "Kaungmyat81199@",
+      database: "fm",
+    });
+    const conn = await connection.connect();
+
+    return conn;
   }
 }
 
-module.exports = new Database()
+module.exports = new Database();

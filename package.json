@@ -16,6 +16,7 @@
     "http": "^0.0.1-security",
     "mongodb": "^4.9.1",
     "mongoose": "^6.6.0",
+    "mysql2": "^2.3.3",
     "nodemon": "^2.0.19",
     "redis": "^4.3.1",
     "socket.io": "^4.5.2",
