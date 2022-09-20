@@ -1,50 +1,24 @@
-/*
-const mongoClient = require('mongodb').MongoClient;
-const mongoDbUrl = 'mongodb://127.0.0.1:27017/';
-let mongodb;
-
-function connect(callback){
-    mongoClient.connect(mongoDbUrl, (err, db) => {
-        mongodb = db;
-        //callback();
-    });
-}
-function get(){
-    return mongodb;
-}
-
-function close(){
-    mongodb.close();
-}
-
-module.exports = {
-    connect,
-    get,
-    close
-};
-
-*/
-
-let mongoose = require('mongoose');
-require('dotenv').config()  
+let mongoose = require("mongoose");
+require("dotenv").config();
 
 const dbServerIp = process.env.DB_SERVER_IP;
 const database = process.env.DATABASE;
 
 class Database {
   constructor() {
-    this._connect()
+    this._connect();
   }
-  
-_connect() {
-     mongoose.connect(`mongodb://${dbServerIp}/${database}`)
-       .then(() => {
-         console.log('Database connection successful')
-       })
-       .catch(err => {
-         console.error('Database connection error')
-       })
+
+  _connect() {
+    mongoose
+      .connect(`mongodb://${dbServerIp}/${database}`)
+      .then(() => {
+        console.log("Database connection successful");
+      })
+      .catch((err) => {
+        console.error("Database connection error");
+      });
   }
 }
 
-module.exports = new Database()
+module.exports = new Database();

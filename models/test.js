@@ -1,40 +1,43 @@
-//let mongoose = require('mongoose')
-const mongoose = require('mongoose');
-require('dotenv').config()  
+// <<<<<<< HEAD
+// let mongoose = require('mongoose')
+// const mongoose = require('mongoose');
+// require('dotenv').config()  
 
-const hostname = process.env.HOST;
-const database = process.env.DATABASE;
-const port = process.env.PORT;
+// const hostname = process.env.HOST;
+// const database = process.env.DATABASE;
+// const port = process.env.PORT;
 
-// Database Connection
-mongoose.connect('mongodb://127.0.0.1:27017/live_tracking',{
-    useNewUrlParser: true,
-    //useCreateIndex: true,
-    useUnifiedTopology: true
-});
-mongoose.set('debug', true);
+// // Database Connection
+// mongoose.connect('mongodb://127.0.0.1:27017/live_tracking',{
+//     useNewUrlParser: true,
+//     //useCreateIndex: true,
+//     useUnifiedTopology: true
+// });
+// mongoose.set('debug', true);
 
-let validator = require('validator')
+// let validator = require('validator')
+// =======
+const mongoose = require("mongoose");
+let validator = require("validator");
 
 let testSchema = new mongoose.Schema({
-    id: {
-        type: Number,
-        lowercase: true,
-    },
-    name: {
-        type: String,
-        required: true,
-        //lowercase: true,
-    },
-    latitude: {
-        type: Number,
-        required: true
-    },
-    longitude: {
-        type: Number,
-        required: true
-    },
-    
-})
+  id: {
+    type: Number,
+    lowercase: true,
+  },
+  name: {
+    type: String,
+    required: true,
+    //lowercase: true,
+  },
+  latitude: {
+    type: Number,
+    required: true,
+  },
+  longitude: {
+    type: Number,
+    required: true,
+  },
+});
 
-module.exports = mongoose.model('Test', testSchema)
+module.exports = mongoose.model("Test", testSchema);
