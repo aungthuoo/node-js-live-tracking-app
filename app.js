@@ -134,49 +134,6 @@ socketIO.on("connection", function (client) {
 app.use("/", indexRoutes);
 app.use("/auth", authRoutes);
 
-// index page
-// app.get("/", function (req, res) {
-//   var mascots = [
-//     { name: "Sammy", organization: "DigitalOcean", birth_year: 2012 },
-//     { name: "Tux", organization: "Linux", birth_year: 1996 },
-//     { name: "Moby Dock", organization: "Docker", birth_year: 2013 },
-//   ];
-//   var tagline =
-//     "No programming concept is complete without a cute animal mascot.";
-
-//   res.render("pages/index", {
-//     mascots: mascots,
-//     tagline: tagline,
-//     error: req.flash('error'),
-//   });
-// });
-
-// app.get("/maps", function (req, res) {
-//   redisSubscriber.subscribe("locationUpdateABC");
-//   res.render("pages/maps", {
-//     root: __dirname,
-//   });
-// });
-
-app.get("/publish", function (req, res) {
-  res.sendFile("views/publisher.html", {
-    root: __dirname,
-  });
-});
-
-app.get("/history", function (req, res) {
-  res.render("pages/history", {
-    root: __dirname,
-  });
-});
-
-//ToDo: Login
-// app.get('/register', function (req, res) {
-//   res.render('pages/login/register', {
-//       root: __dirname
-//   });
-// });
-
 //TESTING
 app.get("/save", function (req, res) {
   let testModel = new TestModel({
