@@ -34,12 +34,14 @@ exports.login = async (req, res, next) => {
       return res.redirect("/maps");
     } else {
       req.flash("error", "Incorrect Password");
-    return res.redirect("/");
+      return res.redirect("/");
     }
   });
 };
 
 exports.isLogin = (req, res, next) => {
-  if (!req.session.isLogin) return res.redirect("/");
+  if (!req.session.isLogin) {
+    return res.redirect("/");
+  }
   next();
 };

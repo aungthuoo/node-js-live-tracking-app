@@ -6,7 +6,7 @@ const http = require("http").Server(app);
 const socketIO = require("socket.io")(http);
 const axios = require("axios");
 const session = require("express-session");
-const flash = require('connect-flash');
+const flash = require("connect-flash");
 
 const redis = require("redis");
 const { DefaultDeserializer } = require("v8");
@@ -21,6 +21,7 @@ let TestModel = require("./models/test");
 var routes = require("./routes");
 const db = require("./db");
 
+const indexRoutes = require("./routes/index");
 const authRoutes = require("./routes/auth");
 
 app.use(function (req, res, next) {
@@ -130,31 +131,32 @@ socketIO.on("connection", function (client) {
   });
 });
 
+app.use("/", indexRoutes);
 app.use("/auth", authRoutes);
 
 // index page
-app.get("/", function (req, res) {
-  var mascots = [
-    { name: "Sammy", organization: "DigitalOcean", birth_year: 2012 },
-    { name: "Tux", organization: "Linux", birth_year: 1996 },
-    { name: "Moby Dock", organization: "Docker", birth_year: 2013 },
-  ];
-  var tagline =
-    "No programming concept is complete without a cute animal mascot.";
+// app.get("/", function (req, res) {
+//   var mascots = [
+//     { name: "Sammy", organization: "DigitalOcean", birth_year: 2012 },
+//     { name: "Tux", organization: "Linux", birth_year: 1996 },
+//     { name: "Moby Dock", organization: "Docker", birth_year: 2013 },
+//   ];
+//   var tagline =
+//     "No programming concept is complete without a cute animal mascot.";
 
-  res.render("pages/index", {
-    mascots: mascots,
-    tagline: tagline,
-    error: req.flash('error'),
-  });
-});
+//   res.render("pages/index", {
+//     mascots: mascots,
+//     tagline: tagline,
+//     error: req.flash('error'),
+//   });
+// });
 
-app.get("/maps", function (req, res) {
-  redisSubscriber.subscribe("locationUpdateABC");
-  res.render("pages/maps", {
-    root: __dirname,
-  });
-});
+// app.get("/maps", function (req, res) {
+//   redisSubscriber.subscribe("locationUpdateABC");
+//   res.render("pages/maps", {
+//     root: __dirname,
+//   });
+// });
 
 app.get("/publish", function (req, res) {
   res.sendFile("views/publisher.html", {
