@@ -1,22 +1,29 @@
 let mongoose = require('mongoose')
 let validator = require('validator')
 
-let locationSchema = new mongoose.Schema({
-    id: {
-        type: Number,
-        lowercase: true,
-    },
+let attendanceSchema = new mongoose.Schema({
     user_id: {
         type: Number,
-        required: true,
         lowercase: true,
     },
+    // user_id: {
+    //     type: Number,
+    //     required: true,
+    //     lowercase: true,
+    // },
     name: {
         type: String,
         required: true,
         lowercase: true,
     },
-    
+    // email: {
+    //     type: String,
+    //     unique: true,
+    //     lowercase: true,
+    //     // validate: (value) => {
+    //     //   return validator.isEmail(value)
+    //     // }
+    // },
     latitude: {
         type: Number,
         required: true
@@ -33,7 +40,6 @@ let locationSchema = new mongoose.Schema({
         type: Date,
         required: true
     }
-    
 })
 
-module.exports = mongoose.model('Location', locationSchema)
+module.exports = mongoose.model('Attendance', attendanceSchema)

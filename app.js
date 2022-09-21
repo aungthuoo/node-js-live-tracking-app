@@ -25,6 +25,7 @@ const db = require('./db');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 const locationRoutes = require('./routes/location');
+const attendanceRoutes = require('./routes/attendance');
 
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
@@ -162,6 +163,7 @@ socketIO.on('connection', function (client) {
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
 app.use('/location', locationRoutes);
+app.use('/attendance', attendanceRoutes);
 
 // index page
 app.get('/', function(req, res) {
