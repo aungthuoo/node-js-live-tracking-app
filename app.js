@@ -24,6 +24,7 @@ const db = require('./db');
 
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
+const locationRoutes = require('./routes/location');
 
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
@@ -69,8 +70,36 @@ socketIO.on('connection', function (client) {
     item.Coordinate.Latitude = data.latitude;
     item.Coordinate.Longitude = data.longitude;
 
+
+// Move Maps Market 
     socketIO.emit('locationUpdate', data);
 
+// Update location for last position 
+/*
+    let user = await UserModel.findOne({ id: data.id });
+    if(user != null){
+      const filter = { id: data.id  };
+      const update = { 
+        latitude:  data.latitude,
+        longitude:  data.longitude
+      };
+
+
+      let doc = await UserModel.findOneAndUpdate(filter, update, {
+        new: true,
+        upsert: true // Make this update into an upsert
+      });
+    }
+*/
+    let userModel = new UserModel({
+      user_id : data.id, 
+      name: data.username, 
+      latitude : data.latitude,
+      longitude : data.longitude, 
+      created_at : new Date()
+    }); 
+
+// Save transaction logs
     let locationModel = new LocationModel({
         //id : data.User.id, 
         user_id : data.id, 
@@ -87,8 +116,8 @@ socketIO.on('connection', function (client) {
             console.error(err)
         })
 
-      socketIO.emit('message', data);
-    })
+    socketIO.emit('message', data);
+  })
 
 
 
@@ -132,7 +161,7 @@ socketIO.on('connection', function (client) {
 
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
-
+app.use('/location', locationRoutes);
 
 // index page
 app.get('/', function(req, res) {
@@ -216,9 +245,10 @@ app.get('/users', (req, res) => {
 
 
 
-app.get('/users/:id', (req, res) => {
+app.get('/users/:id', async (req, res) => {
   var id = req.params.id;
   console.log( id ); 
+
   UserModel.findOne({ _id: id }, (err, item) => {
       if (err) console.error(err);
       console.log( item ); 
