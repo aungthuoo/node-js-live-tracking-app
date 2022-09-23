@@ -4,7 +4,9 @@ let validator = require('validator')
 let userSchema = new mongoose.Schema({
     id: {
         type: Number,
-        lowercase: true,
+        required: true,
+        unique: true,
+        //lowercase: true,
     },
     // user_id: {
     //     type: Number,
@@ -32,6 +34,14 @@ let userSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    created_at: {
+        type: Date,
+        required: true
+    },
+    updated_at: {
+        type: Date,
+        required: true
+    }
     
 })
 

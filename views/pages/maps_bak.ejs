@@ -24,7 +24,7 @@
 
     <%- include('../partials/head'); %>
   </head>
-  <body onload="" style="margin:0;">
+  <body onload="initialize_map();" style="margin:0;">
     <header>
       <%- include('../partials/header'); %>
     </header>
@@ -38,7 +38,78 @@
     </footer>
   
     <script src='/socket.io/socket.io.js'></script>
-    
+    <script>
+      
+        var socket = io();
+
+        socket.on('locationUpdate', function(data) {
+          console.log("locationUpdate@maps "); 
+          debugger ; 
+            //var message = JSON.parse(data); 
+            moveMarker( data ); 
+        });
+        socket.on('time', function(data) {
+            addMessage(data.time);
+        });
+        socket.on('error', console.error.bind(console));
+        socket.on('message', console.log.bind(console));
+
+        function addMessage(message) {
+            console.log( message ); 
+            var text = document.createTextNode(message),
+                el = document.createElement('li'),
+                messages = document.getElementById('messages');
+
+            el.appendChild(text);
+            messages.appendChild(el);
+        }
+
+        function moveMarker(message){
+          debugger; 
+            //var marker = markers.2342fc7f; // or markers['2342fc7']
+            /*
+            var id  = parseInt(message.User.id) ?? 0; 
+            var status  = parseInt(message.User.status) ?? 1; 
+            var name = message.User.name ?? ""; 
+            var lat = message.Coordinate.Latitude ?? 0.0; 
+            var lng = message.Coordinate.Longitude ?? 0.0; 
+            */
+            var id  = parseInt(message.id) ?? 0; 
+            //var status  = parseInt(message.status) ?? 1; 
+            var status  = 1; 
+            var name = message.username ?? ""; 
+            var lat = message.latitude ?? 0.0; 
+            var lng = message.longitude ?? 0.0; 
+            var markerIcon ;  
+
+            var marker = markers[ id ]; 
+            //marker.icon = "http://maps.google.com/mapfiles/ms/micons/red-dot.png"
+            if(marker){
+              var newLatLng = new L.LatLng(lat, lng);
+              marker.setLatLng(newLatLng); 
+            }else{
+              console.log('todo ws');
+              if(status == 1 )
+                //markerIcon  =  "http://maps.google.com/mapfiles/ms/micons/blue-pushpin.png"; 
+                markerIcon  =  "http://maps.google.com/mapfiles/ms/micons/blue-dot.png"; 
+              else if(status == 2 )
+                markerIcon  =  "http://maps.google.com/mapfiles/ms/micons/red-dot.png"; 
+
+              markers[id] = null; 
+              markers[id] = L.marker([ lat, lng ], {
+                  icon: new L.DivIcon({
+                      className: 'my-div-icon',
+                      html: '<img class="my-div-image" width="auto" height="35px" src="'+ markerIcon +'"/>'+
+                            '<div class="my-div-span" style="width:100px;text-align:left;">'+ name +'</div>'
+                  })
+              }).addTo(map);
+              
+            }
+
+        }
+
+    </script>
+
 <script>
   var app = new Vue({
     el: "#app",
@@ -116,18 +187,16 @@
 
       },
       initSocket(){
-        debugger; 
         this.socket = io();
-        var _that = this; 
 
         this.socket.on('locationUpdate', function(data) {
           console.log("locationUpdate@maps "); 
           debugger ; 
             //var message = JSON.parse(data); 
-            _that.moveMarker( data ); 
+            moveMarker( data ); 
         });
         this.socket.on('time', function(data) {
-            this.addMessage(data.time);
+            addMessage(data.time);
         });
         this.socket.on('error', console.error.bind(console));
         this.socket.on('message', console.log.bind(console));
@@ -155,7 +224,7 @@
             var lng = message.longitude ?? 0.0; 
             var markerIcon ;  
 
-            var marker = this.markers[ id ]; 
+            var marker = markers[ id ]; 
             //marker.icon = "http://maps.google.com/mapfiles/ms/micons/red-dot.png"
             if(marker){
               var newLatLng = new L.LatLng(lat, lng);
@@ -168,8 +237,8 @@
               else if(status == 2 )
                 markerIcon  =  "http://maps.google.com/mapfiles/ms/micons/red-dot.png"; 
 
-              this.markers[id] = null; 
-              this.markers[id] = L.marker([ lat, lng ], {
+              markers[id] = null; 
+              markers[id] = L.marker([ lat, lng ], {
                   icon: new L.DivIcon({
                       className: 'my-div-icon',
                       html: '<img class="my-div-image" width="auto" height="35px" src="'+ markerIcon +'"/>'+

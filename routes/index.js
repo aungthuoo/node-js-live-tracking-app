@@ -6,7 +6,8 @@ const { publish } = require("../controllers/publishController");
 const { isLogin } = require("../controllers/authController");
 
 router.get("/", index);
-router.get("/maps", isLogin, map);
+//router.get("/maps", isLogin, map);
+router.get("/maps", map);
 router.get("/publish", isLogin, publish);
 router.get("/history", isLogin, history);
 

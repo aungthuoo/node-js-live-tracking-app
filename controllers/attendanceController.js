@@ -1,6 +1,78 @@
 let AttendanceModel = require('../models/attendance')
 let UserModel = require('../models/user')
 const moment = require('moment')
+const helper = require("../helpers.js");
+
+
+
+exports.index = async (req, res, next) => {
+    //var id = req.params.id; 
+   
+    AttendanceModel.find({}, (err, items) => {
+        if (err) console.error(err);
+        console.log('maps find') ; 
+        res.render("pages/attendance/index", {
+            root: __dirname,
+            id : 123456,
+            items : items 
+        });
+    });
+}
+
+
+
+exports.active = async (req, res, next) => {
+    //var id = req.params.id; 
+    var result  = {
+        "data" : [
+            {
+                name: 'Ko Ko ',
+                latLng: [16.82693891513995,96.17375649588146],
+                id: 1
+            }, 
+            {
+                name: 'Mg Mg ',
+                latLng: [16.82701079758431,96.17407836260564],
+                id: 2
+            }, 
+            {
+                name: 'Hla Hla',
+                latLng: [16.82708268133046,96.17427148333566],
+                id: 3
+            }, 
+        ]
+    };
+/*
+    AttendanceModel.find({}, (err, items) => {
+        if (err) console.error(err);
+        
+        console.log('maps find') ; 
+
+        res.render("pages/attendance/index", {
+            root: __dirname,
+            id : 123456,
+            items : items 
+        });
+    });
+
+*/
+
+    AttendanceModel.find({}, (err, items) => {
+        if (err) console.error(err);
+        console.log('maps find') ; 
+        // res.render("pages/attendance/index", {
+        //     root: __dirname,
+        //     id : 123456,
+        //     items : items 
+        // });
+        res.status(200).json( items );
+    });
+
+    //res.status(201).json( result );
+}
+
+
+
 
 exports.save = async (req, res, next) => {
     var id = req.body.id ?? 0; 
@@ -30,6 +102,8 @@ exports.save = async (req, res, next) => {
                 name: name, 
                 latitude : latitude,
                 longitude : longitude, 
+                duty_in_at : new Date(),
+                duty_out_at : new Date(), 
                 created_at : new Date(),
                 updated_at : new Date()
             }); 
@@ -43,9 +117,10 @@ exports.save = async (req, res, next) => {
         }else{
             const filter = { _id: item._id };
             const update = { 
-                name:"Anujue", 
-                latitude : 16.123456789,
-                longitude : 96.123456789 
+                name: name, 
+                latitude : latitude,
+                longitude : longitude,
+                duty_out_at : new Date(), 
             };
 
             AttendanceModel.findOneAndUpdate(filter, update, null, function (err, docs) {
@@ -57,6 +132,7 @@ exports.save = async (req, res, next) => {
                 }
             });
         }
+        //helper.echo("abc");
     });
 
 

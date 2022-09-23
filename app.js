@@ -30,6 +30,13 @@ const userRoutes = require('./routes/user');
 const locationRoutes = require('./routes/location');
 const attendanceRoutes = require('./routes/attendance');
 
+const locationController = require('./controllers/locationController');
+const userController = require('./controllers/userController');
+
+
+const helper = require("./helpers.js");
+
+
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "OPTIONS, GET, PUT, POST, DELETE");
@@ -66,14 +73,10 @@ app.use(
 app.use(cookieParser());
 
 socketIO.on("connection", function (client) {
-  console.log("Connected...", client.id);
-
   //listens for new messages coming in
-  client.on("message", function name(data) {
-    console.log("i am message");
+  client.on("message", async function name(data) {
     console.log(data);
     var location = JSON.stringify(data);
-    //redisPublisher.publish('locationUpdateABC', location);
 
     var item = {};
     item.Coordinate = {};
@@ -88,50 +91,9 @@ socketIO.on("connection", function (client) {
 // Move Maps Market 
     socketIO.emit('locationUpdate', data);
 
-// Update location for last position 
-/*
-    let user = await UserModel.findOne({ id: data.id });
-    if(user != null){
-      const filter = { id: data.id  };
-      const update = { 
-        latitude:  data.latitude,
-        longitude:  data.longitude
-      };
 
-
-      let doc = await UserModel.findOneAndUpdate(filter, update, {
-        new: true,
-        upsert: true // Make this update into an upsert
-      });
-    }
-*/
-    let userModel = new UserModel({
-      user_id : data.id, 
-      name: data.username, 
-      latitude : data.latitude,
-      longitude : data.longitude, 
-      created_at : new Date()
-    }); 
-
-// Save transaction logs
-    let locationModel = new LocationModel({
-
-      //id : data.User.id,
-      user_id: data.id,
-      name: data.username,
-      latitude: data.latitude,
-      longitude: data.longitude,
-      created_at: new Date(),
-    });
-    locationModel
-      .save()
-      .then((doc) => {
-        console.log(doc);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-
+    userController.update( data );
+    locationController.update( data );
     socketIO.emit("message", data);
   });
 
@@ -176,107 +138,6 @@ app.use('/user', userRoutes);
 app.use('/location', locationRoutes);
 app.use('/attendance', attendanceRoutes);
 
-//TESTING
-app.get("/save", function (req, res) {
-  let testModel = new TestModel({
-    //id : data.User.id,
-    id: 1,
-    name: "ATO",
-    latitude: 16.0,
-    longitude: 96.0,
-    created_at: new Date(),
-  });
-  testModel
-    .save()
-    .then((doc) => {
-      console.log(doc);
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-  res.render("pages/transaction_index", {
-    root: __dirname,
-  });
-});
-
-//const User = require('./models/user');
-app.get("/users", (req, res) => {
-  TestModel.find({}, (err, items) => {
-    if (err) console.error(err);
-    res.render("pages/user/index", { items });
-  });
-});
-
-app.get("/users/:id", (req, res) => {
-  var id = req.params.id;
-  console.log(id);
-  UserModel.findOne({ _id: id }, (err, item) => {
-    if (err) console.error(err);
-    console.log(item);
-    res.render("pages/user/show", { item });
-  });
-});
-
-app.get("/test_cache", (req, res) => {
-  const searchTerm = req.query.search;
-  try {
-    client.get(searchTerm, async (err, jobs) => {
-      if (err) throw err;
-
-      if (jobs) {
-        res.status(200).send({
-          jobs: JSON.parse(jobs),
-          message: "data retrieved from the cache",
-        });
-      } else {
-        //const jobs = await axios.get(`https://jobs.github.com/positions.json?search=${searchTerm}`);
-        const jobs = await axios.get(
-          `https://jsonplaceholder.typicode.com/posts`
-        );
-        client.setex(searchTerm, 600, JSON.stringify(jobs.data));
-        res.status(200).send({
-          jobs: jobs.data,
-          message: "cache miss",
-        });
-      }
-    });
-  } catch (err) {
-    res.status(500).send({ message: err.message });
-  }
-});
-
-app.get("/share", function (req, res) {
-  debugger;
-  var id = req.query.id ?? 0;
-  var name = req.query.name ?? "";
-  var latitude = req.query.lat ?? 0.0;
-  var longitude = req.query.long ?? 0.0;
-
-  res.render("pages/share", {
-    root: __dirname,
-    id: id,
-    name: name,
-    latitude: latitude,
-    longitude: longitude,
-  });
-});
-
-app.get("/tracking", function (req, res) {
-  var id = req.query.id ?? 0;
-  var name = req.query.name ?? "";
-  var latitude = req.query.lat ?? 0.0;
-  var longitude = req.query.long ?? 0.0;
-  var status = req.query.status ?? 1;
-
-  res.render("pages/tracking", {
-    root: __dirname,
-    id: id,
-    name: name,
-    latitude: latitude,
-    longitude: longitude,
-    status: status,
-  });
-});
 
 var port = process.env.PORT || 3000;
 http.listen(port, function (err) {
