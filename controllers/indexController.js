@@ -14,6 +14,6 @@ exports.index = (req, res, next) => {
   res.render("pages/index", {
     mascots: mascots,
     tagline: tagline,
-    error: req.flash("error"),
+    error: req.flash("error") ? req.flash('error') : ''
   });
 };
