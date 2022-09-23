@@ -16,7 +16,11 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 
-
+    <style>
+      .rider-icon{
+        text-align: center;
+      }
+    </style>
 
 
 
@@ -153,20 +157,50 @@
             var name = message.username ?? ""; 
             var lat = message.latitude ?? 0.0; 
             var lng = message.longitude ?? 0.0; 
+            var orderCount = message.order_count ?? 0; 
             var markerIcon ;  
 
             var marker = this.markers[ id ]; 
-            //marker.icon = "http://maps.google.com/mapfiles/ms/micons/red-dot.png"
+
+
+
             if(marker){
               var newLatLng = new L.LatLng(lat, lng);
               marker.setLatLng(newLatLng); 
+
+
+              if(orderCount > 0 )
+                markerIcon  =  "http://maps.google.com/mapfiles/ms/micons/red-dot.png"; 
+              else 
+                markerIcon  =  "http://maps.google.com/mapfiles/ms/micons/green-dot.png"; 
+
+
+/*
+              var smallIcon = L.icon({
+                iconUrl: 'http://maps.google.com/mapfiles/ms/micons/red-dot.png',
+                iconSize: [50, 40],
+                iconAnchor: [15,15]
+              });
+              */
+              var smallIcon = new L.DivIcon({
+                    className: 'rider-icon',
+                    html: '<div class="my-div-span" style="width:100px;text-align:left;">'+ orderCount +'</div>'+ 
+                          '<img class="my-div-image" width="auto" height="35px" src="'+ markerIcon +'"/>'+
+                          '<div class="my-div-span" style="width:100px;text-align:left;">'+ name +'</div>'
+                })
+
+              marker.smallIcon = smallIcon;
+              marker.setIcon(marker.smallIcon);
+
+
+
             }else{
               console.log('todo ws');
-              if(status == 1 )
+              if(orderCount > 0 )
                 //markerIcon  =  "http://maps.google.com/mapfiles/ms/micons/blue-pushpin.png"; 
-                markerIcon  =  "http://maps.google.com/mapfiles/ms/micons/blue-dot.png"; 
-              else if(status == 2 )
                 markerIcon  =  "http://maps.google.com/mapfiles/ms/micons/red-dot.png"; 
+              else if(status == 2 )
+                markerIcon  =  "http://maps.google.com/mapfiles/ms/micons/green-dot.png"; 
 
               this.markers[id] = null; 
               this.markers[id] = L.marker([ lat, lng ], {

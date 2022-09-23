@@ -23,41 +23,15 @@ exports.index = async (req, res, next) => {
 
 exports.active = async (req, res, next) => {
     //var id = req.params.id; 
-    var result  = {
-        "data" : [
-            {
-                name: 'Ko Ko ',
-                latLng: [16.82693891513995,96.17375649588146],
-                id: 1
-            }, 
-            {
-                name: 'Mg Mg ',
-                latLng: [16.82701079758431,96.17407836260564],
-                id: 2
-            }, 
-            {
-                name: 'Hla Hla',
-                latLng: [16.82708268133046,96.17427148333566],
-                id: 3
-            }, 
-        ]
+   
+    const today = moment().startOf('day')
+    var query = {
+        "updated_at": {
+            $gte: today.toDate(),
+            $lte: moment(today).endOf('day').toDate()
+        }
     };
-/*
-    AttendanceModel.find({}, (err, items) => {
-        if (err) console.error(err);
-        
-        console.log('maps find') ; 
-
-        res.render("pages/attendance/index", {
-            root: __dirname,
-            id : 123456,
-            items : items 
-        });
-    });
-
-*/
-
-    AttendanceModel.find({}, (err, items) => {
+    AttendanceModel.find(query, (err, items) => {
         if (err) console.error(err);
         console.log('maps find') ; 
         // res.render("pages/attendance/index", {
