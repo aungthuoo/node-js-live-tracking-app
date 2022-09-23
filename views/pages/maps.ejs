@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <title>Live Tracking</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tailwind CSS Sidebar UI </title>
+    <script src="https://cdn.tailwindcss.com/"></script>
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -15,218 +16,244 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
-
-    <style>
-      .rider-icon{
-        text-align: center;
-      }
-    </style>
-
-
-
-
-
     <%- include('../partials/head'); %>
+
   </head>
-  <body onload="" style="margin:0;">
-    <header>
-      <%- include('../partials/header'); %>
-    </header>
+  <body>
+    <div class="flex">
+      <div class="flex flex-col w-64 h-screen px-4 py-8 overflow-y-auto border-r">
+        <h2 class="text-3xl font-semibold text-center text-blue-800">Live </h2>
 
-    <main id="app">
-      <div id="map" style="width: 100vw; height: calc(100vh - 120px) ;"></div>
-    </main>
 
-    <footer>
-      <%- include('../partials/footer'); %>
-    </footer>
-  
-    <script src='/socket.io/socket.io.js'></script>
+        <div class="flex flex-col justify-between mt-6">
+          <aside>
+            <ul>
+              <li>
+                <a class="flex items-center px-4 py-2 text-gray-700 bg-gray-100 rounded-md " href="#">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+
+                  <span class="mx-4 font-medium">Dashboard</span>
+                </a>
+              </li>
+
+              <li>
+                <a class="flex items-center px-4 py-2 mt-5 text-gray-600 rounded-md hover:bg-gray-200" href="#">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+
+                  <span class="mx-4 font-medium">Settings</span>
+                </a>
+              </li>
+            </ul>
+
+          </aside>
+          
+        </div>
+      </div>
+      <div class="w-full h-full m-4 overflow-y-auto">
+        <div class="flex items-center justify-center border-4 border-dotted">
+
+          <div id="map" style="width: 100vw; height: calc(100vh - 60px) ;"></div>
+
+        </div>
+      </div>
+
+
+      <script src='/socket.io/socket.io.js'></script>
     
-<script>
-  var app = new Vue({
-    el: "#app",
-    data() {
-      return {
-        authstatus: false,
-        socket : null, 
-        map : null, 
-        markers : [], 
-        users : []
-      };
-    },
-    mounted() {
-      this.initMaps(); 
-      this.initSocket(); 
-    },
-    methods: {
-      initMaps(){
-
-        map = L.map('map').setView([16.8387371,96.1781961], 14);
-        mapLink = 
-              '<a href="http://openstreetmap.org">OpenStreetMap</a>';
-        L.tileLayer(
-            'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; ' + mapLink + ' Contributors',
-            maxZoom: 20,
-        }).addTo(map);
-
-
-        axios
-          .get('./attendance/active')
-          .then(response => {
-            debugger; 
-            this.users = response.data.data; 
-
-            for (var i = 0; i < this.users.length; i++) {
-              var person = this.users[i];
-              // Create and save a reference to each marker
-              // markers[person.id] = L.marker(person.latLng).addTo(map);
-              
-              this.markers[person.id] = L.marker(person.latLng, {
-                  icon: new L.DivIcon({
-                      className: 'my-div-icon',
-                      html: '<img class="my-div-image" width="auto" height="35px" src="http://maps.google.com/mapfiles/ms/micons/blue-pushpin.png"/>'+
-                            '<div class="my-div-span" style="width:100px;text-align:left;">'+ person.name +'</div>'
-                  })
+      <script>
+        var app = new Vue({
+          el: "#app",
+          data() {
+            return {
+              authstatus: false,
+              socket : null, 
+              map : null, 
+              markers : [], 
+              users : []
+            };
+          },
+          mounted() {
+            this.initMaps(); 
+            this.initSocket(); 
+          },
+          methods: {
+            initMaps(){
+      
+              map = L.map('map').setView([16.8387371,96.1781961], 14);
+              mapLink = 
+                    '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+              L.tileLayer(
+                  'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                  attribution: '&copy; ' + mapLink + ' Contributors',
+                  maxZoom: 20,
               }).addTo(map);
-            }
-          })
-          .catch(error => {
-            console.log(error)
-            this.errored = true
-          })
-          .finally(() => this.loading = false)
-
-
-          /*
-          // Loop through the data
-          for (var i = 0; i < data.length; i++) {
-            var person = data[i];
-            // Create and save a reference to each marker
-            // markers[person.id] = L.marker(person.latLng).addTo(map);
-            
-            markers[person.id] = L.marker(person.latLng, {
-                icon: new L.DivIcon({
-                    className: 'my-div-icon',
-                    html: '<img class="my-div-image" width="auto" height="35px" src="http://maps.google.com/mapfiles/ms/micons/blue-pushpin.png"/>'+
-                          '<div class="my-div-span" style="width:100px;text-align:left;">'+ person.name +'</div>'
+      
+      
+              axios
+                .get('./attendance/active')
+                .then(response => {
+                  debugger; 
+                  this.users = response.data.data; 
+      
+                  for (var i = 0; i < this.users.length; i++) {
+                    var person = this.users[i];
+                    // Create and save a reference to each marker
+                    // markers[person.id] = L.marker(person.latLng).addTo(map);
+                    
+                    this.markers[person.id] = L.marker(person.latLng, {
+                        icon: new L.DivIcon({
+                            className: 'my-div-icon',
+                            html: '<img class="my-div-image" width="auto" height="35px" src="http://maps.google.com/mapfiles/ms/micons/blue-pushpin.png"/>'+
+                                  '<div class="my-div-span" style="width:100px;text-align:left;">'+ person.name +'</div>'
+                        })
+                    }).addTo(map);
+                  }
                 })
-            }).addTo(map);
-
-          }
-          */
-
-
-      },
-      initSocket(){
-        debugger; 
-        this.socket = io();
-        var _that = this; 
-
-        this.socket.on('locationUpdate', function(data) {
-          console.log("locationUpdate@maps "); 
-          debugger ; 
-            //var message = JSON.parse(data); 
-            _that.moveMarker( data ); 
-        });
-        this.socket.on('time', function(data) {
-            this.addMessage(data.time);
-        });
-        this.socket.on('error', console.error.bind(console));
-        this.socket.on('message', console.log.bind(console));
-      },
-      setAuthStatus(val) {
-        console.log("Setting authstatus through event to: ", val);
-        this.authstatus = val;
-        console.log("New value: ", app.authstatus);
-      },
-      moveMarker(message){
-          debugger; 
-            //var marker = markers.2342fc7f; // or markers['2342fc7']
-            /*
-            var id  = parseInt(message.User.id) ?? 0; 
-            var status  = parseInt(message.User.status) ?? 1; 
-            var name = message.User.name ?? ""; 
-            var lat = message.Coordinate.Latitude ?? 0.0; 
-            var lng = message.Coordinate.Longitude ?? 0.0; 
-            */
-            var id  = parseInt(message.id) ?? 0; 
-            //var status  = parseInt(message.status) ?? 1; 
-            var status  = 1; 
-            var name = message.username ?? ""; 
-            var lat = message.latitude ?? 0.0; 
-            var lng = message.longitude ?? 0.0; 
-            var orderCount = message.order_count ?? 0; 
-            var markerIcon ;  
-
-            var marker = this.markers[ id ]; 
-
-
-
-            if(marker){
-              var newLatLng = new L.LatLng(lat, lng);
-              marker.setLatLng(newLatLng); 
-
-
-              if(orderCount > 0 )
-                markerIcon  =  "http://maps.google.com/mapfiles/ms/micons/red-dot.png"; 
-              else 
-                markerIcon  =  "http://maps.google.com/mapfiles/ms/micons/green-dot.png"; 
-
-
-/*
-              var smallIcon = L.icon({
-                iconUrl: 'http://maps.google.com/mapfiles/ms/micons/red-dot.png',
-                iconSize: [50, 40],
-                iconAnchor: [15,15]
+                .catch(error => {
+                  console.log(error)
+                  this.errored = true
+                })
+                .finally(() => this.loading = false)
+      
+      
+                /*
+                // Loop through the data
+                for (var i = 0; i < data.length; i++) {
+                  var person = data[i];
+                  // Create and save a reference to each marker
+                  // markers[person.id] = L.marker(person.latLng).addTo(map);
+                  
+                  markers[person.id] = L.marker(person.latLng, {
+                      icon: new L.DivIcon({
+                          className: 'my-div-icon',
+                          html: '<img class="my-div-image" width="auto" height="35px" src="http://maps.google.com/mapfiles/ms/micons/blue-pushpin.png"/>'+
+                                '<div class="my-div-span" style="width:100px;text-align:left;">'+ person.name +'</div>'
+                      })
+                  }).addTo(map);
+      
+                }
+                */
+      
+      
+            },
+            initSocket(){
+              debugger; 
+              this.socket = io();
+              var _that = this; 
+      
+              this.socket.on('locationUpdate', function(data) {
+                console.log("locationUpdate@maps "); 
+                debugger ; 
+                  //var message = JSON.parse(data); 
+                  _that.moveMarker( data ); 
               });
-              */
-              var smallIcon = new L.DivIcon({
-                    className: 'rider-icon',
-                    html: '<div class="my-div-span" style="width:100px;text-align:left;">'+ orderCount +'</div>'+ 
-                          '<img class="my-div-image" width="auto" height="35px" src="'+ markerIcon +'"/>'+
-                          '<div class="my-div-span" style="width:100px;text-align:left;">'+ name +'</div>'
-                })
-
-              marker.smallIcon = smallIcon;
-              marker.setIcon(marker.smallIcon);
-
-
-
-            }else{
-              console.log('todo ws');
-              if(orderCount > 0 )
-                //markerIcon  =  "http://maps.google.com/mapfiles/ms/micons/blue-pushpin.png"; 
-                markerIcon  =  "http://maps.google.com/mapfiles/ms/micons/red-dot.png"; 
-              else if(status == 2 )
-                markerIcon  =  "http://maps.google.com/mapfiles/ms/micons/green-dot.png"; 
-
-              this.markers[id] = null; 
-              this.markers[id] = L.marker([ lat, lng ], {
-                  icon: new L.DivIcon({
-                      className: 'my-div-icon',
-                      html: '<img class="my-div-image" width="auto" height="35px" src="'+ markerIcon +'"/>'+
-                            '<div class="my-div-span" style="width:100px;text-align:left;">'+ name +'</div>'
-                  })
-              }).addTo(map);
-              
-            }
-
-        },
-        addMessage(message) {
-            console.log( message ); 
-            var text = document.createTextNode(message),
-                el = document.createElement('li'),
-                messages = document.getElementById('messages');
-
-            el.appendChild(text);
-            messages.appendChild(el);
-        }
-
-    },
-  });
-</script>
+              this.socket.on('time', function(data) {
+                  this.addMessage(data.time);
+              });
+              this.socket.on('error', console.error.bind(console));
+              this.socket.on('message', console.log.bind(console));
+            },
+            setAuthStatus(val) {
+              console.log("Setting authstatus through event to: ", val);
+              this.authstatus = val;
+              console.log("New value: ", app.authstatus);
+            },
+            moveMarker(message){
+                debugger; 
+                  //var marker = markers.2342fc7f; // or markers['2342fc7']
+                  /*
+                  var id  = parseInt(message.User.id) ?? 0; 
+                  var status  = parseInt(message.User.status) ?? 1; 
+                  var name = message.User.name ?? ""; 
+                  var lat = message.Coordinate.Latitude ?? 0.0; 
+                  var lng = message.Coordinate.Longitude ?? 0.0; 
+                  */
+                  var id  = parseInt(message.id) ?? 0; 
+                  //var status  = parseInt(message.status) ?? 1; 
+                  var status  = 1; 
+                  var name = message.username ?? ""; 
+                  var lat = message.latitude ?? 0.0; 
+                  var lng = message.longitude ?? 0.0; 
+                  var orderCount = message.order_count ?? 0; 
+                  var markerIcon ;  
+      
+                  var marker = this.markers[ id ]; 
+      
+      
+      
+                  if(marker){
+                    var newLatLng = new L.LatLng(lat, lng);
+                    marker.setLatLng(newLatLng); 
+      
+      
+                    if(orderCount > 0 )
+                      markerIcon  =  "http://maps.google.com/mapfiles/ms/micons/red-dot.png"; 
+                    else 
+                      markerIcon  =  "http://maps.google.com/mapfiles/ms/micons/green-dot.png"; 
+      
+      
+      /*
+                    var smallIcon = L.icon({
+                      iconUrl: 'http://maps.google.com/mapfiles/ms/micons/red-dot.png',
+                      iconSize: [50, 40],
+                      iconAnchor: [15,15]
+                    });
+                    */
+                    var smallIcon = new L.DivIcon({
+                          className: 'rider-icon',
+                          html: '<div class="my-div-span" style="width:100px;text-align:left;">'+ orderCount +'</div>'+ 
+                                '<img class="my-div-image" width="auto" height="35px" src="'+ markerIcon +'"/>'+
+                                '<div class="my-div-span" style="width:100px;text-align:left;">'+ name +'</div>'
+                      })
+      
+                    marker.smallIcon = smallIcon;
+                    marker.setIcon(marker.smallIcon);
+      
+      
+      
+                  }else{
+                    console.log('todo ws');
+                    if(orderCount > 0 )
+                      //markerIcon  =  "http://maps.google.com/mapfiles/ms/micons/blue-pushpin.png"; 
+                      markerIcon  =  "http://maps.google.com/mapfiles/ms/micons/red-dot.png"; 
+                    else if(status == 2 )
+                      markerIcon  =  "http://maps.google.com/mapfiles/ms/micons/green-dot.png"; 
+      
+                    this.markers[id] = null; 
+                    this.markers[id] = L.marker([ lat, lng ], {
+                        icon: new L.DivIcon({
+                            className: 'my-div-icon',
+                            html: '<img class="my-div-image" width="auto" height="35px" src="'+ markerIcon +'"/>'+
+                                  '<div class="my-div-span" style="width:100px;text-align:left;">'+ name +'</div>'
+                        })
+                    }).addTo(map);
+                    
+                  }
+      
+              },
+              addMessage(message) {
+                  console.log( message ); 
+                  var text = document.createTextNode(message),
+                      el = document.createElement('li'),
+                      messages = document.getElementById('messages');
+      
+                  el.appendChild(text);
+                  messages.appendChild(el);
+              }
+      
+          },
+        });
+      </script>
 
 
   </body>
