@@ -10,6 +10,7 @@ exports.users = (req, res, next) => {
 exports.update = async (item) => {
     var _id = item.id ?? 0; 
     var name = item.username ?? ""; 
+    var orderCount = item.order_count ?? 0; 
     var latitude = item.latitude ?? 0.0; 
     var longitude = item.longitude ?? 0.0; 
 
@@ -20,6 +21,7 @@ exports.update = async (item) => {
         id : _id, 
         latitude : latitude, 
         longitude : longitude, 
+        order_count : orderCount, 
         updated_at: new Date() 
         //expire: new Date() 
     },

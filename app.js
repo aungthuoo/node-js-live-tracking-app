@@ -94,7 +94,9 @@ socketIO.on("connection", function (client) {
 
     userController.update( data );
     locationController.update( data );
-    socketIO.emit("message", data);
+    
+    
+    //socketIO.emit("message", data);
   });
 
   client.on("lastKnownLocation", function name(data) {

@@ -31,7 +31,7 @@ exports.active = async (req, res, next) => {
             $lte: moment(today).endOf('day').toDate()
         }
     };
-    AttendanceModel.find(query, (err, items) => {
+    UserModel.find(query, (err, items) => {
         if (err) console.error(err);
         console.log('maps find') ; 
         // res.render("pages/attendance/index", {
@@ -40,7 +40,7 @@ exports.active = async (req, res, next) => {
         //     items : items 
         // });
         res.status(200).json( items );
-    });
+    }).sort({ order_count: 'descending' });
 
     //res.status(201).json( result );
 }

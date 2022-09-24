@@ -25,8 +25,9 @@
         <h2 class="text-3xl font-semibold text-center text-blue-800">Live </h2>
 
 
-        <div class="flex flex-col justify-between mt-6">
+        <div id="app" class="flex flex-col justify-between mt-6">
           <aside>
+            <!--
             <ul>
               <li>
                 <a class="flex items-center px-4 py-2 text-gray-700 bg-gray-100 rounded-md " href="#">
@@ -49,18 +50,64 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
-
                   <span class="mx-4 font-medium">Settings</span>
                 </a>
               </li>
             </ul>
+          -->
+
+
+
+            <div class="flex justify-center">
+              <div class="bg-white rounded-lg w-96 text-gray-900">
+                <button
+                  v-for="item in users"
+                  type="button"
+                  class="
+                    text-left
+                    px-6
+                    py-2
+                    border-b border-gray-200
+                    w-full
+                    hover:bg-gray-100 hover:text-gray-500
+                    focus:outline-none focus:ring-0 focus:bg-gray-200 focus:text-gray-600
+                    transition
+                    duration-500
+                    cursor-pointer
+                  "
+                >
+                  <img class="my-div-image inline-block" width="auto" height="35px" 
+                    :src="item.order_count == 0 ?  'http://maps.google.com/mapfiles/ms/micons/green-dot.png' : 'http://maps.google.com/mapfiles/ms/micons/red-dot.png'"/>
+                  <span>{{ item.name }}</span>
+                  
+                
+                </button>
+                <button
+                  disabled=""
+                  type="button"
+                  class="
+                    text-left
+                    px-6
+                    py-2
+                    border-gray-200
+                    w-full
+                    rounded-b-lg
+                    focus:outline-none focus:ring-0
+                    text-gray-400
+                    cursor-default
+                  "
+                >
+                  A disabled link item
+                </button>
+              </div>
+            </div>
 
           </aside>
           
         </div>
       </div>
       <div class="w-full h-full m-4 overflow-y-auto">
-        <div class="flex items-center justify-center border-4 border-dotted">
+        <div class="flex items-center justify-center">
 
           <div id="map" style="width: 100vw; height: calc(100vh - 60px) ;"></div>
 
@@ -75,6 +122,7 @@
           el: "#app",
           data() {
             return {
+              message : "this is message", 
               authstatus: false,
               socket : null, 
               map : null, 
@@ -103,14 +151,15 @@
                 .get('./attendance/active')
                 .then(response => {
                   debugger; 
-                  this.users = response.data.data; 
+                  this.users = response.data; 
       
                   for (var i = 0; i < this.users.length; i++) {
+                    debugger; 
                     var person = this.users[i];
                     // Create and save a reference to each marker
                     // markers[person.id] = L.marker(person.latLng).addTo(map);
                     
-                    this.markers[person.id] = L.marker(person.latLng, {
+                    this.markers[person.id] = L.marker([person.latitude, person.longitude], {
                         icon: new L.DivIcon({
                             className: 'my-div-icon',
                             html: '<img class="my-div-image" width="auto" height="35px" src="http://maps.google.com/mapfiles/ms/micons/blue-pushpin.png"/>'+
