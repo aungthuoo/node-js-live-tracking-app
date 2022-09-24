@@ -150,11 +150,9 @@
               axios
                 .get('./attendance/active')
                 .then(response => {
-                  debugger; 
                   this.users = response.data; 
       
                   for (var i = 0; i < this.users.length; i++) {
-                    debugger; 
                     var person = this.users[i];
                     // Create and save a reference to each marker
                     // markers[person.id] = L.marker(person.latLng).addTo(map);
@@ -196,13 +194,11 @@
       
             },
             initSocket(){
-              debugger; 
               this.socket = io();
               var _that = this; 
       
               this.socket.on('locationUpdate', function(data) {
                 console.log("locationUpdate@maps "); 
-                debugger ; 
                   //var message = JSON.parse(data); 
                   _that.moveMarker( data ); 
               });
@@ -218,7 +214,6 @@
               console.log("New value: ", app.authstatus);
             },
             moveMarker(message){
-                debugger; 
                   //var marker = markers.2342fc7f; // or markers['2342fc7']
                   /*
                   var id  = parseInt(message.User.id) ?? 0; 
