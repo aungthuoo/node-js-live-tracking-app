@@ -48,6 +48,7 @@
             <circle cx="13" cy="13" r="8" stroke="black" stroke-width="1" :fill="getIconColor(item)" />
           </svg>
 					<span class="text-sm">{{ item.name }}</span>
+          <span class="text-xs">A : {{ item.order_count }}</span>
 				</li>
 				
 				<button class="w-full mt-10 bg-[#EC5252] rounded-full py-1.5 text-white">Learn</button>
@@ -58,7 +59,7 @@
 
 
 	<main class="min-h-screen w-full bg-white border-l">
-		<nav class="flex items-center justify-between px-10 bg-white py-6 border-b">
+		<nav class="flex items-center justify-between px-10 bg-white py-2 border-b" style="height:60px;">
 			<div class="flex items-center bg-gray-100 px-4 py-2 rounded-md space-x-3 w-96">
 				<input type="text" placeholder="search" class="bg-gray-100 outline-none w-full" />
 				<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 cursor-pointer text-gray-500" fill="none"
@@ -101,14 +102,10 @@
 			</div>
 		</div>
   -->
-		<div class="mx-6 grid mt-10">
-      <div id="map" style="width:100%;height: calc(100vh - 60px) ;"></div>
+		<div class="grid">
+      <div id="map" style="width:100%;height: calc(100vh - 60px) ;overflow: hidden;"></div>
     </div>
 
-
-    <footer class="text-center py-6 mt-4">
-      Copyright &copy; <script> new Date();</script> FoodMallMM.com
-    </footer>
   </main>
 </div>
 
