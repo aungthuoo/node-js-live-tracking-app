@@ -29,9 +29,11 @@ const authRoutes = require("./routes/auth");
 const userRoutes = require('./routes/user');
 const locationRoutes = require('./routes/location');
 const attendanceRoutes = require('./routes/attendance');
+const jobRoutes = require('./routes/job');
 
 const locationController = require('./controllers/locationController');
 const userController = require('./controllers/userController');
+const attendanceController = require('./controllers/attendanceController');
 
 
 const helper = require("./helpers.js");
@@ -91,8 +93,13 @@ socketIO.on("connection", function (client) {
 // Move Maps Market 
     socketIO.emit('locationUpdate', data);
 
-
+// Update user info 
     userController.update( data );
+    
+// Update attendance  
+    attendanceController.update( data );
+
+// Save location tracking 
     locationController.update( data );
     
     
@@ -139,7 +146,7 @@ app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
 app.use('/location', locationRoutes);
 app.use('/attendance', attendanceRoutes);
-
+app.use('/job', jobRoutes);
 
 var port = process.env.PORT || 3000;
 http.listen(port, function (err) {

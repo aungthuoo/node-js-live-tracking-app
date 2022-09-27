@@ -67,11 +67,225 @@ exports.save = async (req, res, next) => {
          }, (err, item) => {
         if (err) console.error(err);
 
-        console.log( item ); 
+        //console.log( item ); 
         //res.render('pages/user/show', { item });
         if(item == null){
             let attendanceModel = new AttendanceModel({
                 //id : data.User.id, 
+                user_id : id, 
+                name: name, 
+                latitude : latitude,
+                longitude : longitude, 
+                duty_in_at : new Date(),
+                duty_out_at : new Date(), 
+                created_at : new Date(),
+                updated_at : new Date()
+            }); 
+            attendanceModel.save()
+                .then(doc => {
+                    //console.log(doc)
+                })
+                .catch(err => {
+                    console.error(err)
+                })
+        }else{
+            const filter = { _id: item._id };
+            const update = { 
+                name: name, 
+                latitude : latitude,
+                longitude : longitude,
+                duty_out_at : new Date(), 
+            };
+
+            AttendanceModel.findOneAndUpdate(filter, update, null, function (err, docs) {
+                if (err){
+                    console.log(err)
+                }
+                else{
+                    //console.log("Original Doc : ",docs);
+                }
+            });
+        }
+        //helper.echo("abc");
+    });
+
+
+
+    res.status(201).json("OK" + name );
+
+}
+
+exports.update = async (req, res, next) => {
+    var _id = req.id ?? 0; 
+    var name = req.username ?? ""; 
+    var latitude = req.latitude ?? 0.0; 
+    var longitude = req.longitude ?? 0.0; 
+
+    const today = moment().startOf('day')
+    var query = { 
+        "user_id": _id, 
+        "created_at": {
+            $gte: today.toDate(),
+            $lte: moment(today).endOf('day').toDate()
+        }
+    }; 
+
+    AttendanceModel.exists(query, async function (err, doc)  {
+        if (err) console.error(err);
+
+        if (doc){
+            const update = { 
+                duty_out_at : new Date(), 
+                updated_at : new Date()
+            };
+
+            AttendanceModel.findOneAndUpdate(query, update, null, function (err, docs) {
+                if (err){
+                    console.log(err)
+                }
+                else{
+                    //console.log("Original Doc : ",docs);
+                }
+            });
+        }else{
+            let attendanceModel = new AttendanceModel({
+                id : _id, 
+                user_id : _id, 
+                name: name, 
+                latitude : latitude,
+                longitude : longitude, 
+                duty_in_at : new Date(),
+                duty_out_at : new Date(), 
+                created_at : new Date(),
+                updated_at : new Date()
+            }); 
+            await attendanceModel.save()
+                .then(doc => {
+                    //console.log(doc)
+                })
+                .catch(err => {
+                    console.error(err)
+                })
+                
+        }
+    });
+
+
+/*
+
+
+
+
+
+
+    update = { 
+        id : _id, 
+        user_id : _id, 
+        name: name, 
+        latitude : latitude,
+        longitude : longitude, 
+        duty_in_at : new Date(),
+        duty_out_at : new Date(), 
+        created_at : new Date(),
+        updated_at : new Date()
+    },
+
+    AttendanceModel.findOne({ 
+        query, 
+     }, (err, item) => {
+        if (err) console.error(err);
+
+        console.log( item ); 
+        //res.render('pages/user/show', { item });
+        if(item){
+            let attendanceModel = new AttendanceModel({
+                //id : data.User.id, 
+                user_id : _id, 
+                name: name, 
+                latitude : latitude,
+                longitude : longitude, 
+                duty_in_at : new Date(),
+                duty_out_at : new Date(), 
+                created_at : new Date(),
+                updated_at : new Date()
+            }); 
+            attendanceModel.save()
+                .then(doc => {
+                    console.log(doc)
+                })
+                .catch(err => {
+                    console.error(err)
+                })
+        }else{
+            const filter = { 
+                "user_id": _id, 
+                "created_at": {
+                    $gte: today.toDate(),
+                    $lte: moment(today).endOf('day').toDate()
+                } 
+            };
+            const update = { 
+                name: name, 
+                latitude : latitude,
+                longitude : longitude,
+                duty_out_at : new Date(), 
+                updated_at : new Date(), 
+            };
+
+            AttendanceModel.findOneAndUpdate(filter, update, null, function (err, docs) {
+                if (err){
+                    console.log(err)
+                }
+                else{
+                    console.log("Original Doc : ",docs);
+                }
+            });
+        }
+        //helper.echo("abc");
+    });
+*/
+
+
+
+/*
+    var query = {user_id : _id},
+    update = { 
+        id : _id, 
+        user_id : _id, 
+        name: name, 
+        latitude : latitude,
+        longitude : longitude, 
+        duty_in_at : new Date(),
+        duty_out_at : new Date(), 
+        created_at : new Date(),
+        updated_at : new Date()
+    },
+    options = { upsert: true, new: true, setDefaultsOnInsert: true };
+
+    // Find the document
+    AttendanceModel.findOneAndUpdate(query, update, options, function(error, result) {
+        if (error) return;
+        // do something with the document
+    });
+*/
+
+
+
+/*
+    AttendanceModel.findOne({ 
+            "user_id": id, 
+            "created_at": {
+                $gte: today.toDate(),
+                $lte: moment(today).endOf('day').toDate()
+              }
+         }, (err, item) => {
+        if (err) console.error(err);
+
+        console.log( item ); 
+        //res.render('pages/user/show', { item });
+        if(item == null){
+            let attendanceModel = new AttendanceModel({
+                id : id, 
                 user_id : id, 
                 name: name, 
                 latitude : latitude,
@@ -111,27 +325,6 @@ exports.save = async (req, res, next) => {
 
 
 
-    res.status(201).json("OK" + name );
-
-}
-
-exports.update = async (req, res, next) => {
-    var id = req.params.id; 
-    res.status(201).json("OK" + id );
-    // req.body is for POST requests. Think 'body of the postman'
-    // destruct the name value from the request body
-    const {name} = req.body;
-    return name; 
-
-    // check if database already contains this name
-    const foundUser = await UserModel.find({name});
-
-    // if no user is found, we can add this user to the database.
-    if(!foundUser || foundUser.length == 0) {
-        const user = new UserModel({name});
-        const response = await user.save();
-        res.status(201).json(response);
-    } else {
-        res.status(409).json({message: "User already exists!"});
-    }
+    //res.status(201).json("OK" + name );
+*/
 }

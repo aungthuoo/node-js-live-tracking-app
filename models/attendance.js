@@ -4,7 +4,8 @@ let validator = require('validator')
 let attendanceSchema = new mongoose.Schema({
     user_id: {
         type: Number,
-        lowercase: true,
+        required: true,
+        //lowercase: true,
     },
     // user_id: {
     //     type: Number,
@@ -14,7 +15,7 @@ let attendanceSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        lowercase: true,
+        //lowercase: true,
     },
     // email: {
     //     type: String,
@@ -31,6 +32,10 @@ let attendanceSchema = new mongoose.Schema({
     longitude: {
         type: Number,
         required: true
+    },
+    distance_km: {
+        type: Number,
+        //required: true
     },
     duty_in_at: {
         type: Date,
