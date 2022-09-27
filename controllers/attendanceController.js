@@ -40,7 +40,7 @@ exports.active = async (req, res, next) => {
         //     items : items 
         // });
         res.status(200).json( items );
-    }).sort({ order_count: 'descending' });
+    }).sort({ order_count: 'ascending' });
 
     //res.status(201).json( result );
 }
