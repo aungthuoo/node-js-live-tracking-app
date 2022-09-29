@@ -32,7 +32,7 @@
           <svg height="30" width="30">
             <circle cx="13" cy="13" r="8" stroke="black" stroke-width="1" :fill="getIconColor(item)" />
           </svg>
-          <span class="text-sm">{{ item.name }}</span>
+          <span class="text-sm">{{ item.name }}<small>({{ item.id }})</small></span>
           <span class="text-xs">A : {{ item.order_count }}</span>
 				</li>
 				
@@ -200,10 +200,9 @@
             var markerIcon ;  
 
             var marker = this.markers[ id ]; 
-debugger; 
-            var biker = this.bikers[id] ?? { id: id, name : "_", latitude: lat, longitude : lng }; 
+            var biker = this.bikers[id] ?? { id: id, name : "", latitude: lat, longitude : lng }; 
             biker.id = id;
-            biker.name = "_";
+            biker.name = name; 
             biker.latitude = lat; 
             biker.longitude = lng;
 
