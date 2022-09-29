@@ -218,7 +218,9 @@ debugger;
               this.bikers[objIndex].order_count = orderCount; 
               
             }
-            this.bikers.sort((a, b) => (a > b ? -1 : 1)); 
+            this.bikers.sort(function(a, b) {
+                return parseFloat(a.order_count) - parseFloat(b.order_count);
+            });
 
 
             if(marker){
