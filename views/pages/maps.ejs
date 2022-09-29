@@ -218,19 +218,7 @@ debugger;
               this.bikers[objIndex].order_count = orderCount; 
               
             }
-
-            this.bikers[objIndex].latitude = lat; 
-            this.bikers[objIndex].longitude = lng; 
-
-            //Log object to Console.
-            console.log("Before update: ", this.bikers[objIndex])
-
-            //Update object's name property.
-            //myArray[objIndex].name = "Laila"
-
-
-            //this.bikers.push(biker ); 
-            //console.log(this.bikers); 
+            this.bikers.sort((a, b) => (a > b ? -1 : 1)); 
 
 
             if(marker){
