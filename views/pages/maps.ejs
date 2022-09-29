@@ -27,12 +27,12 @@
 		<div class="mx-auto py-10 overflow-y-auto ">
 			<!-- <h1 class="text-2xl font-bold mb-10 cursor-pointer text-[#EC5252] duration-150">Live Tracking</h1> -->
 			<ul>
-				
-				<li v-for="item in users" class="flex space-x-2 mt-2 cursor-pointer hover:text-[#EC5252] duration-150">
-					<svg height="30" width="30">
+
+				<li v-for="item in bikers" class="flex space-x-2 mt-2 cursor-pointer hover:text-[#EC5252] duration-150">
+          <svg height="30" width="30">
             <circle cx="13" cy="13" r="8" stroke="black" stroke-width="1" :fill="getIconColor(item)" />
           </svg>
-					<span class="text-sm">{{ item.name }}</span>
+          <span class="text-sm">{{ item.name }}</span>
           <span class="text-xs">A : {{ item.order_count }}</span>
 				</li>
 				
@@ -110,7 +110,9 @@
         socket : null, 
         map : null, 
         markers : [], 
-        users : []
+        users : [],
+        biker : [], 
+        bikers : [] 
       };
     },
     mounted() {
@@ -129,7 +131,7 @@
             maxZoom: 20,
         }).addTo(map);
 
-
+        /*
         axios
           .get('./attendance/active')
           .then(response => {
@@ -154,27 +156,9 @@
             this.errored = true
           })
           .finally(() => this.loading = false)
+*/
 
-
-          /*
-          // Loop through the data
-          for (var i = 0; i < data.length; i++) {
-            var person = data[i];
-            // Create and save a reference to each marker
-            // markers[person.id] = L.marker(person.latLng).addTo(map);
-            
-            markers[person.id] = L.marker(person.latLng, {
-                icon: new L.DivIcon({
-                    className: 'my-div-icon',
-                    html: '<img class="my-div-image" width="auto" height="35px" src="http://maps.google.com/mapfiles/ms/micons/blue-pushpin.png"/>'+
-                          '<div class="my-div-span" style="width:100px;text-align:left;">'+ person.name +'</div>'
-                })
-            }).addTo(map);
-
-          }
-          */
-
-
+          
       },
       initSocket(){
         this.socket = io();
@@ -197,6 +181,7 @@
         console.log("New value: ", app.authstatus);
       },
       moveMarker(message){
+
             //var marker = markers.2342fc7f; // or markers['2342fc7']
             /*
             var id  = parseInt(message.User.id) ?? 0; 
@@ -215,7 +200,37 @@
             var markerIcon ;  
 
             var marker = this.markers[ id ]; 
+debugger; 
+            var biker = this.bikers[id] ?? { id: id, name : "_", latitude: lat, longitude : lng }; 
+            biker.id = id;
+            biker.name = "_";
+            biker.latitude = lat; 
+            biker.longitude = lng;
 
+
+            objIndex = this.bikers.findIndex((obj => obj.id == id));
+            if(objIndex == -1) {
+              this.bikers.push(biker); 
+            }else{
+              this.bikers[objIndex].latitude = lat; 
+              this.bikers[objIndex].longitude = lng; 
+              this.bikers[objIndex].name = name; 
+              this.bikers[objIndex].order_count = orderCount; 
+              
+            }
+
+            this.bikers[objIndex].latitude = lat; 
+            this.bikers[objIndex].longitude = lng; 
+
+            //Log object to Console.
+            console.log("Before update: ", this.bikers[objIndex])
+
+            //Update object's name property.
+            //myArray[objIndex].name = "Laila"
+
+
+            //this.bikers.push(biker ); 
+            //console.log(this.bikers); 
 
 
             if(marker){
