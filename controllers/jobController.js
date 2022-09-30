@@ -27,7 +27,7 @@ exports.assign = async (req, res, next) => {
     const users = await AttendanceModel
                     .find(query)
                     .sort({ updated_at: 'descending' })
-                    .limit(10);
+                    .limit(100);
     if(users.length == 0){
         res.status(200).json( {"status" : false, "message" : "There are no bikers"} );
     }
