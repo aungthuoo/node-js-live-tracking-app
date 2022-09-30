@@ -79,7 +79,7 @@ socketIO.on("connection", function (client) {
   client.on("message", async function name(data) {
     console.log(data);
     var location = JSON.stringify(data);
-
+/*
     var item = {};
     item.Coordinate = {};
     item.User = {};
@@ -89,7 +89,7 @@ socketIO.on("connection", function (client) {
     item.User.status = 1;
     item.Coordinate.Latitude = data.latitude;
     item.Coordinate.Longitude = data.longitude;
-
+*/
 // Move Maps Market 
     socketIO.emit('locationUpdate', data);
 
