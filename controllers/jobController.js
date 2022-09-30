@@ -5,7 +5,7 @@ const helper = require("../helpers.js");
 
 
 exports.assign = async (req, res, next) => {
-
+    var userId = 0 ; 
     var distance = 0.00; 
     var rejectedUsers = req.body.rejected_users ?? []; 
     var restaurantLatitude = req.body.latitude ?? 0.0; 
@@ -40,7 +40,11 @@ exports.assign = async (req, res, next) => {
         return parseFloat(a.distance_km) - parseFloat(b.distance_km);
     });
 
-    res.status(200).json( { "status" : true, "users" : users });
+    if(users.length > 0 ){
+        userId = users[0].user_id
+    }
+
+    res.status(200).json( { "status" : true, "user_id" : userId, "users" : users });
 
 }
 

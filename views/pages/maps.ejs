@@ -17,6 +17,12 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
     <%- include('../partials/head'); %>
+
+    <style>
+      .marker-name{
+        width: 150px !important;
+      }
+    </style>
   </head>
   <body>
 
@@ -483,8 +489,8 @@
               */
               var smallIcon = new L.DivIcon({
                     className: 'rider-icon',
-                    html: '<img class="my-div-image" width="auto" height="35px" src="'+ markerIcon +'"/>'+
-                          '<div class="my-div-span" style="text-align:left;">'+ name +'</div>'
+                    html: '<img class="marker-icon" width="auto" height="35px" src="'+ markerIcon +'"/>'+
+                          '<div class="marker-name" style="text-align:left;" style="width:150px;">'+ name +'</div>'
                 })
 
               marker.smallIcon = smallIcon;
@@ -504,8 +510,8 @@
               this.markers[id] = L.marker([ lat, lng ], {
                   icon: new L.DivIcon({
                       className: 'my-div-icon',
-                      html: '<img class="my-div-image" width="auto" height="35px" src="'+ markerIcon +'"/>'+
-                            '<div class="my-div-span" style="width:100px;text-align:left;">'+ name +'</div>'
+                      html: '<img class="marker-icon" width="auto" height="35px" src="'+ markerIcon +'"/>'+
+                            '<div class="marker-name" style="width:150px;text-align:left;">'+ name +'</div>'
                   })
               }).addTo(map);
               
