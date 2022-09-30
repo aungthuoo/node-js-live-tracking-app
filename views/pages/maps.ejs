@@ -125,7 +125,10 @@
                               
                               <img v-if="item.total_order >= 10" src="./image/gif/so_happy.gif" alt="biker boring"  width="25" />
                               <img v-if="item.total_order >= 5" src="./image/gif/smile.gif" alt="biker boring"  width="25" />
-                              <img v-if="item.total_order < 5" src="./image/gif/afraid.gif" alt="biker boring"  width="25" />
+                              <img v-else src="./image/gif/afraid.gif" alt="biker boring"  width="25" />
+
+
+
                               <img v-if="item.order_count == 0 && item.hold_count == 0" src="./image/gif/zzz.gif" alt="biker zzz"  width="25" />
                           </div>
                       </div>
