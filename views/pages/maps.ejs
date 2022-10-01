@@ -511,7 +511,7 @@
               this.bikers[objIndex].hold_count = holdCount; 
             }
             this.bikers.sort(function(a, b) {
-                return parseFloat(a.total_count) - parseFloat(b.total_count)  || 
+                return parseFloat(a.total_count) - parseFloat(b.total_count)  &&
                       parseFloat(a.hold_count) - parseFloat(b.hold_count);
             });
 
