@@ -48,3 +48,48 @@ exports.assign = async (req, res, next) => {
 
 }
 
+
+
+exports.timeDiff = async (req, res, next) => {
+    /*
+    var date1 = new Date();
+    var date2 = new Date(2015, 2, 2);
+    var diff = new Date(date2.getTime() - date1.getTime());
+
+    var years = diff.getUTCFullYear() - 1970; // Gives difference as year
+    var months = diff.getUTCMonth(); // Gives month count of difference
+    var days = diff.getUTCDate()-1; // Gives day count of difference
+
+    //alert("remaining time = " + years + " years, " + months + " months, " + days + " days.");
+    var result = "remaining time = " + years + " years, " + months + " months, " + days + " days."; 
+*/
+
+
+
+
+/*
+    var date1 = new Date();
+    var date2 = new Date(2022, 10, 1, 10, 00, 00);
+    var diff = new Date(date2.getTime() - date1.getTime());
+
+    var years = diff.getUTCFullYear() - 1970; // Gives difference as year
+    var months = diff.getUTCMonth(); // Gives month count of difference
+    var days = diff.getUTCDate()-1; // Gives day count of difference
+
+    //alert("remaining time = " + years + " years, " + months + " months, " + days + " days.");
+    var result = "remaining time = " + years + " years, " + months + " months, " + days + " days."; 
+*/
+
+var countDownDate = new Date("2022-10-01 16:37:52").getTime();
+var now = new Date().getTime();
+var timeleft = countDownDate - now;
+    
+var days = Math.floor(timeleft / (1000 * 60 * 60 * 24));
+var hours = Math.floor((timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+var minutes = Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60));
+var seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
+
+    res.status(200).json( { "status" : true, data : days });
+
+}
+
