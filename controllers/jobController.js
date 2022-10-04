@@ -1,6 +1,6 @@
 let UserModel = require("../models/user");
 let AttendanceModel = require("../models/attendance");
-const moment = require('moment')
+const moment = require('moment-timezone')
 const helper = require("../helpers.js");
 
 
@@ -13,12 +13,12 @@ exports.assign = async (req, res, next) => {
     var result = [];
     console.log(rejectedUsers);
 
-
     const today = moment().startOf('day')
+
     var query = {
         "updated_at": {
             $gte: today.toDate(),
-            $lte: moment(today).endOf('day').toDate()
+            $lte: moment(today).endOf('day')
         },
         'user_id': {$nin : rejectedUsers}
     };
