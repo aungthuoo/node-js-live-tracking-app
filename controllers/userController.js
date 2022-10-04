@@ -23,7 +23,7 @@ exports.update = async (item) => {
         longitude : longitude, 
         order_count : orderCount, 
         //updated_at :  moment().tz("Asia/Rangoon").format()
-        updated_at: moment(new Date().tz('Asia/Rangoon'))
+        updated_at: new Date()
         //expire: new Date() 
     },
     options = { upsert: true, new: true, setDefaultsOnInsert: true };
