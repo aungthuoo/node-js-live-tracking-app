@@ -148,6 +148,13 @@ app.use('/location', locationRoutes);
 app.use('/attendance', attendanceRoutes);
 app.use('/job', jobRoutes);
 
+
+// Timezone 
+process.env.TZ = "Asia/Rangoon";
+console.log(new Date().toString());
+
+
+
 var port = process.env.PORT || 3000;
 http.listen(port, function (err) {
   if (err) console.log(err);
