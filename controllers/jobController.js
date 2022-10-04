@@ -16,12 +16,10 @@ exports.assign = async (req, res, next) => {
 
     const today = moment().startOf('day')
     var query = {
-        /*
         "updated_at": {
             $gte: today.toDate(),
             $lte: moment(today).endOf('day').toDate()
         },
-        */
         'user_id': {$nin : rejectedUsers}
     };
 
