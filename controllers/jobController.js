@@ -27,7 +27,7 @@ exports.assign = async (req, res, next) => {
     const users = await UserModel
                     .find(query)
                     .sort({ updated_at: 'descending' })
-                    .limit(100);
+                    .limit(50);
     if(users.length == 0){
         res.status(200).json( {"status" : false, "message" : "There are no bikers"} );
     }
@@ -43,6 +43,7 @@ exports.assign = async (req, res, next) => {
     if(users.length > 0 ){
         userId = users[0].user_id
     }
+    
 
     res.status(200).json( { "status" : true, "user_id" : userId, "users" : users });
 
