@@ -1,5 +1,6 @@
 let UserModel = require("../models/user");
 let AttendanceModel = require("../models/attendance");
+let LocationeModel = require("../models/location");
 const moment = require('moment')
 const helper = require("../helpers.js");
 
@@ -26,7 +27,7 @@ exports.assign = async (req, res, next) => {
     };
 
 
-    const users = await AttendanceModel
+    const users = await LocationeModel
                     .find(query)
                     .sort({ updated_at: 'descending' })
                     .limit(100);
