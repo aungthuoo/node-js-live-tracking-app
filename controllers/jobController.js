@@ -41,9 +41,9 @@ exports.assign = async (req, res, next) => {
     });
 
     if(users.length > 0 ){
-        userId = users[0].user_id
+        userId = users[0].id
     }
-    
+
 
     res.status(200).json( { "status" : true, "user_id" : userId, "users" : users });
 
