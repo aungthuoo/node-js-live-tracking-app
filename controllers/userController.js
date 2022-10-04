@@ -1,5 +1,5 @@
 let UserModel = require("../models/user");
-const moment = require('moment')
+const moment = require('moment-timezone')
 
 exports.users = (req, res, next) => {
     console.log(req.body);
@@ -22,7 +22,8 @@ exports.update = async (item) => {
         latitude : latitude, 
         longitude : longitude, 
         order_count : orderCount, 
-        updated_at: new Date() 
+        updated_at :  moment().tz("Asia/Rangoon").format()
+        //updated_at: new Date() 
         //expire: new Date() 
     },
     options = { upsert: true, new: true, setDefaultsOnInsert: true };

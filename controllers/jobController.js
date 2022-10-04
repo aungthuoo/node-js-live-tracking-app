@@ -11,9 +11,10 @@ exports.assign = async (req, res, next) => {
     var restaurantLatitude = req.body.latitude ?? 0.0; 
     var restaurantLongitude = req.body.longitude ?? 0.0; 
     var result = [];
-    console.log(rejectedUsers);
 
     const today = moment().startOf('day')
+    console.log( moment().tz("Asia/Rangoon").format() ); 
+
 
     var query = {
         "updated_at": {
