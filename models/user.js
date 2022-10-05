@@ -52,7 +52,7 @@ let userSchema = new mongoose.Schema({
         required: true
     },
     updated_at: {
-        type : Date, default: Date.now
+        type : Date, default: moment().tz("Asia/Yangon").format()
     },
     active_at: {
         type: Date,
