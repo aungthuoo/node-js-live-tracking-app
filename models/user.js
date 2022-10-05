@@ -58,8 +58,8 @@ let userSchema = new mongoose.Schema({
         required: true
     },
     active_at: {
-        type: String,
-        //default: dateRangoon, 
+        type: Date,
+        default: Date.now, 
         required: true
     },
 })
