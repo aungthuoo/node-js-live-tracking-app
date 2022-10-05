@@ -30,11 +30,12 @@ const userRoutes = require('./routes/user');
 const locationRoutes = require('./routes/location');
 const attendanceRoutes = require('./routes/attendance');
 const jobRoutes = require('./routes/job');
+const testRoutes = require('./routes/test');
 
 const locationController = require('./controllers/locationController');
 const userController = require('./controllers/userController');
 const attendanceController = require('./controllers/attendanceController');
-
+const testController = require('./controllers/attendanceController');
 
 const helper = require("./helpers.js");
 
@@ -147,7 +148,7 @@ app.use('/user', userRoutes);
 app.use('/location', locationRoutes);
 app.use('/attendance', attendanceRoutes);
 app.use('/job', jobRoutes);
-
+app.use('/test', testRoutes);
 
 // Timezone 
 process.env.TZ = "Asia/Rangoon";

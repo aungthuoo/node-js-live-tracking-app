@@ -1,6 +1,9 @@
 let mongoose = require('mongoose')
 let validator = require('validator')
-
+//https://stackoverflow.com/questions/35672248/how-to-change-date-timezone-in-mongoose
+const moment = require('moment-timezone');
+const dateRangoon = moment.tz(Date.now(), "Asia/Rangoon");
+//
 let userSchema = new mongoose.Schema({
     id: {
         type: Number,
@@ -45,13 +48,19 @@ let userSchema = new mongoose.Schema({
     
     created_at: {
         type: Date,
+        default: dateRangoon, 
         required: true
     },
     updated_at: {
         type: Date,
+        default: dateRangoon, 
         required: true
-    }
-    
+    },
+    active_at: {
+        type: Date,
+        default: dateRangoon, 
+        required: true
+    },
 })
 
 module.exports = mongoose.model('User', userSchema)
