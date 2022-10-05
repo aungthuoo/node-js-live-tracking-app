@@ -1,6 +1,6 @@
 let UserModel = require("../models/user");
 const moment = require('moment-timezone')
-
+const dateRangoon = moment.tz(Date.now(), "Asia/Rangoon");
 
 exports.datetime = async (req, res, next) => {
 
@@ -17,7 +17,7 @@ exports.datetime = async (req, res, next) => {
         latitude : 16.001, 
         longitude : 96.001, 
         order_count : 31, 
-        active_at : new Date(), 
+        active_at : moment.utc().toDate(), 
         updated_at :  updatedAt
         //updated_at: new Date()
         //expire: new Date() 
