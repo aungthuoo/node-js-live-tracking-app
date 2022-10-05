@@ -5,6 +5,12 @@ const moment = require('moment-timezone');
 
 const dateRangoon = moment.tz(Date.now(), "Asia/Yangon");
 //
+
+const schemaOptions = {
+    timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
+};
+
+
 let userSchema = new mongoose.Schema({
     id: {
         type: Number,
@@ -59,12 +65,12 @@ let userSchema = new mongoose.Schema({
         default: Date.now, 
         required: true
     },
-})
+}, schemaOptions)
 
 
-userSchema.pre('update', function(next) {
-    this.updated_at = Date.now();
-    next();
-  });
+// userSchema.pre('update', function(next) {
+//     this.updated_at = Date.now();
+//     next();
+//   });
 
 module.exports = mongoose.model('User', userSchema)
