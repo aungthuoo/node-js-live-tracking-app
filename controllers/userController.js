@@ -15,6 +15,13 @@ exports.update = async (item) => {
     var longitude = item.longitude ?? 0.0; 
 
 
+
+    const nDate = new Date().toLocaleString('en-US', {
+        timeZone: 'Asia/Yangon'
+    });
+
+
+
     var query = {id : _id},
     update = { 
         name : name, 

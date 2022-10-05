@@ -1,11 +1,11 @@
 let UserModel = require("../models/user");
 const moment = require('moment-timezone')
-const dateRangoon = moment.tz(Date.now(), "Asia/Rangoon");
+const dateRangoon = moment.tz(Date.now(), "Asia/Yangon");
 
 exports.datetime = async (req, res, next) => {
 
 
-    var updatedAt = moment().tz("Asia/Rangoon").format()
+    var updatedAt = moment().tz("Asia/Yangon").format()
     //const updatedAt = moment.tz(Date.now(), "Asia/Rangoon");
     // res.status(200).json( { "status" : true, "data" : updatedAt });
 

@@ -3,7 +3,7 @@ let validator = require('validator')
 //https://stackoverflow.com/questions/35672248/how-to-change-date-timezone-in-mongoose
 const moment = require('moment-timezone');
 
-const dateRangoon = moment.tz(Date.now(), "Asia/Rangoon");
+const dateRangoon = moment.tz(Date.now(), "Asia/Yangon");
 //
 let userSchema = new mongoose.Schema({
     id: {
