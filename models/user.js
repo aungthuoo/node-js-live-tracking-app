@@ -58,7 +58,7 @@ let userSchema = new mongoose.Schema({
         required: true
     },
     active_at: {
-        type: Date,
+        type: String,
         //default: dateRangoon, 
         required: true
     },
