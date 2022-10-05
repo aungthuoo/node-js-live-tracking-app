@@ -57,7 +57,7 @@ update = {
     longitude : 96.001, 
     order_count : 31, 
     active_at : moment.utc().toDate(), 
-    updated_at :  updatedAt
+    //updated_at :  updatedAt
     //updated_at: new Date()
     //expire: new Date() 
 },
