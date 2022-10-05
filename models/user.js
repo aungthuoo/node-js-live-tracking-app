@@ -60,7 +60,7 @@ let userSchema = new mongoose.Schema({
         default: Date.now, 
         required: true
     },
-})
+}, { timestamps: true })
 
 
 // userSchema.pre('update', function(next) {
