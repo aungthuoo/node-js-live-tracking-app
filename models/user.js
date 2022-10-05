@@ -53,9 +53,7 @@ let userSchema = new mongoose.Schema({
         required: true
     },
     updated_at: {
-        type: Date,
-        default: dateYangon, 
-        required: true
+        type: Number, default: function(){return new Date().getTime()} 
     },
     active_at: {
         type: Date,
