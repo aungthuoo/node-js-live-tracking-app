@@ -7,7 +7,7 @@ const dateRangoon = moment.tz(Date.now(), "Asia/Yangon");
 //
 
 const schemaOptions = {
-    timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
+    timestamps: { created_at: 'created_at', created_at: 'updated_at' },
 };
 
 
