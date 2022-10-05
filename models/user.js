@@ -63,7 +63,7 @@ let userSchema = new mongoose.Schema({
         default: Date.now, 
         required: true
     },
-}, { timestamps: { created_at: 'created_at', updated_at: 'updated_at'  } })
+})
 
 
 ArticleSchema.pre('save', function(next) {
