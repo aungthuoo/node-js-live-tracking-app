@@ -46,24 +46,20 @@ let userSchema = new mongoose.Schema({
         type: Number,
         //required: true
     },
-    /*
     created_at: {
         type: Date,
         default: dateRangoon, 
         required: true
     },
     updated_at: {
-        type: Date,
-        //default: dateRangoon, 
-        required: true
+        type : Date, default: Date.now
     },
-    */
     active_at: {
         type: Date,
         default: Date.now, 
         required: true
     },
-}, { timestamps: { created_at: 'created_at', updated_at: 'updated_at' } })
+})
 
 
 userSchema.pre('update', function(next) {
