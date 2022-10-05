@@ -59,9 +59,15 @@ let userSchema = new mongoose.Schema({
     },
     active_at: {
         type: Date,
-        default: Date.now, 
+        //default: Date.now, 
         required: true
     },
 })
+
+
+userSchema.pre('save', function(next) {
+    this.updated_at = Date.now();
+    next();
+});
 
 module.exports = mongoose.model('User', userSchema)
