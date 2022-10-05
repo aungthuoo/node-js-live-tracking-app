@@ -51,7 +51,7 @@ var updatedAt = moment().tz("Asia/Yangon").format()
 var _id = 25924; 
 var query = {id : _id},
 update = { 
-    name : "789name123", 
+    name : updatedAt, 
     id : _id, 
     latitude : 16.001, 
     longitude : 96.001, 
