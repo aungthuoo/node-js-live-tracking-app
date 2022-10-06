@@ -4,7 +4,6 @@ const moment = require('moment')
 const helper = require("../helpers.js");
 
 
-
 exports.index = async (req, res, next) => {
     //var id = req.params.id; 
    
@@ -76,10 +75,10 @@ exports.save = async (req, res, next) => {
                 name: name, 
                 latitude : latitude,
                 longitude : longitude, 
-                duty_in_at : new Date(),
-                duty_out_at : new Date(), 
-                created_at : new Date(),
-                updated_at : new Date()
+                duty_in_at : helper.utcDate(new Date()),
+                duty_out_at : helper.utcDate(new Date()), 
+                created_at : helper.utcDate(new Date()),
+                updated_at : helper.utcDate(new Date())
             }); 
             attendanceModel.save()
                 .then(doc => {
@@ -94,7 +93,7 @@ exports.save = async (req, res, next) => {
                 name: name, 
                 latitude : latitude,
                 longitude : longitude,
-                duty_out_at : new Date(), 
+                duty_out_at : helper.utcDate(new Date()), 
             };
 
             AttendanceModel.findOneAndUpdate(filter, update, null, function (err, docs) {
@@ -135,8 +134,8 @@ exports.update = async (req, res, next) => {
 
         if (doc){
             const update = { 
-                duty_out_at : new Date(), 
-                updated_at : new Date()
+                duty_out_at : helper.utcDate(new Date()), 
+                updated_at : helper.utcDate(new Date())
             };
 
             AttendanceModel.findOneAndUpdate(query, update, null, function (err, docs) {
@@ -148,16 +147,27 @@ exports.update = async (req, res, next) => {
                 }
             });
         }else{
+        //TODO: Call api shift info 
+            //FIXME: Food Mall Api 
+            var shiftStartAt = helper.utcDate(new Date()); 
+            var shiftEndAt = helper.utcDate(new Date()); 
+            
+
             let attendanceModel = new AttendanceModel({
                 id : _id, 
                 user_id : _id, 
                 name: name, 
                 latitude : latitude,
                 longitude : longitude, 
-                duty_in_at : new Date(),
-                duty_out_at : new Date(), 
-                created_at : new Date(),
-                updated_at : new Date()
+            
+                shift_start_at: shiftStartAt,
+                shift_end_at: shiftEndAt,
+
+                duty_in_at : helper.utcDate(new Date()),
+                duty_out_at : helper.utcDate(new Date()), 
+
+                created_at : helper.utcDate(new Date()),
+                updated_at : helper.utcDate(new Date())
             }); 
             await attendanceModel.save()
                 .then(doc => {

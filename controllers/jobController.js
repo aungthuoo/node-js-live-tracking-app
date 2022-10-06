@@ -13,7 +13,7 @@ exports.assign = async (req, res, next) => {
     var result = [];
 
     const today = moment().startOf('day')
-    console.log( moment().tz("Asia/Rangoon").format() ); 
+    //console.log( moment().tz("Asia/Rangoon").format() ); 
 
 
     var query = {
