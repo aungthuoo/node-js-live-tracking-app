@@ -151,8 +151,9 @@ app.use('/job', jobRoutes);
 app.use('/test', testRoutes);
 
 // Timezone 
-process.env.TZ = "Asia/Yangon";
-console.log(new Date().toString());
+//process.env.TZ = "Etc/Universal";
+// process.env.TZ = "Asia/Yangon";
+// console.log(new Date().toString());
 
 
 

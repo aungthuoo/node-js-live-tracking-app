@@ -1,5 +1,6 @@
 let UserModel = require("../models/user");
 const moment = require('moment-timezone')
+const helper = require("../helpers.js");
 
 exports.users = (req, res, next) => {
     console.log(req.body);
@@ -15,13 +16,6 @@ exports.update = async (item) => {
     var longitude = item.longitude ?? 0.0; 
 
 
-
-    const nDate = new Date().toLocaleString('en-US', {
-        timeZone: 'Asia/Yangon'
-    });
-
-
-
     var query = {id : _id},
     update = { 
         name : name, 
@@ -29,7 +23,7 @@ exports.update = async (item) => {
         latitude : latitude, 
         longitude : longitude, 
         order_count : orderCount, 
-        updated_at :  moment().tz("Asia/Rangoon").format()
+        updated_at :  helper.utcDate(new Date()), 
         //updated_at: new Date()
         //expire: new Date() 
     },
@@ -40,37 +34,6 @@ exports.update = async (item) => {
         if (error) return;
         // do something with the document
     });
-
-
-
-// To Test 
-var updatedAt = moment().tz("Asia/Yangon").format()
-//const updatedAt = moment.tz(Date.now(), "Asia/Rangoon");
-// res.status(200).json( { "status" : true, "data" : updatedAt });
-
-var _id = 25924; 
-var query = {id : _id},
-update = { 
-    name : updatedAt, 
-    id : _id, 
-    latitude : 16.001, 
-    longitude : 96.001, 
-    order_count : 31, 
-    active_at : moment.utc().toDate(), 
-    //updated_at :  updatedAt
-    //updated_at: new Date()
-    //expire: new Date() 
-},
-options = { upsert: true, new: true, setDefaultsOnInsert: true };
-
-// Find the document
-UserModel.findOneAndUpdate(query, update, options, function(error, result) {
-    if (error) return;
-    // do something with the document
-});
-
-
-
 }
 
 
@@ -82,7 +45,6 @@ exports.updateUser = async (req, res, next) => {
 
 
     const today = moment().startOf('day')
-
 
     AttendanceModel.findOne({ 
             "user_id": id, 

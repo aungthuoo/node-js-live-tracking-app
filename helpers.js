@@ -53,3 +53,17 @@ module.exports.distance = function distance(lat1, lon1, lat2, lon2, unit){
 }
 
 
+module.exports.utcDate = function utcDate(date) {
+	const timestamp = Date.UTC(
+	  date.getFullYear(),
+	  date.getMonth(),
+	  date.getDate(),
+	  date.getHours(),
+	  date.getMinutes(),
+	  date.getSeconds(),
+	  date.getMilliseconds(),
+	);
+  
+	return new Date(timestamp);
+}
+  

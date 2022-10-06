@@ -1,25 +1,20 @@
 let UserModel = require("../models/user");
 const moment = require('moment-timezone')
-const dateRangoon = moment.tz(Date.now(), "Asia/Yangon");
+const helper = require("../helpers.js");
 
 exports.datetime = async (req, res, next) => {
 
 
-    var updatedAt = moment().tz("Asia/Yangon").format()
-    //const updatedAt = moment.tz(Date.now(), "Asia/Rangoon");
-    // res.status(200).json( { "status" : true, "data" : updatedAt });
-
     var _id = 25924; 
     var query = {id : _id},
     update = { 
-        name : "name123", 
+        name : helper.utcDate(new Date()), 
         id : _id, 
-        latitude : 16.001, 
-        longitude : 96.001, 
-        order_count : 31, 
-        active_at : moment.utc().toDate(), 
-        updated_at :  updatedAt
-        //updated_at: new Date()
+        latitude : 16.1001, 
+        longitude : 96.1001, 
+        order_count : 38, 
+        active_at : helper.utcDate(new Date()), 
+        updated_at :   helper.utcDate(new Date()), 
         //expire: new Date() 
     },
     options = { upsert: true, new: true, setDefaultsOnInsert: true };
@@ -30,9 +25,18 @@ exports.datetime = async (req, res, next) => {
         // do something with the document
     });
 
+    var query = {
+        'id': _id
+    };
+    const users = await UserModel
+                    .find(query)
+                    .sort({ updated_at: 'descending' })
+                    .limit(50);
 
 
-    res.status(200).json( { "status" : true, "data" : updatedAt });
+
+
+    res.status(200).json( { "status" : true, "updatedAt" : new Date(), "users" : users });
 
 }
 
