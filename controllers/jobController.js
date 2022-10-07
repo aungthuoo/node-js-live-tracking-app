@@ -1,6 +1,7 @@
 let UserModel = require("../models/user");
 let AttendanceModel = require("../models/attendance");
 const moment = require('moment-timezone')
+const axios = require('axios')
 const helper = require("../helpers.js");
 
 
@@ -93,5 +94,41 @@ var seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
 
     res.status(200).json( { "status" : true, data : days });
 
+}
+
+exports.workingHour = async (req, res, next) => {
+    var userId = req.body.user_id ?? 0; 
+    var findAt = req.body.date ; 
+    var findDate = new Date(findAt);
+    res.status(200).json( { "status" : true, "user_id" : userId, "data" : findDate });
+}
+
+
+exports.todayShiftInfo = async (req, res, next) => {
+    var userId = req.body.user_id ?? 0; 
+    var shifts = []; 
+    var shiftStartTime, shiftEndTime ; 
+    axios
+    .get('https://api.foodmallmm.com/api/v2/biker-app/booking-info', { params: { user_id: userId } })
+    .then(response => {
+      //this.users = response.data; 
+        console.log( response.data ); 
+        shifts = response.data.data; 
+
+        if( shifts.length > 0 ) {
+            shiftStartTime = shifts[0].start_time;
+            shiftEndTime = shifts[shifts.length - 1].end_time;
+
+            console.log(shifts[0].start_time )
+        }
+        res.status(200).json( { "status" : true, "shift_start" : shiftStartTime, "shift_end": shiftEndTime });
+    })
+    .catch(error => {
+      console.log(error)
+      this.errored = true
+    })
+    .finally(() => this.loading = false)
+
+    
 }
 
