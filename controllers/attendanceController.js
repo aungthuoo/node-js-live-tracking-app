@@ -166,7 +166,7 @@ exports.update = async (req, res, next) => {
                         console.log(shifts[0].start_time )
 
                         //FIXME: Food Mall Api 
-                        this.createUserAttendance(shiftStartAt, shiftEndAt) ; 
+                        //this.createUserAttendance(shiftStartAt, shiftEndAt) ; 
 
 
                             
@@ -186,8 +186,6 @@ exports.update = async (req, res, next) => {
 
 
     async function createUserAttendance(shiftStartAt, shiftEndAt) {
-
-
         //FIXME: Food Mall Api 
         var shiftStartAt = helper.utcDate(new Date()); 
         var shiftEndAt = helper.utcDate(new Date()); 
