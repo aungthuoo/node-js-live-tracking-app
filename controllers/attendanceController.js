@@ -152,6 +152,35 @@ exports.update = async (req, res, next) => {
         }else{
         //TODO: Call api shift info 
 
+
+            let attendanceModel = new AttendanceModel({
+                id : _id, 
+                user_id : _id, 
+                name: name, 
+                latitude : latitude,
+                longitude : longitude, 
+            
+                shift_start_at: shiftStartAt,
+                shift_end_at: shiftEndAt,
+
+                duty_in_at : helper.utcDate(new Date()),
+                duty_out_at : helper.utcDate(new Date()), 
+
+                created_at : helper.utcDate(new Date()),
+                updated_at : helper.utcDate(new Date())
+            }); 
+            await attendanceModel.save()
+                .then(doc => {
+                    //console.log(doc)
+                })
+                .catch(err => {
+                    console.error(err)
+                })
+
+    /*
+
+
+
             axios
                 .get('https://api.foodmallmm.com/api/v2/biker-app/booking-info', { params: { user_id: _id } })
                 .then(response => {
@@ -179,7 +208,7 @@ exports.update = async (req, res, next) => {
                 })
                 .finally(() => this.loading = false)
 
-
+*/
                 
         }
     });
