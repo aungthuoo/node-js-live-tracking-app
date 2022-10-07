@@ -160,13 +160,13 @@ exports.update = async (req, res, next) => {
                     shifts = response.data.data; 
             
                     if( shifts.length > 0 ) {
-                        shiftStartTime = shifts[0].start_time;
-                        shiftEndTime = shifts[shifts.length - 1].end_time;
+                        shiftStartAt = shifts[0].start_time;
+                        shiftEndAt = shifts[shifts.length - 1].end_time;
             
                         console.log(shifts[0].start_time )
 
                         //FIXME: Food Mall Api 
-                        this.createUserAttendance(shiftStartTime, shiftEndTime) ; 
+                        this.createUserAttendance(shiftStartAt, shiftEndAt) ; 
 
 
                             
