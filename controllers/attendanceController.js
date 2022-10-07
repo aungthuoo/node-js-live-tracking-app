@@ -119,9 +119,6 @@ exports.update = async (req, res, next) => {
     var name = req.username ?? ""; 
     var latitude = req.latitude ?? 0.0; 
     var longitude = req.longitude ?? 0.0; 
-    var shifts = []; 
-    var shiftStartTime, shiftEndTime ; 
-    
 
     const today = moment().startOf('day')
     var query = { 
@@ -151,7 +148,10 @@ exports.update = async (req, res, next) => {
             });
         }else{
         //TODO: Call api shift info 
-
+            //FIXME: Food Mall Api 
+            var shiftStartAt = helper.utcDate(new Date()); 
+            var shiftEndAt = helper.utcDate(new Date()); 
+            
 
             let attendanceModel = new AttendanceModel({
                 id : _id, 
@@ -160,8 +160,8 @@ exports.update = async (req, res, next) => {
                 latitude : latitude,
                 longitude : longitude, 
             
-                shift_start_at: helper.utcDate(new Date()),
-                shift_end_at: helper.utcDate(new Date()), 
+                shift_start_at: shiftStartAt,
+                shift_end_at: shiftEndAt,
 
                 duty_in_at : helper.utcDate(new Date()),
                 duty_out_at : helper.utcDate(new Date()), 
@@ -176,76 +176,10 @@ exports.update = async (req, res, next) => {
                 .catch(err => {
                     console.error(err)
                 })
-
-    /*
-
-
-
-            axios
-                .get('https://api.foodmallmm.com/api/v2/biker-app/booking-info', { params: { user_id: _id } })
-                .then(response => {
-                //this.users = response.data; 
-                    console.log( response.data ); 
-                    shifts = response.data.data; 
-            
-                    if( shifts.length > 0 ) {
-                        shiftStartAt = shifts[0].start_time;
-                        shiftEndAt = shifts[shifts.length - 1].end_time;
-            
-                        console.log(shifts[0].start_time )
-
-                        //FIXME: Food Mall Api 
-                        this.createUserAttendance(shiftStartAt, shiftEndAt) ; 
-
-
-                            
-                    }
-                    res.status(200).json( { "status" : true, "shift_start" : shiftStartTime, "shift_end": shiftEndTime });
-                })
-                .catch(error => {
-                    console.log(error)
-                    this.errored = true
-                })
-                .finally(() => this.loading = false)
-
-*/
                 
         }
     });
 
-
-    async function createUserAttendance(shiftStartAt, shiftEndAt) {
-        //FIXME: Food Mall Api 
-        //var shiftStartAt = helper.utcDate(new Date()); 
-        //var shiftEndAt = helper.utcDate(new Date()); 
-        
-
-        let attendanceModel = new AttendanceModel({
-            id : _id, 
-            user_id : _id, 
-            name: name, 
-            latitude : latitude,
-            longitude : longitude, 
-        
-            shift_start_at: shiftStartAt,
-            shift_end_at: shiftEndAt,
-
-            duty_in_at : helper.utcDate(new Date()),
-            duty_out_at : helper.utcDate(new Date()), 
-
-            created_at : helper.utcDate(new Date()),
-            updated_at : helper.utcDate(new Date())
-        }); 
-        await attendanceModel.save()
-            .then(doc => {
-                //console.log(doc)
-            })
-            .catch(err => {
-                console.error(err)
-            })
-
-        return true; 
-    }
 
 /*
 
