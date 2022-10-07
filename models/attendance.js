@@ -37,6 +37,17 @@ let attendanceSchema = new mongoose.Schema({
         type: Number,
         //required: true
     },
+
+    shift_start_at: {
+        type: Date,
+        required: true
+    },
+    shift_end_at: {
+        type: Date,
+        required: true
+    },
+
+
     duty_in_at: {
         type: Date,
         required: true

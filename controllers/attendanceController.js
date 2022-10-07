@@ -2,7 +2,7 @@ let AttendanceModel = require('../models/attendance')
 let UserModel = require('../models/user')
 const moment = require('moment')
 const helper = require("../helpers.js");
-
+const axios = require('axios')
 
 exports.index = async (req, res, next) => {
     //var id = req.params.id; 
@@ -115,10 +115,22 @@ exports.save = async (req, res, next) => {
 }
 
 exports.update = async (req, res, next) => {
+    /*
     var _id = req.id ?? 0; 
     var name = req.username ?? ""; 
     var latitude = req.latitude ?? 0.0; 
     var longitude = req.longitude ?? 0.0; 
+    */
+
+    //   var utcDate = helper.getDateFromStringTime(new Date(), '03', "59", "01")
+    //   res.status(200).json( { "status" : true, "date2" : utcDate });
+
+
+
+    var _id = req.body.id ?? 0; 
+    var name = req.body.username ?? ""; 
+    var latitude = req.body.latitude ?? 0.0; 
+    var longitude = req.body.longitude ?? 0.0; 
 
     const today = moment().startOf('day')
     var query = { 
@@ -131,6 +143,94 @@ exports.update = async (req, res, next) => {
 
     AttendanceModel.exists(query, async function (err, doc)  {
         if (err) console.error(err);
+        if (doc){
+            const update = { 
+                duty_out_at : helper.utcDate(new Date()), 
+                updated_at : helper.utcDate(new Date())
+            };
+            AttendanceModel.findOneAndUpdate(query, update, null, function (err, docs) {
+                if (err){
+                    console.log(err)
+                }
+                else{
+                    //console.log("Original Doc : ",docs);
+                }
+            });
+            res.status(200).json( { "status" : true });
+        }else{
+            axios
+                .get('https://api.foodmallmm.com/api/v2/biker-app/booking-info', { params: { user_id: _id } })
+                .then(async response => {
+                //this.users = response.data; 
+                    console.log( response.data ); 
+                    shifts = response.data.data; 
+        
+                    if( shifts.length > 0 ) {
+                        shiftStartAt = shifts[0].start_time.split(":");
+                        shiftEndAt = shifts[shifts.length - 1].end_time.split(":");
+
+
+               
+                        let attendanceModel = new AttendanceModel({
+                            id : _id, 
+                            user_id : _id, 
+                            name: name, 
+                            latitude : latitude,
+                            longitude : longitude, 
+                        
+                            shift_start_at: helper.getDateFromStringTime(new Date(), shiftStartAt[0], shiftStartAt[1], shiftStartAt[2]),
+                            shift_end_at: helper.getDateFromStringTime(new Date(), shiftEndAt[0], shiftEndAt[1], shiftEndAt[2]),
+
+                            duty_in_at : helper.utcDate(new Date()),
+                            duty_out_at : helper.utcDate(new Date()), 
+
+                            created_at : helper.utcDate(new Date()),
+                            updated_at : helper.utcDate(new Date())
+                        }); 
+                        await attendanceModel.save()
+                            .then(doc => {
+                                //console.log(doc)
+                            })
+                            .catch(err => {
+                                console.error(err)
+                            })
+                            res.status(200).json( { "status" : true, "att" : attendanceModel,  "shift_start" : shiftStartAt, "shift_end": shiftEndAt });
+                    }
+                    
+                })
+                .catch(error => {
+                console.log(error)
+                this.errored = true
+                })
+                .finally(() => this.loading = false)
+
+        }
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+    const today = moment().startOf('day')
+    var query = { 
+        "user_id": _id, 
+        "created_at": {
+            $gte: today.toDate(),
+            $lte: moment(today).endOf('day').toDate()
+        }
+    }; 
+
+    AttendanceModel.exists(query, async function (err, doc)  {
+        if (err) console.error(err);
+
 
         if (doc){
             const update = { 
@@ -146,141 +246,73 @@ exports.update = async (req, res, next) => {
                     //console.log("Original Doc : ",docs);
                 }
             });
+
+
         }else{
         //TODO: Call api shift info 
             //FIXME: Food Mall Api 
-            var shiftStartAt = helper.utcDate(new Date()); 
-            var shiftEndAt = helper.utcDate(new Date()); 
             
-
-            let attendanceModel = new AttendanceModel({
-                id : _id, 
-                user_id : _id, 
-                name: name, 
-                latitude : latitude,
-                longitude : longitude, 
+            axios
+                .get('https://api.foodmallmm.com/api/v2/biker-app/booking-info', { params: { user_id: _id } })
+                .then(async response => {
+                //this.users = response.data; 
+                res.status(200).json( { "status" : true, "data" : "record not exist"}); 
+                    console.log( response.data ); 
+                    shifts = response.data.data; 
+                    res.status(200).json( { "status" : true, "data" : shifts });
+                    if( shifts.length > 0 ) {
+                        shiftStartAt = shifts[0].start_time;
+                        shiftEndAt = shifts[shifts.length - 1].end_time;
             
-                shift_start_at: shiftStartAt,
-                shift_end_at: shiftEndAt,
+                        console.log(shifts[0].start_time )
 
-                duty_in_at : helper.utcDate(new Date()),
-                duty_out_at : helper.utcDate(new Date()), 
+                        
+                        res.status(200).json( { "status" : true, "data" : shifts });
 
-                created_at : helper.utcDate(new Date()),
-                updated_at : helper.utcDate(new Date())
-            }); 
-            await attendanceModel.save()
-                .then(doc => {
-                    //console.log(doc)
+                        //FIXME: Food Mall Api 
+      
+                res.status(200).json( { "status" : true, "data" : new Date.parse(shiftStartAt) });
+                        let attendanceModel = new AttendanceModel({
+                            id : _id, 
+                            user_id : _id, 
+                            name: name, 
+                            latitude : latitude,
+                            longitude : longitude, 
+                        
+                            shift_start_at: shiftStartAt,
+                            shift_end_at: shiftEndAt,
+
+                            duty_in_at : helper.utcDate(new Date()),
+                            duty_out_at : helper.utcDate(new Date()), 
+
+                            created_at : helper.utcDate(new Date()),
+                            updated_at : helper.utcDate(new Date())
+                        }); 
+                        await attendanceModel.save()
+                            .then(doc => {
+                                //console.log(doc)
+                            })
+                            .catch(err => {
+                                console.error(err)
+                            })
+
+                            
+                            
+                    }
                 })
-                .catch(err => {
-                    console.error(err)
+                .catch(error => {
+                    console.log(error)
+                    this.errored = true
+                    res.status(200).json( { "status" : false, "message" : error });
                 })
+                .finally(() => this.loading = false)
+
+
+
                 
         }
     });
-
-
-/*
-
-
-
-
-
-
-    update = { 
-        id : _id, 
-        user_id : _id, 
-        name: name, 
-        latitude : latitude,
-        longitude : longitude, 
-        duty_in_at : new Date(),
-        duty_out_at : new Date(), 
-        created_at : new Date(),
-        updated_at : new Date()
-    },
-
-    AttendanceModel.findOne({ 
-        query, 
-     }, (err, item) => {
-        if (err) console.error(err);
-
-        console.log( item ); 
-        //res.render('pages/user/show', { item });
-        if(item){
-            let attendanceModel = new AttendanceModel({
-                //id : data.User.id, 
-                user_id : _id, 
-                name: name, 
-                latitude : latitude,
-                longitude : longitude, 
-                duty_in_at : new Date(),
-                duty_out_at : new Date(), 
-                created_at : new Date(),
-                updated_at : new Date()
-            }); 
-            attendanceModel.save()
-                .then(doc => {
-                    console.log(doc)
-                })
-                .catch(err => {
-                    console.error(err)
-                })
-        }else{
-            const filter = { 
-                "user_id": _id, 
-                "created_at": {
-                    $gte: today.toDate(),
-                    $lte: moment(today).endOf('day').toDate()
-                } 
-            };
-            const update = { 
-                name: name, 
-                latitude : latitude,
-                longitude : longitude,
-                duty_out_at : new Date(), 
-                updated_at : new Date(), 
-            };
-
-            AttendanceModel.findOneAndUpdate(filter, update, null, function (err, docs) {
-                if (err){
-                    console.log(err)
-                }
-                else{
-                    console.log("Original Doc : ",docs);
-                }
-            });
-        }
-        //helper.echo("abc");
-    });
 */
-
-
-
-/*
-    var query = {user_id : _id},
-    update = { 
-        id : _id, 
-        user_id : _id, 
-        name: name, 
-        latitude : latitude,
-        longitude : longitude, 
-        duty_in_at : new Date(),
-        duty_out_at : new Date(), 
-        created_at : new Date(),
-        updated_at : new Date()
-    },
-    options = { upsert: true, new: true, setDefaultsOnInsert: true };
-
-    // Find the document
-    AttendanceModel.findOneAndUpdate(query, update, options, function(error, result) {
-        if (error) return;
-        // do something with the document
-    });
-*/
-
-
-
 /*
     AttendanceModel.findOne({ 
             "user_id": id, 

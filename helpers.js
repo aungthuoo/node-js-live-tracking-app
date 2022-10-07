@@ -67,3 +67,18 @@ module.exports.utcDate = function utcDate(date) {
 	return new Date(timestamp);
 }
   
+
+module.exports.getDateFromStringTime = function getDateFromStringTime(date, hour, min, second) {
+	const timestamp = Date.UTC(
+	  date.getFullYear(),
+	  date.getMonth(),
+	  date.getDate(),
+	  hour,
+	  min,
+	  second,
+	  date.getMilliseconds(),
+	);
+  
+	return new Date(timestamp);
+}
+  
