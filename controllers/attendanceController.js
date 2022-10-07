@@ -160,8 +160,8 @@ exports.update = async (req, res, next) => {
                 latitude : latitude,
                 longitude : longitude, 
             
-                shift_start_at: shiftStartAt,
-                shift_end_at: shiftEndAt,
+                shift_start_at: helper.utcDate(new Date()),
+                shift_end_at: helper.utcDate(new Date()), 
 
                 duty_in_at : helper.utcDate(new Date()),
                 duty_out_at : helper.utcDate(new Date()), 
