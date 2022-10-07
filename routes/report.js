@@ -1,6 +1,7 @@
 const router = require('express').Router();
-const {dailyAttendance } = require('../controllers/reportController');
+const {reportDashboard, dailyAttendance } = require('../controllers/reportController');
 
+router.get('/', reportDashboard);
 router.get('/daily-attendance', dailyAttendance);
 
 module.exports = router;

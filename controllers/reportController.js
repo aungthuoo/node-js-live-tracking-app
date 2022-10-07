@@ -6,6 +6,23 @@ const axios = require('axios')
 
 
 
+
+exports.reportDashboard = async (req, res, next) => {
+    //res.status(200).json( "here" );
+    // var _id = req.id ?? 0; 
+    // var name = req.username ?? ""; 
+    // var latitude = req.latitude ?? 0.0; 
+    // var longitude = req.longitude ?? 0.0; 
+
+
+    res.render("pages/reports/index", {
+        root: __dirname,
+        id : 123456,
+    });
+}
+
+
+
 exports.dailyAttendance = async (req, res, next) => {
     //res.status(200).json( "here" );
     // var _id = req.id ?? 0; 

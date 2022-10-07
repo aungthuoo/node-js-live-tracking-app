@@ -44,19 +44,19 @@
                             <%= attendance.name %> 
                         </th>
                         <td class="py-4 px-6">
-                            <%= attendance.created_at %> 
+                            <%= attendance.created_at.toLocaleString('en-US') %> 
                         </td>
                         <td class="py-4 px-6">
-                            <%= attendance.shift_start_at %> 
+                            <%= attendance.shift_start_at.toUTCString() %> 
                         </td>
                         <td class="py-4 px-6">
-                            <%= attendance.duty_in_at %> 
+                            <%= attendance.duty_in_at.toUTCString() %> 
                         </td>
                         <td class="py-4 px-6">
-                            <%= attendance.shift_end_at %> 
+                            <%= attendance.shift_end_at.toUTCString() %> 
                         </td>
                         <td class="py-4 px-6">
-                            <%= attendance.duty_out_at %> 
+                            <%= attendance.duty_out_at.toUTCString() %> 
                         </td>
                         <td class="py-4 px-6 text-right">
                             <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</a>
