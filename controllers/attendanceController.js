@@ -115,23 +115,23 @@ exports.save = async (req, res, next) => {
 }
 
 exports.update = async (req, res, next) => {
-    /*
+
     var _id = req.id ?? 0; 
     var name = req.username ?? ""; 
     var latitude = req.latitude ?? 0.0; 
     var longitude = req.longitude ?? 0.0; 
-    */
+
 
     //   var utcDate = helper.getDateFromStringTime(new Date(), '03', "59", "01")
     //   res.status(200).json( { "status" : true, "date2" : utcDate });
 
 
-
+/*
     var _id = req.body.id ?? 0; 
     var name = req.body.username ?? ""; 
     var latitude = req.body.latitude ?? 0.0; 
     var longitude = req.body.longitude ?? 0.0; 
-
+*/
     const today = moment().startOf('day')
     var query = { 
         "user_id": _id, 
