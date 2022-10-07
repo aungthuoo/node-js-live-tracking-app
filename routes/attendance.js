@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {index, active, save, update} = require('../controllers/attendanceController');
+const {index, active, save, update, daily } = require('../controllers/attendanceController');
 
 router.get('/index', index);
 router.get('/active', active);

@@ -30,6 +30,7 @@ const userRoutes = require('./routes/user');
 const locationRoutes = require('./routes/location');
 const attendanceRoutes = require('./routes/attendance');
 const jobRoutes = require('./routes/job');
+const reportRoutes = require('./routes/report');
 const testRoutes = require('./routes/test');
 
 const locationController = require('./controllers/locationController');
@@ -148,6 +149,8 @@ app.use('/user', userRoutes);
 app.use('/location', locationRoutes);
 app.use('/attendance', attendanceRoutes);
 app.use('/job', jobRoutes);
+
+app.use('/reports', reportRoutes);
 app.use('/test', testRoutes);
 
 // Timezone 
