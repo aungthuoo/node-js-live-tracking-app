@@ -166,7 +166,7 @@ exports.update = async (req, res, next) => {
                         console.log(shifts[0].start_time )
 
                         //FIXME: Food Mall Api 
-                        createUserAttendance(shiftStartAt, shiftEndAt) ; 
+                        //this.createUserAttendance(shiftStartAt, shiftEndAt) ; 
 
 
                             
