@@ -81,17 +81,38 @@ socketIO.on("connection", function (client) {
   client.on("message", async function name(data) {
     console.log(data);
     var location = JSON.stringify(data);
-/*
-    var item = {};
-    item.Coordinate = {};
-    item.User = {};
 
-    item.User.id = data.id;
-    item.User.name = data.username;
-    item.User.status = 1;
-    item.Coordinate.Latitude = data.latitude;
-    item.Coordinate.Longitude = data.longitude;
+
+    /* Make mapping */
+    /*
+      id : user_id,
+      u : user_name, 
+      lt : latitude, 
+      lg : longitude, 
+      t : total_count,
+      h : hold_count
+    
+    var id  = parseInt(message.id) ?? 0; 
+    //var status  = parseInt(message.status) ?? 1; 
+    var status  = 1; 
+    var name = message.u ?? ""; 
+    var lat = message.lt ?? 0.0; 
+    var lng = message.lg ?? 0.0; 
+    var totalCount = message.t ?? 0; 
+    var holdCount  = message.h ?? 0; 
+    var orderCount = 0; 
+
 */
+/* Make mapping */
+    data.user_id = data.id; 
+    data.username = data.u; 
+    data.latitude = data.lt;
+    data.longitude = data.lg;
+    data.total_count = data.t; 
+    data.hold_count = data.h;
+    data.order_count = 0;  
+    data.image_name = ""; 
+
 // Move Maps Market 
     socketIO.emit('locationUpdate', data);
 
@@ -103,8 +124,7 @@ socketIO.on("connection", function (client) {
 
 // Save location tracking 
     locationController.update( data );
-    
-    
+
     //socketIO.emit("message", data);
   });
 
