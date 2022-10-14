@@ -581,10 +581,12 @@
           return this.bikers.length ?? 0.0 ; 
         }, 
         getFreeBikerCount(){
-          return this.bikers.filter(item => item.order_count == 0).length ?? 0 ; 
+          let totalCount = this.bikers.filter(item => item.total_count == 0).length ?? 0 ; 
+          let holdCount = this.bikers.filter(item => item.hold_count == 0).length ?? 0 ; 
+          return (totalCount - holdCount ) ?? 0 ; 
         },
         getBusyBikerCount(){
-          return this.bikers.filter(item => item.order_count > 0).length ?? 0 ; 
+          return this.bikers.filter(item => item.hold_count > 0).length ?? 0 ; 
         },
         showDetail(flag, item) {
           debugger; 
