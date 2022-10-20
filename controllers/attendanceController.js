@@ -1430,7 +1430,7 @@ exports.workingHour = async (req, res, next) => {
         res.status(200).json( { 
             "status" : true, 
             "user_id" : _id,  
-            "total_working_hours" : (totalWorkingHours) ? totalWorkingHours : 0 * 10,
+            "total_working_hours" : totalWorkingHours * 10,
             "shift_working_hours" : (shiftWorkingHours) ? shiftWorkingHours : 0 * 10
         });
     });
