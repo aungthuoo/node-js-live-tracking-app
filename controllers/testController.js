@@ -1,6 +1,7 @@
 let UserModel = require("../models/user");
 const moment = require('moment-timezone')
 const helper = require("../helpers.js");
+const attendanceController = require('./attendanceController');
 
 exports.datetime = async (req, res, next) => {
 
@@ -146,6 +147,26 @@ async function createUserAttendance(shiftStartAt, shiftEndAt) {
 
         return true; 
 }
+
+
+
+exports.inShift = async (req, res, next) => {
+        
+    var data = {}; 
+
+    data.user_id = 123456; 
+    data.username = "User name "; 
+    data.in_shift = 1; 
+    data.order_count = 0;  
+
+// Working hour log  
+    var result = attendanceController.updateWorkingHourInterval( data ); 
+    // console.log(result ); 
+    // var result = attendanceController.updateInShift( data );
+
+    res.status(200).json( { "status" : result });
+}
+
 
 
 

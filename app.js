@@ -110,6 +110,7 @@ socketIO.on("connection", function (client) {
     data.longitude = data.lg;
     data.total_count = data.t; 
     data.hold_count = data.h;
+    data.in_shift = data.s ?? 1; 
     data.order_count = 0;  
     data.image_name = ""; 
 
@@ -121,10 +122,12 @@ socketIO.on("connection", function (client) {
     
 // Update attendance  
     attendanceController.update( data );
+    
+// Working hour log  
+    attendanceController.updateWorkingHourInterval( data ); 
 
 // Save location tracking 
     locationController.update( data );
-
     //socketIO.emit("message", data);
   });
 

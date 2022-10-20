@@ -1,6 +1,7 @@
 let AttendanceModel = require('../models/attendance')
 let WorkingHourInterval = require('../models/workingHourInterval')
 let UserModel = require('../models/user')
+let TodayShiftInfo = require('../models/todayShiftInfo')
 const moment = require('moment')
 const helper = require("../helpers.js");
 const axios = require('axios')
@@ -172,7 +173,7 @@ exports.update = async (req, res, next) => {
                         shiftEndAt = shifts[shifts.length - 1].end_time.split(":");
 
 
-               
+                        
                         let attendanceModel = new AttendanceModel({
                             id : _id, 
                             user_id : _id, 
@@ -197,31 +198,37 @@ exports.update = async (req, res, next) => {
                                 console.error(err)
                             })
                             res.status(200).json( { "status" : true, "att" : attendanceModel,  "shift_start" : shiftStartAt, "shift_end": shiftEndAt });
+                    
                     }
                     
                 })
                 .catch(error => {
-                console.log(error)
-                this.errored = true
+                    console.log(error)
+                    this.errored = true
                 })
                 .finally(() => this.loading = false)
 
         }
     });
+
+
 }
 
 
 
-exports.updateWorkingHourInterval = async (req, res, next) => {
+exports.updateWorkingHourInterval = async (data) => {
     /*
         var _id = req.id ?? 0; 
         var name = req.username ?? ""; 
-    */
-        var _id = req.body.id ?? 0; 
-        var name = req.body.username ?? ""; 
+        var inShift = req.in_shift ?? 1; 
         //res.status(201).json("OK" + name  );
-    
-    
+    */
+   
+        var _id = data.id ?? 0; 
+        var name = data.username ?? ""; 
+        console.log( "user name is : " ); 
+        console.log( name ); 
+
     
         const today = moment().startOf('day')
         var query = { 
@@ -233,34 +240,70 @@ exports.updateWorkingHourInterval = async (req, res, next) => {
         }; 
     
     
-    
         WorkingHourInterval.exists(query, async function (err, doc)  {
-    
-            var _field = "t6_11_20"; 
-    
-    
+
             if (err) console.error(err);
             if (doc){
+
+ 
                 const update = { 
-                    _field : 1, 
+                    //_field : 1, 
                     updated_at : helper.utcDate(new Date())
                 };
                 WorkingHourInterval.findOneAndUpdate(query, update, null, function (err, docs) {
                     if (err){
                         console.log(err)
-                    }
-                    else{
-                        //console.log("Original Doc : ",docs);
+                    }else{
+                         
+                        var hourColumn, minColumn = ""; 
+
+                        hourColumn = new Date().getHours();
+                        var minutes = new Date().getMinutes();
+
+
+                        
+                        if( minutes >= 50){
+                            minColumn = "_60"; 
+                        }else if( minutes >= 40){
+                            minColumn = "_50"; 
+                        }else if( minutes >= 30){
+                            minColumn = "_40"; 
+                        }else if( minutes >= 20){
+                            minColumn = "_30";
+                        }else if( minutes >= 10){
+                            minColumn = "_20";  
+                        }else if( minutes >= 0){
+                            minColumn = "_10";  
+                        }
+
+                        var column = "t" + hourColumn + minColumn; 
+                        var query = {
+                            id : _id
+                        }; 
+
+                        
+                        var setQuery = {};
+                        let statusColumn = `working_hours.${column}.status`;
+                        let inShiftColumn = `working_hours.${column}.in_shift`
+                        setQuery[statusColumn] = 1; 
+                        setQuery[inShiftColumn] = 1; 
+                        
+                        //res.status(200).json( setQuery );
+
+                        WorkingHourInterval.findOneAndUpdate(query, {$set: setQuery }, function(err, doc) {
+                            console.log(doc);
+                            
+                        });
+
                     }
                 });
-                res.status(200).json( { "status" : true });
             }else {
                 let workingHourInterval = new WorkingHourInterval({
                     id : _id, 
                     user_id : _id, 
                     name: name, 
-                    _field : 1, 
-                    cards : [], 
+                    //_field : 1, 
+                    //cards : [], 
                     created_at : helper.utcDate(new Date()),
                     updated_at : helper.utcDate(new Date())
                 }); 
@@ -274,189 +317,225 @@ exports.updateWorkingHourInterval = async (req, res, next) => {
                             "t6_10" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t6_20" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t6_30" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t6_40" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t6_50" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t6_60" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                         // 7:00 
                             "t7_10" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t7_20" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t7_30" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t7_40" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t7_50" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t7_60" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                         
                             // 8:00 
                             "t8_10" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t8_20" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t8_30" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t8_40" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t8_50" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t8_60" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                         // 9:00 
                             "t9_10" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t9_20" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t9_30" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t9_40" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t9_50" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t9_60" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                         // 10:00 
                             "t10_10" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t10_20" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t10_30" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t10_40" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t10_50" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t10_60" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
 
                         // 11:00 
                             "t11_10" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t11_20" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t11_30" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t11_40" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t11_50" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t11_60" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
 
 
@@ -464,32 +543,38 @@ exports.updateWorkingHourInterval = async (req, res, next) => {
                             "t12_10" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t12_20" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t12_30" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t12_40" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t12_50" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t12_60" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
 
 
@@ -497,59 +582,70 @@ exports.updateWorkingHourInterval = async (req, res, next) => {
                             "t13_10" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t13_20" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t13_30" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t13_40" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t13_50" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t13_60" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
 
                         // 14:00 
                             "t14_10" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t14_20" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t14_30" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t14_40" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t14_50" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t14_60" :  {
                                 caption : "",
@@ -561,32 +657,38 @@ exports.updateWorkingHourInterval = async (req, res, next) => {
                             "t15_10" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t15_20" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t15_30" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t15_40" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t15_50" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t15_60" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
 
 
@@ -595,32 +697,38 @@ exports.updateWorkingHourInterval = async (req, res, next) => {
                             "t15_10" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t15_20" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t15_30" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t15_40" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t15_50" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t15_60" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
 
 
@@ -628,32 +736,38 @@ exports.updateWorkingHourInterval = async (req, res, next) => {
                             "t16_10" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t16_20" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t16_30" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t16_40" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t16_50" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t16_60" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
 
 
@@ -661,32 +775,38 @@ exports.updateWorkingHourInterval = async (req, res, next) => {
                             "t17_10" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t17_20" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t17_30" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t17_40" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t17_50" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t17_60" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
 
 
@@ -695,32 +815,38 @@ exports.updateWorkingHourInterval = async (req, res, next) => {
                             "t18_10" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t18_20" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t18_30" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t18_40" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t18_50" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t18_60" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
 
 
@@ -730,32 +856,38 @@ exports.updateWorkingHourInterval = async (req, res, next) => {
                             "t19_10" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t19_20" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t19_30" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t19_40" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t19_50" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t19_60" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
 
 
@@ -764,32 +896,38 @@ exports.updateWorkingHourInterval = async (req, res, next) => {
                             "t20_10" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t20_20" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t20_30" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t20_40" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t20_50" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t20_60" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
 
 
@@ -798,32 +936,38 @@ exports.updateWorkingHourInterval = async (req, res, next) => {
                             "t21_10" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t21_20" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t21_30" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t21_40" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t21_50" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t21_60" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
 
 
@@ -832,32 +976,38 @@ exports.updateWorkingHourInterval = async (req, res, next) => {
                             "t22_10" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t22_20" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t22_30" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t22_40" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t22_50" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t22_60" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
 
 
@@ -866,32 +1016,38 @@ exports.updateWorkingHourInterval = async (req, res, next) => {
                             "t23_10" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t23_20" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t23_30" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t23_40" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t23_50" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             "t23_60" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                         }; 
     
@@ -903,7 +1059,8 @@ exports.updateWorkingHourInterval = async (req, res, next) => {
                             function (err, managerparent) {
                                 if (err) throw err;
                                 console.log(managerparent);
-                                res.status(200).json( { "status" : "model", "id": doc._id  });
+                                //res.status(200).json( { "status" : "model", "id": doc._id  });
+                                return true; 
                             }
                         );
     
@@ -948,6 +1105,276 @@ exports.showTestRecord = async (req, res, next) => {
 exports.updateTestRecord = async (req, res, next) => {
 
     var _id = req.body._id; 
+    var hourColumn, minColumn = ""; 
+    
+    hourColumn = new Date().getHours();
+    var minutes = new Date().getMinutes();
+
+
+    
+    if( minutes >= 50){
+        minColumn = "_60"; 
+    }else if( minutes >= 40){
+        minColumn = "_50"; 
+    }else if( minutes >= 30){
+        minColumn = "_40"; 
+    }else if( minutes >= 20){
+        minColumn = "_30";
+    }else if( minutes >= 10){
+        minColumn = "_20";  
+    }else if( minutes >= 0){
+        minColumn = "_10";  
+    }
+
+    var result = "t" + hourColumn + minColumn; 
+    var query = {
+        id : _id
+    }; 
+
+    
+    var setQuery = {};
+    let str = `working_hours.${result}.status`
+    setQuery[str] = 1; 
+    //res.status(200).json( str );
+    //res.status(200).json( setQuery );
+
+    WorkingHourInterval.findOneAndUpdate(query, {$set: setQuery }, function(err, doc) {
+        console.log(doc);
+        //res.status(200).json( _id );
+
+        var query = {
+            id : _id
+        }; 
+        WorkingHourInterval.find(query, (err, item) => {
+            if (err) console.error(err);
+            
+            res.status(200).json( item );
+        }).sort({ name: 'ascending' });
+
+        
+    });
+}
+
+
+
+exports.workingHour = async (req, res, next) => {
+
+    var _id = req.body.user_id; 
+    var query = {
+        id : _id,
+    }; 
+
+
+    WorkingHourInterval.findOne(query)
+    .populate({ path: "working_hours"})
+    .exec(function(err, item) {
+        let totalWorkingHours = item.working_hours.t6_10.status + 
+                    item.working_hours.t6_20.status + 
+                    item.working_hours.t6_30.status + 
+                    item.working_hours.t6_40.status + 
+                    item.working_hours.t6_50.status + 
+                    item.working_hours.t6_60.status +
+                    
+                    item.working_hours.t7_10.status + 
+                    item.working_hours.t7_20.status + 
+                    item.working_hours.t7_30.status + 
+                    item.working_hours.t7_40.status + 
+                    item.working_hours.t7_50.status + 
+                    item.working_hours.t7_60.status +
+
+                    item.working_hours.t8_10.status + 
+                    item.working_hours.t8_20.status + 
+                    item.working_hours.t8_30.status + 
+                    item.working_hours.t8_40.status + 
+                    item.working_hours.t8_50.status + 
+                    item.working_hours.t8_60.status +
+
+                    item.working_hours.t9_10.status + 
+                    item.working_hours.t9_20.status + 
+                    item.working_hours.t9_30.status + 
+                    item.working_hours.t9_40.status + 
+                    item.working_hours.t9_50.status + 
+                    item.working_hours.t9_60.status +
+
+                    item.working_hours.t10_10.status + 
+                    item.working_hours.t10_20.status + 
+                    item.working_hours.t10_30.status + 
+                    item.working_hours.t10_40.status + 
+                    item.working_hours.t10_50.status + 
+                    item.working_hours.t10_60.status +
+
+                    item.working_hours.t11_10.status + 
+                    item.working_hours.t11_20.status + 
+                    item.working_hours.t11_30.status + 
+                    item.working_hours.t11_40.status + 
+                    item.working_hours.t11_50.status + 
+                    item.working_hours.t11_60.status +
+
+                    item.working_hours.t12_10.status + 
+                    item.working_hours.t12_20.status + 
+                    item.working_hours.t12_30.status + 
+                    item.working_hours.t12_40.status + 
+                    item.working_hours.t12_50.status + 
+                    item.working_hours.t12_60.status +
+
+                    item.working_hours.t13_10.status + 
+                    item.working_hours.t13_20.status + 
+                    item.working_hours.t13_30.status + 
+                    item.working_hours.t13_40.status + 
+                    item.working_hours.t13_50.status + 
+                    item.working_hours.t13_60.status +
+
+                    item.working_hours.t14_10.status + 
+                    item.working_hours.t14_20.status + 
+                    item.working_hours.t14_30.status + 
+                    item.working_hours.t14_40.status + 
+                    item.working_hours.t14_50.status + 
+                    item.working_hours.t14_60.status +
+
+                    item.working_hours.t15_10.status + 
+                    item.working_hours.t15_20.status + 
+                    item.working_hours.t15_30.status + 
+                    item.working_hours.t15_40.status + 
+                    item.working_hours.t15_50.status + 
+                    item.working_hours.t15_60.status +
+
+                    item.working_hours.t16_10.status + 
+                    item.working_hours.t16_20.status + 
+                    item.working_hours.t16_30.status + 
+                    item.working_hours.t16_40.status + 
+                    item.working_hours.t16_50.status + 
+                    item.working_hours.t16_60.status +
+
+                    item.working_hours.t17_10.status + 
+                    item.working_hours.t17_20.status + 
+                    item.working_hours.t17_30.status + 
+                    item.working_hours.t17_40.status + 
+                    item.working_hours.t17_50.status + 
+                    item.working_hours.t17_60.status +
+
+                    item.working_hours.t18_10.status + 
+                    item.working_hours.t18_20.status + 
+                    item.working_hours.t18_30.status + 
+                    item.working_hours.t18_40.status + 
+                    item.working_hours.t18_50.status + 
+                    item.working_hours.t18_60.status +
+
+                    item.working_hours.t19_10.status + 
+                    item.working_hours.t19_20.status + 
+                    item.working_hours.t19_30.status + 
+                    item.working_hours.t19_40.status + 
+                    item.working_hours.t19_50.status + 
+                    item.working_hours.t19_60.status +
+
+                    item.working_hours.t20_10.status + 
+                    item.working_hours.t20_20.status + 
+                    item.working_hours.t20_30.status + 
+                    item.working_hours.t20_40.status + 
+                    item.working_hours.t20_50.status + 
+                    item.working_hours.t20_60.status +
+
+                    item.working_hours.t21_10.status + 
+                    item.working_hours.t21_20.status + 
+                    item.working_hours.t21_30.status + 
+                    item.working_hours.t21_40.status + 
+                    item.working_hours.t21_50.status + 
+                    item.working_hours.t21_60.status +
+
+                    item.working_hours.t22_10.status + 
+                    item.working_hours.t22_20.status + 
+                    item.working_hours.t22_30.status + 
+                    item.working_hours.t22_40.status + 
+                    item.working_hours.t22_50.status + 
+                    item.working_hours.t22_60.status +
+
+                    item.working_hours.t23_10.status + 
+                    item.working_hours.t23_20.status + 
+                    item.working_hours.t23_30.status + 
+                    item.working_hours.t23_40.status + 
+                    item.working_hours.t23_50.status + 
+                    item.working_hours.t23_60.status ;
+
+        res.status(200).json( { 
+            "status" : true, 
+            "user_id" : _id,  
+            "total_working_hours" : totalWorkingHours * 10,
+            "shift_working_hours" : totalWorkingHours * 10
+        });
+    });
+
+
+
+
+    // WorkingHourInterval.count(query, function(err, result) {
+    //     if (err) {
+    //       console.log(err);
+    //     } else {
+    //       res.json("Number of documents in the collection: " + result);
+    //     }
+    // });
+
+}
+
+
+exports.todayShiftInfo = async (req, res, next) => {
+    var userId = req.body.user_id; 
+
+
+    
+    var query = { 
+        "user_id": userId
+    }; 
+
+    const today = moment().startOf('day')
+    TodayShiftInfo.exists(query, async function (err, doc)  {
+        if (err) console.error(err);
+
+
+        const update = { 
+            shift_start_at : helper.utcDate(new Date()), 
+            shift_end_at : helper.utcDate(new Date())
+        };
+
+        if (doc){
+            TodayShiftInfo.update(query, update, function (err, docs) {
+                if (err){
+                    console.log(err)
+                }else{
+                    //console.log("Original Doc : ",docs);
+                }
+            });
+            res.status(200).json( { "status" : true });
+
+        }else {
+            let todayShiftInfoModel = new TodayShiftInfo({
+                //id : data.User.id, 
+                user_id : userId, 
+                name: "name", 
+                shift_start_at : helper.utcDate(new Date()), 
+                shift_end_at : helper.utcDate(new Date()),
+                created_at : helper.utcDate(new Date()),
+                updated_at : helper.utcDate(new Date())
+            }); 
+            todayShiftInfoModel.save()
+                .then(doc => {
+                    //console.log(doc)
+                    res.status(200).json( { "status" : true });
+                })
+                .catch(err => {
+                    console.error(err)
+                })
+        }
+    }); 
+ 
+}
+
+
+
+
+exports.updateInShift = async (req, res, next) => {
+
+    //var _id = req.body._id; 
+    var _id = req._id;
     var hourColumn, minColumn = ""; 
 
     hourColumn = new Date().getHours();

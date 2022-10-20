@@ -1,30 +1,24 @@
 let mongoose = require('mongoose')
 let validator = require('validator')
 
-let workingHourIntervalSchema = new mongoose.Schema({
+let todayShiftInfoSchema = new mongoose.Schema({
     user_id: {
         type: Number,
         required: true,
         //lowercase: true,
     },
-    
     name: {
         type: String,
         required: true,
         //lowercase: true,
     },
-    // tags: {
-    //     type: [
-    //       {
-    //         type: String,
-    //         // Another properties
-    //       },
-    //     ],
-    //     default: ["tech", "economy"],
-    // },
-    working_hours: {
-      type: Object,
-      //required: true,
+    shift_start_at: {
+        type: Date,
+        required: true
+    },
+    shift_end_at: {
+        type: Date,
+        required: true
     },
     created_at: {
         type: Date,
@@ -36,4 +30,4 @@ let workingHourIntervalSchema = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model('WorkingHourInterval', workingHourIntervalSchema)
+module.exports = mongoose.model('TodayShiftInfo', todayShiftInfoSchema)
