@@ -1165,9 +1165,9 @@ exports.updateTestRecord = async (req, res, next) => {
 
 exports.workingHour = async (req, res, next) => {
 
-    var _id = req.params.user_id; 
+    var _id = req.query.user_id ?? 0; 
     const today = moment().startOf('day')
-   
+
     var query = { 
         "user_id": _id, 
         "created_at": {
@@ -1443,7 +1443,6 @@ exports.workingHour = async (req, res, next) => {
             "shift_working_hours" : shiftWorkingHours * 10
         });
     }).sort({ name: 'ascending' });
-
 
 
 
