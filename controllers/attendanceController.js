@@ -224,7 +224,7 @@ exports.updateWorkingHourInterval = async (data) => {
         //res.status(201).json("OK" + name  );
     */
    
-        var _id = data.id ?? 0; 
+        var _id = data.user_id ?? 0; 
         var name = data.username ?? ""; 
         console.log( "user name is : " ); 
         console.log( name ); 
