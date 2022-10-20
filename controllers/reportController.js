@@ -1,4 +1,5 @@
 let AttendanceModel = require('../models/attendance')
+let WorkingHourInterval = require('../models/workingHourInterval')
 let UserModel = require('../models/user')
 const moment = require('moment')
 const helper = require("../helpers.js");
@@ -49,3 +50,31 @@ exports.dailyAttendance = async (req, res, next) => {
         //res.status(200).json( items );
     }).sort({ name: 'ascending' });
 }
+
+
+
+
+exports.workingHour = async (req, res, next) => {
+    //res.status(200).json( "working hour report " );
+
+    const today = moment().startOf('day')
+    var query = { 
+        "created_at": {
+            $gte: today.toDate(),
+            $lte: moment(today).endOf('day').toDate()
+        }
+    }; 
+    WorkingHourInterval.find(query, (err, items) => {
+        if (err) console.error(err);
+        console.log( items); 
+        res.render("pages/reports/working_hour", {
+            root: __dirname,
+            id : 123456,
+            items : items 
+        });
+        //res.status(200).json( items );
+    }).sort({ name: 'ascending' });
+
+}
+
+

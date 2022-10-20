@@ -654,7 +654,8 @@ exports.updateWorkingHourInterval = async (data) => {
                             "t14_60" :  {
                                 caption : "",
                                 status : 0, 
-                                hold_count : 0
+                                hold_count : 0,
+                                in_shift : 0
                             },
                             
                         // 15:00 
