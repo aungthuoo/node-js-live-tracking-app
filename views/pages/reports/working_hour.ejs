@@ -764,78 +764,121 @@
                                     (workingHour.t11_10.in_shift == 1) ? 'bg-green-600' : 'bg-green-300' 
                                         : 'bg-gray-200' %>">
                         </td>
-
-                        <td class="py-4 px-6 text-center">
-                            <%= workingHour.t11_20.status %> 
+                        <td class="py-4 px-6 text-center 
+                            <%=  (workingHour.t11_20.status == 1) ? 
+                                    (workingHour.t11_20.in_shift == 1) ? 'bg-green-600' : 'bg-green-300' 
+                                        : 'bg-gray-200' %>">
                         </td>
-                        <td class="py-4 px-6 text-center">
-                            <%= workingHour.t11_30.status %> 
+                        <td class="py-4 px-6 text-center 
+                            <%=  (workingHour.t11_30.status == 1) ? 
+                                    (workingHour.t11_30.in_shift == 1) ? 'bg-green-600' : 'bg-green-300' 
+                                        : 'bg-gray-200' %>">
                         </td>
-                        <td class="py-4 px-6 text-center">
-                            <%= workingHour.t11_40.status %> 
+                        <td class="py-4 px-6 text-center 
+                            <%=  (workingHour.t11_40.status == 1) ? 
+                                    (workingHour.t11_40.in_shift == 1) ? 'bg-green-600' : 'bg-green-300' 
+                                        : 'bg-gray-200' %>">
                         </td>
-                        <td class="py-4 px-6 text-center">
-                            <%= workingHour.t11_50.status %> 
+                        <td class="py-4 px-6 text-center 
+                            <%=  (workingHour.t11_50.status == 1) ? 
+                                    (workingHour.t11_50.in_shift == 1) ? 'bg-green-600' : 'bg-green-300' 
+                                        : 'bg-gray-200' %>">
                         </td>
-                        <td class="py-4 px-6 text-center">
-                            <%= workingHour.t11_60.status %> 
-                        </td>                  
-
-
-                        <td class="py-4 px-6 text-center">
-                            <%= workingHour.t12_10.status %> 
-                        </td>
-                        <td class="py-4 px-6 text-center">
-                            <%= workingHour.t12_20.status %> 
-                        </td>
-                        <td class="py-4 px-6 text-center">
-                            <%= workingHour.t12_30.status %> 
-                        </td>
-                        <td class="py-4 px-6 text-center">
-                            <%= workingHour.t12_40.status %> 
-                        </td>
-                        <td class="py-4 px-6 text-center">
-                            <%= workingHour.t12_50.status %> 
-                        </td>
-                        <td class="py-4 px-6 text-center">
-                            <%= workingHour.t12_60.status %> 
-                        </td>                  
+                        <td class="py-4 px-6 text-center 
+                            <%=  (workingHour.t11_60.status == 1) ? 
+                                    (workingHour.t11_60.in_shift == 1) ? 'bg-green-600' : 'bg-green-300' 
+                                        : 'bg-gray-200' %>">
+                        </td>      
+                        <td class="py-4 px-6 text-center 
+                            <%=  (workingHour.t12_10.status == 1) ? 
+                                    (workingHour.t12_10.in_shift == 1) ? 'bg-green-600' : 'bg-green-300' 
+                                        : 'bg-gray-200' %>">
+                        </td>   
+                        <td class="py-4 px-6 text-center 
+                            <%=  (workingHour.t12_20.status == 1) ? 
+                                    (workingHour.t12_20.in_shift == 1) ? 'bg-green-600' : 'bg-green-300' 
+                                        : 'bg-gray-200' %>">
+                        </td> 
+                        <td class="py-4 px-6 text-center 
+                            <%=  (workingHour.t12_30.status == 1) ? 
+                                    (workingHour.t12_30.in_shift == 1) ? 'bg-green-600' : 'bg-green-300' 
+                                        : 'bg-gray-200' %>">
+                        </td> 
+                        <td class="py-4 px-6 text-center 
+                            <%=  (workingHour.t12_40.status == 1) ? 
+                                    (workingHour.t12_40.in_shift == 1) ? 'bg-green-600' : 'bg-green-300' 
+                                        : 'bg-gray-200' %>">
+                        </td> 
+                        <td class="py-4 px-6 text-center 
+                            <%=  (workingHour.t12_50.status == 1) ? 
+                                    (workingHour.t12_50.in_shift == 1) ? 'bg-green-600' : 'bg-green-300' 
+                                        : 'bg-gray-200' %>">
+                        </td> 
+                        <td class="py-4 px-6 text-center 
+                            <%=  (workingHour.t12_60.status == 1) ? 
+                                    (workingHour.t12_60.in_shift == 1) ? 'bg-green-600' : 'bg-green-300' 
+                                        : 'bg-gray-200' %>">
+                        </td>                 
                         
-                        <td class="py-4 px-6 text-center">
-                            <%= workingHour.t13_10.status %> 
-                        </td>
-                        <td class="py-4 px-6 text-center">
-                            <%= workingHour.t13_20.status %> 
-                        </td>
-                        <td class="py-4 px-6 text-center">
-                            <%= workingHour.t13_30.status %> 
-                        </td>
-                        <td class="py-4 px-6 text-center">
-                            <%= workingHour.t13_40.status %> 
-                        </td>
-                        <td class="py-4 px-6 text-center">
-                            <%= workingHour.t13_50.status %> 
-                        </td>
-                        <td class="py-4 px-6 text-center">
-                            <%= workingHour.t13_60.status %> 
-                        </td>                  
-                        <td class="py-4 px-6 text-center">
-                            <%= workingHour.t14_10.status %> 
-                        </td>
-                        <td class="py-4 px-6 text-center">
-                            <%= workingHour.t14_20.status %> 
-                        </td>
-                        <td class="py-4 px-6 text-center">
-                            <%= workingHour.t14_30.status %> 
-                        </td>
-                        <td class="py-4 px-6 text-center">
-                            <%= workingHour.t14_40.status %> 
-                        </td>
-                        <td class="py-4 px-6 text-center">
-                            <%= workingHour.t14_50.status %> 
-                        </td>
-                        <td class="py-4 px-6 text-center">
-                            <%= workingHour.t14_60.status %> 
+                        <td class="py-4 px-6 text-center 
+                            <%=  (workingHour.t13_10.status == 1) ? 
+                                    (workingHour.t13_10.in_shift == 1) ? 'bg-green-600' : 'bg-green-300' 
+                                        : 'bg-gray-200' %>">
+                        </td> 
+                        <td class="py-4 px-6 text-center 
+                            <%=  (workingHour.t13_20.status == 1) ? 
+                                    (workingHour.t13_20.in_shift == 1) ? 'bg-green-600' : 'bg-green-300' 
+                                        : 'bg-gray-200' %>">
+                        </td> 
+                        <td class="py-4 px-6 text-center 
+                            <%=  (workingHour.t13_30.status == 1) ? 
+                                    (workingHour.t13_30.in_shift == 1) ? 'bg-green-600' : 'bg-green-300' 
+                                        : 'bg-gray-200' %>">
+                        </td> 
+                        <td class="py-4 px-6 text-center 
+                            <%=  (workingHour.t13_40.status == 1) ? 
+                                    (workingHour.t13_40.in_shift == 1) ? 'bg-green-600' : 'bg-green-300' 
+                                        : 'bg-gray-200' %>">
+                        </td> 
+                        <td class="py-4 px-6 text-center 
+                            <%=  (workingHour.t13_50.status == 1) ? 
+                                    (workingHour.t13_50.in_shift == 1) ? 'bg-green-600' : 'bg-green-300' 
+                                        : 'bg-gray-200' %>">
+                        </td> 
+                        <td class="py-4 px-6 text-center 
+                            <%=  (workingHour.t13_60.status == 1) ? 
+                                    (workingHour.t13_60.in_shift == 1) ? 'bg-green-600' : 'bg-green-300' 
+                                        : 'bg-gray-200' %>">
+                        </td>                 
+                        <td class="py-4 px-6 text-center 
+                            <%=  (workingHour.t14_10.status == 1) ? 
+                                    (workingHour.t14_10.in_shift == 1) ? 'bg-green-600' : 'bg-green-300' 
+                                        : 'bg-gray-200' %>">
+                        </td>    
+                        <td class="py-4 px-6 text-center 
+                            <%=  (workingHour.t14_20.status == 1) ? 
+                                    (workingHour.t14_20.in_shift == 1) ? 'bg-green-600' : 'bg-green-300' 
+                                        : 'bg-gray-200' %>">
+                        </td>   
+                        <td class="py-4 px-6 text-center 
+                            <%=  (workingHour.t14_30.status == 1) ? 
+                                    (workingHour.t14_30.in_shift == 1) ? 'bg-green-600' : 'bg-green-300' 
+                                        : 'bg-gray-200' %>">
+                        </td>   
+                        <td class="py-4 px-6 text-center 
+                            <%=  (workingHour.t14_40.status == 1) ? 
+                                    (workingHour.t14_40.in_shift == 1) ? 'bg-green-600' : 'bg-green-300' 
+                                        : 'bg-gray-200' %>">
+                        </td> 
+                        <td class="py-4 px-6 text-center 
+                            <%=  (workingHour.t14_50.status == 1) ? 
+                                    (workingHour.t14_50.in_shift == 1) ? 'bg-green-600' : 'bg-green-300' 
+                                        : 'bg-gray-200' %>">
+                        </td> 
+                        <td class="py-4 px-6 text-center 
+                            <%=  (workingHour.t14_60.status == 1) ? 
+                                    (workingHour.t14_60.in_shift == 1) ? 'bg-green-600' : 'bg-green-300' 
+                                        : 'bg-gray-200' %>">
                         </td>                  
                         
                         <td class="py-4 px-6 text-center">
