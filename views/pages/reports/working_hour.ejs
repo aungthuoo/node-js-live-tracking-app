@@ -755,9 +755,13 @@
                         </td>
 
 
-                        <td class="py-4 px-6 text-center <%= (workingHour.t11_10.status == 1) ? 'bg-green-300' : 'bg-gray-200' %>">
-                            
+                        <td class="py-4 px-6 text-center 
+                        <%= (workingHour.t11_10.status == 1) ? 
+                                ( (workingHour.t11_10.in_shift == 1) 'bg-green-600' : 'bg-green-300') 
+                                : 'bg-gray-200' 
+                        %>">
                         </td>
+
                         <td class="py-4 px-6 text-center">
                             <%= workingHour.t11_20.status %> 
                         </td>
