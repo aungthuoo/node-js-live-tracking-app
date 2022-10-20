@@ -1165,7 +1165,7 @@ exports.updateTestRecord = async (req, res, next) => {
 
 exports.workingHour = async (req, res, next) => {
 
-    var _id = req.body.user_id; 
+    var _id = req.user_id; 
     var query = {
         id : _id,
     }; 
@@ -1300,11 +1300,138 @@ exports.workingHour = async (req, res, next) => {
                     item.working_hours.t23_50.status + 
                     item.working_hours.t23_60.status ;
 
+        let shiftWorkingHours = item.working_hours.t6_10.in_shift + 
+                    item.working_hours.t6_20.in_shift + 
+                    item.working_hours.t6_30.in_shift + 
+                    item.working_hours.t6_40.in_shift + 
+                    item.working_hours.t6_50.in_shift + 
+                    item.working_hours.t6_60.in_shift +
+                    
+                    item.working_hours.t7_10.in_shift + 
+                    item.working_hours.t7_20.in_shift + 
+                    item.working_hours.t7_30.in_shift + 
+                    item.working_hours.t7_40.in_shift + 
+                    item.working_hours.t7_50.in_shift + 
+                    item.working_hours.t7_60.in_shift +
+
+                    item.working_hours.t8_10.in_shift + 
+                    item.working_hours.t8_20.in_shift + 
+                    item.working_hours.t8_30.in_shift + 
+                    item.working_hours.t8_40.in_shift + 
+                    item.working_hours.t8_50.in_shift + 
+                    item.working_hours.t8_60.in_shift +
+
+                    item.working_hours.t9_10.in_shift + 
+                    item.working_hours.t9_20.in_shift + 
+                    item.working_hours.t9_30.in_shift + 
+                    item.working_hours.t9_40.in_shift + 
+                    item.working_hours.t9_50.in_shift + 
+                    item.working_hours.t9_60.in_shift +
+
+                    item.working_hours.t10_10.in_shift + 
+                    item.working_hours.t10_20.in_shift + 
+                    item.working_hours.t10_30.in_shift + 
+                    item.working_hours.t10_40.in_shift + 
+                    item.working_hours.t10_50.in_shift + 
+                    item.working_hours.t10_60.in_shift +
+
+                    item.working_hours.t11_10.in_shift + 
+                    item.working_hours.t11_20.in_shift + 
+                    item.working_hours.t11_30.in_shift + 
+                    item.working_hours.t11_40.in_shift + 
+                    item.working_hours.t11_50.in_shift + 
+                    item.working_hours.t11_60.in_shift +
+
+                    item.working_hours.t12_10.in_shift + 
+                    item.working_hours.t12_20.in_shift + 
+                    item.working_hours.t12_30.in_shift + 
+                    item.working_hours.t12_40.in_shift + 
+                    item.working_hours.t12_50.in_shift + 
+                    item.working_hours.t12_60.in_shift +
+
+                    item.working_hours.t13_10.in_shift + 
+                    item.working_hours.t13_20.in_shift + 
+                    item.working_hours.t13_30.in_shift + 
+                    item.working_hours.t13_40.in_shift + 
+                    item.working_hours.t13_50.in_shift + 
+                    item.working_hours.t13_60.in_shift +
+
+                    item.working_hours.t14_10.in_shift + 
+                    item.working_hours.t14_20.in_shift + 
+                    item.working_hours.t14_30.in_shift + 
+                    item.working_hours.t14_40.in_shift + 
+                    item.working_hours.t14_50.in_shift + 
+                    item.working_hours.t14_60.in_shift +
+
+                    item.working_hours.t15_10.in_shift + 
+                    item.working_hours.t15_20.in_shift + 
+                    item.working_hours.t15_30.in_shift + 
+                    item.working_hours.t15_40.in_shift + 
+                    item.working_hours.t15_50.in_shift + 
+                    item.working_hours.t15_60.in_shift +
+
+                    item.working_hours.t16_10.in_shift + 
+                    item.working_hours.t16_20.in_shift + 
+                    item.working_hours.t16_30.in_shift + 
+                    item.working_hours.t16_40.in_shift + 
+                    item.working_hours.t16_50.in_shift + 
+                    item.working_hours.t16_60.in_shift +
+
+                    item.working_hours.t17_10.in_shift + 
+                    item.working_hours.t17_20.in_shift + 
+                    item.working_hours.t17_30.in_shift + 
+                    item.working_hours.t17_40.in_shift + 
+                    item.working_hours.t17_50.in_shift + 
+                    item.working_hours.t17_60.in_shift +
+
+                    item.working_hours.t18_10.in_shift + 
+                    item.working_hours.t18_20.in_shift + 
+                    item.working_hours.t18_30.in_shift + 
+                    item.working_hours.t18_40.in_shift + 
+                    item.working_hours.t18_50.in_shift + 
+                    item.working_hours.t18_60.in_shift +
+
+                    item.working_hours.t19_10.in_shift + 
+                    item.working_hours.t19_20.in_shift + 
+                    item.working_hours.t19_30.in_shift + 
+                    item.working_hours.t19_40.in_shift + 
+                    item.working_hours.t19_50.in_shift + 
+                    item.working_hours.t19_60.in_shift +
+
+                    item.working_hours.t20_10.in_shift + 
+                    item.working_hours.t20_20.in_shift + 
+                    item.working_hours.t20_30.in_shift + 
+                    item.working_hours.t20_40.in_shift + 
+                    item.working_hours.t20_50.in_shift + 
+                    item.working_hours.t20_60.in_shift +
+
+                    item.working_hours.t21_10.in_shift + 
+                    item.working_hours.t21_20.in_shift + 
+                    item.working_hours.t21_30.in_shift + 
+                    item.working_hours.t21_40.in_shift + 
+                    item.working_hours.t21_50.in_shift + 
+                    item.working_hours.t21_60.in_shift +
+
+                    item.working_hours.t22_10.in_shift + 
+                    item.working_hours.t22_20.in_shift + 
+                    item.working_hours.t22_30.in_shift + 
+                    item.working_hours.t22_40.in_shift + 
+                    item.working_hours.t22_50.in_shift + 
+                    item.working_hours.t22_60.in_shift +
+
+                    item.working_hours.t23_10.in_shift + 
+                    item.working_hours.t23_20.in_shift + 
+                    item.working_hours.t23_30.in_shift + 
+                    item.working_hours.t23_40.in_shift + 
+                    item.working_hours.t23_50.in_shift + 
+                    item.working_hours.t23_60.in_shift ;
+
+                                        
         res.status(200).json( { 
             "status" : true, 
             "user_id" : _id,  
-            "total_working_hours" : totalWorkingHours * 10,
-            "shift_working_hours" : totalWorkingHours * 10
+            "total_working_hours" : (totalWorkingHours) ? totalWorkingHours : 0 * 10,
+            "shift_working_hours" : (shiftWorkingHours) ? shiftWorkingHours : 0 * 10
         });
     });
 
