@@ -755,7 +755,7 @@
                         </td>
 
 
-                        <td class="py-4 px-6 text-center">
+                        <td class="py-4 px-6 text-center <%= (workingHour.t11_10.status == 1) ? 'bg-green-300' : '' %>">
                             <%= workingHour.t11_10.status %> 
                         </td>
                         <td class="py-4 px-6 text-center">
@@ -960,7 +960,7 @@
                         <td class="py-4 px-6 text-center">
                             <%= workingHour.t21_50.status %> 
                         </td>
-                        <td class="py-4 px-6 text-center">
+                        <td class="py-4 px-6 text-center <%= (workingHour.t21_60.status == 1) ? 'bg-green-300' : '' %>">
                             <%= workingHour.t21_60.status %> 
                         </td>                  
                         
