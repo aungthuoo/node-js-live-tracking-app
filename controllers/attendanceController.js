@@ -1165,7 +1165,7 @@ exports.updateTestRecord = async (req, res, next) => {
 
 exports.workingHour = async (req, res, next) => {
 
-    var _id = req.user_id; 
+    var _id = req.params.user_id; 
     var query = {
         id : _id,
     }; 
