@@ -1166,9 +1166,19 @@ exports.updateTestRecord = async (req, res, next) => {
 exports.workingHour = async (req, res, next) => {
 
     var _id = req.params.user_id; 
-    var query = {
-        id : _id,
+    // var query = {
+    //     id : _id,
+    // }; 
+
+    const today = moment().startOf('day')
+    var query = { 
+        "user_id": _id, 
+        "created_at": {
+            $gte: today.toDate(),
+            $lte: moment(today).endOf('day').toDate()
+        }
     }; 
+
 
 
     WorkingHourInterval.findOne(query)
