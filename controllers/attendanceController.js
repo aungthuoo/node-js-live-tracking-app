@@ -278,7 +278,11 @@ exports.updateWorkingHourInterval = async (data) => {
 
                         var column = "t" + hourColumn + minColumn; 
                         var query = {
-                            id : _id
+                            "user_id" : _id,
+                            "created_at": {
+                                $gte: today.toDate(),
+                                $lte: moment(today).endOf('day').toDate()
+                            }
                         }; 
 
                         
