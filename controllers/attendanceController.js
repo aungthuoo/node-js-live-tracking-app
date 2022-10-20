@@ -226,6 +226,7 @@ exports.updateWorkingHourInterval = async (data) => {
    
         var _id = data.user_id ?? 0; 
         var name = data.username ?? ""; 
+        var inShiftStatus = data.in_shift ?? 1; 
         console.log( "user name is : " ); 
         console.log( name ); 
 
@@ -290,7 +291,7 @@ exports.updateWorkingHourInterval = async (data) => {
                         let statusColumn = `working_hours.${column}.status`;
                         let inShiftColumn = `working_hours.${column}.in_shift`
                         setQuery[statusColumn] = 1; 
-                        setQuery[inShiftColumn] = 1; 
+                        setQuery[inShiftColumn] = inShiftStatus; 
                         
                         //res.status(200).json( setQuery );
 
