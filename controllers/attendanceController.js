@@ -1174,6 +1174,7 @@ exports.workingHour = async (req, res, next) => {
     WorkingHourInterval.findOne(query)
     .populate({ path: "working_hours"})
     .exec(function(err, item) {
+        console.log(item);
         let totalWorkingHours = item.working_hours.t6_10.status + 
                     item.working_hours.t6_20.status + 
                     item.working_hours.t6_30.status + 
@@ -1431,7 +1432,7 @@ exports.workingHour = async (req, res, next) => {
             "status" : true, 
             "user_id" : _id,  
             "total_working_hours" : totalWorkingHours * 10,
-            "shift_working_hours" : (shiftWorkingHours) ? shiftWorkingHours : 0 * 10
+            "shift_working_hours" : shiftWorkingHours * 10
         });
     });
 
