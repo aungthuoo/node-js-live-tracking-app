@@ -5,9 +5,22 @@
   </head>
 
   <body class="">
-    <header><%- include('../../partials/header'); %></header>
+    <header>
+        <%- include('../../partials/header'); %>
+        <%- include('../../partials/report_header'); %>
+        
+    </header>
 
     <main>
+        <div class="grid grid-cols-3 gap-4 content-center">
+            <form action="/reports/working-hour" method="get">
+                <%- include('../../partials/date_filter'); %>
+            </form>
+
+            <div><small>Search for</small><%= "  " + searchFor %></div>
+            <div></div>
+        </div>
+
 
         <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">

@@ -25,14 +25,13 @@ exports.reportDashboard = async (req, res, next) => {
 
 
 exports.dailyAttendance = async (req, res, next) => {
-    //res.status(200).json( "here" );
-    // var _id = req.id ?? 0; 
-    // var name = req.username ?? ""; 
-    // var latitude = req.latitude ?? 0.0; 
-    // var longitude = req.longitude ?? 0.0; 
+    let searchFor = req.query.date; 
+    let today = moment().startOf('day')
 
+    if(searchFor)
+        today = moment(searchFor, 'DD-MM-YYYY').startOf('day');
 
-    const today = moment().startOf('day')
+        
     var query = { 
         "created_at": {
             $gte: today.toDate(),
@@ -45,7 +44,8 @@ exports.dailyAttendance = async (req, res, next) => {
         res.render("pages/reports/daily_attendance", {
             root: __dirname,
             id : 123456,
-            items : items 
+            items : items,
+            searchFor: searchFor 
         });
         //res.status(200).json( items );
     }).sort({ name: 'ascending' });
@@ -55,20 +55,12 @@ exports.dailyAttendance = async (req, res, next) => {
 
 
 exports.workingHour = async (req, res, next) => {
-    //res.status(200).json( "working hour report " );
-    //console.log(req.query.date ); 
-
     let searchFor = req.query.date; 
     let today = moment().startOf('day')
 
     if(searchFor)
         today = moment(searchFor, 'DD-MM-YYYY').startOf('day');
 
-    // console.log('SearchFor');
-    // console.log(myDate );  
-    //const today = moment().startOf('day')
-
-    //console.log( today ); 
 
     var query = { 
         "created_at": {
