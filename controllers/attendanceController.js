@@ -119,7 +119,7 @@ exports.save = async (req, res, next) => {
 
 exports.update = async (req, res, next) => {
 
-    var _id = req.id ?? 0; 
+    var _id = req.user_id ?? 0; 
     var name = req.username ?? ""; 
     var latitude = req.latitude ?? 0.0; 
     var longitude = req.longitude ?? 0.0; 
