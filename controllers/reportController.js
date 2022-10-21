@@ -56,8 +56,20 @@ exports.dailyAttendance = async (req, res, next) => {
 
 exports.workingHour = async (req, res, next) => {
     //res.status(200).json( "working hour report " );
+    //console.log(req.query.date ); 
 
-    const today = moment().startOf('day')
+    let searchFor = req.query.date; 
+    let today = moment().startOf('day')
+
+    if(searchFor)
+        today = moment(searchFor, 'DD-MM-YYYY').startOf('day');
+
+    // console.log('SearchFor');
+    // console.log(myDate );  
+    //const today = moment().startOf('day')
+
+    //console.log( today ); 
+
     var query = { 
         "created_at": {
             $gte: today.toDate(),
@@ -70,7 +82,8 @@ exports.workingHour = async (req, res, next) => {
         res.render("pages/reports/working_hour", {
             root: __dirname,
             id : 123456,
-            items : items 
+            items : items,
+            searchFor : searchFor 
         });
         //res.status(200).json( items );
     }).sort({ name: 'ascending' });
