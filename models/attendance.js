@@ -56,6 +56,18 @@ let attendanceSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
+
+
+    in_diff: {
+        type: Date,
+        //required: true
+    },
+    out_diff: {
+        type: Date,
+        //required: true
+    },
+
+
     created_at: {
         type: Date,
         required: true

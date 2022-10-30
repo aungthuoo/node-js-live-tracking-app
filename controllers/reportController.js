@@ -40,11 +40,36 @@ exports.dailyAttendance = async (req, res, next) => {
     }; 
     AttendanceModel.find(query, (err, items) => {
         if (err) console.error(err);
-        console.log( items); 
+        //console.log( items); 
+
+        var dutyInAt, dutyOutAt; 
+
+
+
+        result = items.map(function(doc) { 
+            // var duration = moment.duration(doc.shift_start_at.diff(doc.duty_in_at))
+            // var hours = duration.hours();
+            // doc.in_diff = hours
+
+            // var duration = moment.duration(doc.duty_in_at.diff(doc.duty_out_at));
+            // var hours = duration.asHours();
+
+            shiftStartAt =  moment(doc.shift_start_at) ?? moment([2019, 03, 17]); 
+            dutyInAt = moment(doc.duty_in_at) ?? moment([2019, 03, 17]); 
+console.log(shiftStartAt); 
+console.log(dutyInAt); 
+            var result = shiftStartAt.diff( dutyInAt, 'minutes') 
+            console.log("No of diff:", result)
+
+            doc.out_diff = result
+            return doc; 
+        });
+
         res.render("pages/reports/daily_attendance", {
             root: __dirname,
             id : 123456,
-            items : items,
+            items : result,
+            moment : moment(),
             searchFor: searchFor 
         });
         //res.status(200).json( items );
