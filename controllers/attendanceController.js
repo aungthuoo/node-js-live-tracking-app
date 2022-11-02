@@ -233,7 +233,7 @@ exports.updateWorkingHourInterval = async (data) => {
     update = {
         //id : userId, 
         user_id : userId, 
-        name: "User " + userId, 
+        name: name, 
         //_field : 1, 
         //cards : [], 
         created_at : helper.utcDate(new Date()),
