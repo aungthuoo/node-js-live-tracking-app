@@ -1,9 +1,14 @@
 const router = require('express').Router();
-const {datetime, shiftStartEnd, inShift} = require('../controllers/testController');
+const {datetime, shiftStartEnd, inShift, fixDuplicatedRecord} = require('../controllers/testController');
 
 //router.post('/update', update);
 router.get('/datetime', datetime);
 //router.get('/shift-start-end', shiftStartEnd);
 router.post('/in-shift', inShift);
+
+
+
+router.get('/fix-duplicated-record', fixDuplicatedRecord);
+
 
 module.exports = router;
