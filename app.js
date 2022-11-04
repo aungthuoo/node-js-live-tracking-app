@@ -129,8 +129,6 @@ socketIO.on("connection", function (client) {
 // Save location tracking 
     //locationController.update( data );
 
-
-    
     //socketIO.emit("message", data);
   });
 

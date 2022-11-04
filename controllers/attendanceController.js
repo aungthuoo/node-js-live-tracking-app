@@ -216,6 +216,9 @@ exports.update = async (req, res, next) => {
 
 exports.updateWorkingHourInterval = async (data) => {
     //var userId = req.query.user_id ?? 0; 
+
+    //console.log("HOUR @@@@@" +  helper.utcDate(new Date()).getMinutes() ); 
+
     var _id = data.user_id ?? 0; 
     var userId = data.user_id ?? 0; 
     var name = data.username ?? ""; 
@@ -1011,7 +1014,8 @@ exports.updateWorkingHourInterval = async (data) => {
 
             hourColumn = new Date().getHours();
             var minutes = new Date().getMinutes();
-
+            // hourColumn = helper.utcDate(new Date()).getHours();
+            // var minutes = helper.utcDate(new Date()).getMinutes();
 
             
             if( minutes >= 50){

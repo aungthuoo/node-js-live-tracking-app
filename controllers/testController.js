@@ -1017,6 +1017,26 @@ exports.fixDuplicatedRecord = async (req, res, next) => {
         //res.status(200).json( { "status" : result });
         */
     });
+}
+
+exports.saveWorkingHour = async (req, res, next) => {
+    //res.status(200).json( "here" );
+    
+    var userId = req.query.user_id ?? 0;
+    //res.status(200).json( "hiere" );
+    var data = {}; 
+    data.user_id = 74112; 
+    data.username = "ato testing"; 
+    data.latitude = 16.00;
+    data.longitude = 96.00;
+    data.total_count = 0; 
+    data.hold_count = 0;
+    data.in_shift = 1; 
+    data.order_count = 0;  
+    data.image_name = ""; 
+
+
+    attendanceController.updateWorkingHourInterval( data ); 
     
 }
 

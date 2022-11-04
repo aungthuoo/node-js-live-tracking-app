@@ -80,6 +80,7 @@ console.log(dutyInAt);
 
 
 exports.workingHour = async (req, res, next) => {
+    debugger; 
     let searchFor = req.query.date; 
     let today = moment().startOf('day')
 
@@ -94,6 +95,7 @@ exports.workingHour = async (req, res, next) => {
         }
     }; 
     WorkingHourInterval.find(query, (err, items) => {
+        debugger; 
         if (err) console.error(err);
         console.log( items); 
         res.render("pages/reports/working_hour", {
