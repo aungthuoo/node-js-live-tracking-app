@@ -1048,7 +1048,7 @@ exports.updateWorkingHourInterval = async (data) => {
 
             WorkingHourInterval.findOneAndUpdate(query, {$set: setQuery }, function(err, doc) {
                 console.log(doc);
-                res.status(200).json( {status : true} );
+                //res.status(200).json( {status : true} );
             });
         }
         /*
