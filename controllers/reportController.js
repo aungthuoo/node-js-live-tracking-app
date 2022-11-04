@@ -102,6 +102,7 @@ exports.workingHour = async (req, res, next) => {
             root: __dirname,
             id : 123456,
             items : items,
+            query : query, 
             searchFor : searchFor 
         });
         //res.status(200).json( items );
