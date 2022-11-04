@@ -159,7 +159,7 @@ exports.update = async (req, res, next) => {
                     //console.log("Original Doc : ",docs);
                 }
             });
-            res.status(200).json( { "status" : true });
+            //res.status(200).json( { "status" : true });
         }else{
             axios
                 .get('https://api.foodmallmm.com/api/v2/biker-app/booking-info', { params: { user_id: _id } })
