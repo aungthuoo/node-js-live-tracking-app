@@ -112,14 +112,12 @@ exports.todayShiftInfo = async (req, res, next) => {
     .get('https://api.foodmallmm.com/api/v2/biker-app/booking-info', { params: { user_id: userId } })
     .then(response => {
       //this.users = response.data; 
-        console.log( response.data ); 
         shifts = response.data.data; 
 
         if( shifts.length > 0 ) {
             shiftStartTime = shifts[0].start_time;
             shiftEndTime = shifts[shifts.length - 1].end_time;
 
-            console.log(shifts[0].start_time )
         }
         res.status(200).json( { "status" : true, "shift_start" : shiftStartTime, "shift_end": shiftEndTime });
     })

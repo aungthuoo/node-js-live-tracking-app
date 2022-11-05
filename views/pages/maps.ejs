@@ -446,7 +446,6 @@
         var _that = this; 
 
         this.socket.on('locationUpdate', function(data) {
-          console.log("locationUpdate@maps "); 
             //var message = JSON.parse(data); 
             _that.moveMarker( data ); 
         });
@@ -546,7 +545,6 @@
 
 
             }else{
-              console.log('todo ws');
               if(holdCount > 0 )
                 //markerIcon  =  "http://maps.google.com/mapfiles/ms/micons/blue-pushpin.png"; 
                 markerIcon  =  "http://maps.google.com/mapfiles/ms/micons/red-dot.png"; 
@@ -566,7 +564,6 @@
 
         },
         addMessage(message) {
-            console.log( message ); 
             var text = document.createTextNode(message),
                 el = document.createElement('li'),
                 messages = document.getElementById('messages');

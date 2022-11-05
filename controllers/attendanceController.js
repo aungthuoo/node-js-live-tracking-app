@@ -11,7 +11,6 @@ exports.index = async (req, res, next) => {
    
     AttendanceModel.find({}, (err, items) => {
         if (err) console.error(err);
-        console.log('maps find') ; 
         res.render("pages/attendance/index", {
             root: __dirname,
             id : 123456,
@@ -34,7 +33,6 @@ exports.active = async (req, res, next) => {
     };
     UserModel.find(query, (err, items) => {
         if (err) console.error(err);
-        console.log('maps find') ; 
         // res.render("pages/attendance/index", {
         //     root: __dirname,
         //     id : 123456,
@@ -68,7 +66,6 @@ exports.save = async (req, res, next) => {
          }, (err, item) => {
         if (err) console.error(err);
 
-        //console.log( item ); 
         //res.render('pages/user/show', { item });
         if(item == null){
             let attendanceModel = new AttendanceModel({
@@ -165,7 +162,6 @@ exports.update = async (req, res, next) => {
                 .get('https://api.foodmallmm.com/api/v2/biker-app/booking-info', { params: { user_id: _id } })
                 .then(async response => {
                 //this.users = response.data; 
-                    console.log( response.data ); 
                     shifts = response.data.data; 
         
                     if( shifts.length > 0 ) {
@@ -217,7 +213,6 @@ exports.update = async (req, res, next) => {
 exports.updateWorkingHourInterval = async (data) => {
     //var userId = req.query.user_id ?? 0; 
 
-    //console.log("HOUR @@@@@" +  helper.utcDate(new Date()).getMinutes() ); 
 
     var _id = data.user_id ?? 0; 
     var userId = data.user_id ?? 0; 
@@ -1051,7 +1046,7 @@ exports.updateWorkingHourInterval = async (data) => {
             //res.status(200).json( setQuery );
 
             WorkingHourInterval.findOneAndUpdate(query, {$set: setQuery }, function(err, doc) {
-                console.log(doc);
+                //console.log(doc);
                 //res.status(200).json( {status : true} );
             });
         }
@@ -1075,8 +1070,6 @@ exports.updateWorkingHourInterval = async (data) => {
     var _id = data.user_id ?? 0; 
     var name = data.username ?? ""; 
     var inShiftStatus = data.in_shift ?? 1; 
-    console.log( "user name is : " ); 
-    console.log( name ); 
 
 
     const today = moment().startOf('day')
@@ -1987,7 +1980,7 @@ exports.updateTestRecord = async (req, res, next) => {
     //res.status(200).json( setQuery );
 
     WorkingHourInterval.findOneAndUpdate(query, {$set: setQuery }, function(err, doc) {
-        console.log(doc);
+
         //res.status(200).json( _id );
 
         var query = {
@@ -2595,7 +2588,6 @@ exports.workingHours = async (req, res, next) => {
     ],
     function(err,results) {
         if (err) throw err;
-        console.log(results);
         workingHours = results.map(function(doc) { 
             doc.total_working_minutes = doc.total_working_minutes * 10
             doc.shift_working_minutes = doc.shift_working_minutes * 10
@@ -2705,7 +2697,7 @@ exports.updateInShift = async (req, res, next) => {
     //res.status(200).json( setQuery );
 
     WorkingHourInterval.findOneAndUpdate(query, {$set: setQuery }, function(err, doc) {
-        console.log(doc);
+
         //res.status(200).json( _id );
 
         var query = {

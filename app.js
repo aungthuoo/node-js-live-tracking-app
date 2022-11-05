@@ -79,7 +79,7 @@ app.use(cookieParser());
 socketIO.on("connection", function (client) {
   //listens for new messages coming in
   client.on("message", async function name(data) {
-    console.log(data);
+
     var location = JSON.stringify(data);
 
 
@@ -145,7 +145,7 @@ socketIO.on("connection", function (client) {
     locationModel
       .save()
       .then((doc) => {
-        console.log(doc);
+        //console.log(doc);
       })
       .catch((err) => {
         console.error(err);

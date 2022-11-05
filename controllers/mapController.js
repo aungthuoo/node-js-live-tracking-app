@@ -15,8 +15,6 @@ exports.map = (req, res, next) => {
   AttendanceModel.find({}, (err, items) => {
     if (err) console.error(err);
     //res.render("pages/user/index", { items });
-    console.log('maps find') ; 
-    console.log( items ); 
     res.render("pages/maps", {
       root: __dirname,
       id : 123456,

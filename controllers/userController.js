@@ -55,7 +55,6 @@ exports.updateUser = async (req, res, next) => {
          }, (err, item) => {
         if (err) console.error(err);
 
-        console.log( item ); 
         //res.render('pages/user/show', { item });
         if(item == null){
             let attendanceModel = new AttendanceModel({

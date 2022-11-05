@@ -40,7 +40,7 @@ exports.dailyAttendance = async (req, res, next) => {
     }; 
     AttendanceModel.find(query, (err, items) => {
         if (err) console.error(err);
-        //console.log( items); 
+
 
         var dutyInAt, dutyOutAt; 
 
@@ -56,10 +56,8 @@ exports.dailyAttendance = async (req, res, next) => {
 
             shiftStartAt =  moment(doc.shift_start_at) ?? moment([2019, 03, 17]); 
             dutyInAt = moment(doc.duty_in_at) ?? moment([2019, 03, 17]); 
-console.log(shiftStartAt); 
-console.log(dutyInAt); 
+
             var result = shiftStartAt.diff( dutyInAt, 'minutes') 
-            console.log("No of diff:", result)
 
             doc.out_diff = result
             return doc; 
