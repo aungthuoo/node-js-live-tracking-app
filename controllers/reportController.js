@@ -91,7 +91,7 @@ exports.workingHour = async (req, res, next) => {
             $gte: today.toDate(),
             $lte: moment(today).endOf('day').toDate()
         }
-    }; 
+    };
     WorkingHourInterval.find(query, (err, items) => {
         debugger; 
         if (err) console.error(err);
