@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const conn = require("../utils/mysql");
 
 exports.login = async (req, res, next) => {
+  /*
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -37,11 +38,12 @@ exports.login = async (req, res, next) => {
       return res.redirect("/");
     }
   });
+  */
 };
 
 exports.isLogin = (req, res, next) => {
-  if (!req.session.isLogin) {
-    return res.redirect("/");
-  }
+  // if (!req.session.isLogin) {
+  //   return res.redirect("/");
+  // }
   next();
 };
