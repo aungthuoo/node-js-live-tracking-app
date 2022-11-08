@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const conn = require("../utils/mysql");
+//const conn = require("../utils/mysql");
 
 exports.login = async (req, res, next) => {
   /*
