@@ -82,3 +82,43 @@ module.exports.getDateFromStringTime = function getDateFromStringTime(date, hour
 	return new Date(timestamp);
 }
   
+
+
+
+module.exports.getTranDateId = function getTranDateId(dateObj) {
+    //var dateObj = new Date();
+	/*
+    var month = ("0" + dateObj.getUTCMonth() + 1 ).slice(-2); //months from 1-12
+    var day = ("0" + dateObj.getUTCDate() ).slice(-2); 
+    var year = dateObj.getUTCFullYear();
+
+    newdate = year + "" + month + "" + day;
+	return newdate; 
+	*/
+
+	const year = dateObj.getUTCFullYear();
+	const month = String(dateObj.getUTCMonth() + 1).padStart(2, '0');
+	const day = String(dateObj.getUTCDate()).padStart(2, '0');
+	const joined = [ year, month, day ].join('');
+	return joined; 
+}
+
+
+
+module.exports.getTranDateIdFromDate = function utcDate(date) {
+	/*
+	const timestamp = Date.UTC(
+	  date.getFullYear(),
+	  date.getMonth(),
+	  date.getDate(),
+	  date.getHours(),
+	  date.getMinutes(),
+	  date.getSeconds(),
+	  date.getMilliseconds(),
+	);
+	*/
+  
+	return new Date(timestamp);
+}
+  
+  

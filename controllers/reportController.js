@@ -79,23 +79,36 @@ exports.dailyAttendance = async (req, res, next) => {
 
 exports.workingHour = async (req, res, next) => {
     debugger; 
-    let searchFor = req.query.date; 
-    let today = moment().startOf('day')
 
-    if(searchFor)
-        today = moment(searchFor, 'DD-MM-YYYY').startOf('day');
+    let searchFor = req.query.date; 
+    
+    // let today = moment().startOf('day')
+    // res.status(200).json( { "status" : today });
+    // if(searchFor)
+    //     today = moment(searchFor, 'YYYY-MM-DD').startOf('day');
+
+
+    //var tranDateId =  helper.getTranDateId( today  ); 
+
+
+    //let parsed = moment(searchFor, "YYYY-MM-DD"); 
+    //var tranDateId =  helper.getTranDateId( parsed  ); 
+
+
+
+    var parsed = new Date(searchFor );
+    var tranDateId =  helper.getTranDateId( parsed  ); 
+    //res.status(200).json( { "status" : tranDateId });
+
 
 
     var query = { 
-        "created_at": {
-            $gte: today.toDate(),
-            $lte: moment(today).endOf('day').toDate()
-        }
+        "tran_date_id" : tranDateId  
     };
     WorkingHourInterval.find(query, (err, items) => {
         debugger; 
         if (err) console.error(err);
-        console.log( items); 
+        //console.log( items); 
         res.render("pages/reports/working_hour", {
             root: __dirname,
             id : 123456,

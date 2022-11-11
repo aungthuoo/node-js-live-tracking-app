@@ -220,13 +220,17 @@ exports.updateWorkingHourInterval = async (data) => {
     var inShiftStatus = data.in_shift ?? 1; 
     
    
-    const today = moment().startOf('day')
+    //const today = moment().startOf('day')
+    var tranDateId = helper.getTranDateId(new Date() ); 
     var query = { 
         "user_id": userId, 
+        "tran_date_id" : tranDateId
+        /*
         "created_at": {
             $gte: today.toDate(),
             $lte: moment(today).endOf('day').toDate()
         }
+        */
     }; 
     update = {
         //id : userId, 
@@ -234,6 +238,7 @@ exports.updateWorkingHourInterval = async (data) => {
         name: name, 
         //_field : 1, 
         //cards : [], 
+        tran_date_id : tranDateId,  
         created_at : helper.utcDate(new Date()),
         updated_at : helper.utcDate(new Date())
     }; 
@@ -1030,10 +1035,13 @@ exports.updateWorkingHourInterval = async (data) => {
             var column = "t" + hourColumn + minColumn; 
             var query = {
                 "user_id" : userId,
+                "tran_date_id" : tranDateId
+                /*
                 "created_at": {
                     $gte: today.toDate(),
                     $lte: moment(today).endOf('day').toDate()
                 }
+                */
             }; 
 
             
@@ -1050,17 +1058,7 @@ exports.updateWorkingHourInterval = async (data) => {
                 //res.status(200).json( {status : true} );
             });
         }
-        /*
-        var query = {
-            user_id : result.user_id
-        }; 
-        WorkingHourInterval.find(query, (err, item) => {
-            if (err) console.error(err);
-            
-            res.status(200).json( item );
-        }).sort({ user_id: 'ascending' });
-        //res.status(200).json( { "status" : result });
-        */
+       
     });
 
 }

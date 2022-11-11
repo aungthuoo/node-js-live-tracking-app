@@ -405,7 +405,6 @@
                             <% 
                                 totalWorkingHours = 
                                 (
-                                    
                                     workingHour.t6_10.status +  
                                     workingHour.t6_20.status +  
                                     workingHour.t6_30.status +  
@@ -529,12 +528,10 @@
                                     workingHour.t23_20.status +  
                                     workingHour.t23_30.status +  
                                     workingHour.t23_40.status +  
-                                    workingHour.t23_50.status + 
+                                    workingHour.t23_50.status +  
                                     workingHour.t23_60.status 
                                     
-                                );  
-                                
-                                totalWorkingHours = ((totalWorkingHours > 0 ) ? totalWorkingHours : 0.01 )  * 10 
+                                ) * 10 ;   
 
                                 
 
@@ -664,12 +661,9 @@
                                     workingHour.t23_30.in_shift +  
                                     workingHour.t23_40.in_shift +  
                                     workingHour.t23_50.in_shift +  
-                             
                                     workingHour.t23_60.in_shift 
                                     
-                                );
-                                shiftWorkingHours = ((shiftWorkingHours > 0 ) ? shiftWorkingHours : 0.01 )  * 10 
-
+                                ) * 10 ;
                             %>
 
                             <% if( totalWorkingHours > 0){ %>

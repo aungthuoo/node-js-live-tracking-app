@@ -2,6 +2,11 @@ let mongoose = require('mongoose')
 let validator = require('validator')
 
 let workingHourIntervalSchema = new mongoose.Schema({
+    tran_date_id: {
+        type: Number,
+        required: true,
+        //lowercase: true,
+    },
     user_id: {
         type: Number,
         required: true,
