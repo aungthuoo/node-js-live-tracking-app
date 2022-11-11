@@ -117,7 +117,8 @@ exports.workingHour = async (req, res, next) => {
             searchFor : searchFor 
         });
         //res.status(200).json( items );
-    }).sort({ name: 'ascending' });
+    }).sort({ name: 'ascending' })
+    .limit(100);
 
 }
 
