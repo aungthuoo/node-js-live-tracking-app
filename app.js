@@ -121,7 +121,7 @@ socketIO.on("connection", function (client) {
     userController.update( data );
     
 // Update attendance  
-    attendanceController.update( data );
+    //attendanceController.update( data );
     
 // Working hour log  
     attendanceController.updateWorkingHourInterval( data ); 
