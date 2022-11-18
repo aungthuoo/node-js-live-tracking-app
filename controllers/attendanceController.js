@@ -2282,24 +2282,28 @@ exports.workingHour = async (req, res, next) => {
 
 exports.workingHours = async (req, res, next) => {
 
-    var dateFrom = req.query.from ?? ""; 
-    var dateTo = req.query.to ?? ""; 
+    //var dateFrom = req.query.from ?? ""; 
+    //var dateTo = req.query.to ?? ""; 
 
 
+    
 
-    from = moment(dateFrom, 'YYYY-MM-DD').startOf('day');
-    to = moment(dateTo, 'YYYY-MM-DD').startOf('day');
+    //from = moment(dateFrom, 'YYYY-MM-DD').startOf('day');
+    //to = moment(dateTo, 'YYYY-MM-DD').startOf('day');
 
-
+    var findDate = req.query.find_date ?? ""; 
     //res.status(200).json( {"data" : query });
     const data = await WorkingHourInterval.aggregate([
         // First Stage
         {
             $match : { 
+                /*
                 "created_at": {
                     $gte: from.toDate(),
                     $lte: moment(to).endOf('day').toDate()
                 }
+                */
+                "tram_date_id" : findDate
             }
         },
         // Second Stage
