@@ -1042,4 +1042,15 @@ exports.saveWorkingHour = async (req, res, next) => {
 
 
 
+exports.getWorkingHours = async (req, res, next) => {
+    //res.status(200).json( "here" );
+   
+
+
+    attendanceController.workingHours(req, res, next ); 
+    
+}
+
+
+
 

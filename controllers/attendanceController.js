@@ -2292,7 +2292,18 @@ exports.workingHours = async (req, res, next) => {
     //to = moment(dateTo, 'YYYY-MM-DD').startOf('day');
 
     var findDate = req.query.find_date ?? ""; 
-    //res.status(200).json( {"data" : query });
+    findDate = parseInt(findDate); 
+    // res.status(200).json( 
+    //     {   
+    //         "status" : true, 
+    //         "data" : parseInt(findDate)
+    //     }
+    // );
+
+
+
+    //var findDate = 20221115; 
+    //res.status(200).json( {"data" : findDate });
     const data = await WorkingHourInterval.aggregate([
         // First Stage
         {
@@ -2303,7 +2314,7 @@ exports.workingHours = async (req, res, next) => {
                     $lte: moment(to).endOf('day').toDate()
                 }
                 */
-                "tran_date_id" : findDate
+                "tran_date_id": { $eq: findDate } 
             }
         },
         // Second Stage
@@ -2314,7 +2325,7 @@ exports.workingHours = async (req, res, next) => {
                 $sum:"$user_id"
             },
             working_days: { $sum: 1 }, 
-            
+            /*
             total_working_minutes: { 
                 $sum: { 
                     $add: [ 
@@ -2581,6 +2592,7 @@ exports.workingHours = async (req, res, next) => {
                     ] 
                 } 
             },
+            */
           }
         },
         // Third Stage
@@ -2589,10 +2601,15 @@ exports.workingHours = async (req, res, next) => {
         }
     ],
     function(err,results) {
+        
         if (err) throw err;
+        console.log( results ); 
         workingHours = results.map(function(doc) { 
-            doc.total_working_minutes = doc.total_working_minutes * 10
-            doc.shift_working_minutes = doc.shift_working_minutes * 10
+            //doc.total_working_minutes = doc.total_working_minutes * 10
+            //doc.shift_working_minutes = doc.shift_working_minutes * 10
+            
+            
+            
             // doc._id = doc.origId;
             // delete doc.origId;
             return doc; 
