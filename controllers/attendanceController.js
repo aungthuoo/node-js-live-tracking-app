@@ -2291,8 +2291,12 @@ exports.workingHours = async (req, res, next) => {
     //from = moment(dateFrom, 'YYYY-MM-DD').startOf('day');
     //to = moment(dateTo, 'YYYY-MM-DD').startOf('day');
 
-    var findDate = req.query.find_date ?? "0"; 
-    findDate = parseInt(findDate); 
+    // var findDate = req.query.find_date ?? "0"; 
+    // findDate = parseInt(findDate); 
+
+
+
+    var findDate = 20221115; 
     // res.status(200).json( 
     //     {   
     //         "status" : true, 
