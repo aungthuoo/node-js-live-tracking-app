@@ -2606,6 +2606,9 @@ exports.workingHours = async (req, res, next) => {
     function(err,results) {
         
         if (err) throw err;
+
+        res.status(200).json( results );
+        /*
         console.log( results ); 
         workingHours = results.map(function(doc) { 
             //doc.total_working_minutes = doc.total_working_minutes * 10
@@ -2623,6 +2626,7 @@ exports.workingHours = async (req, res, next) => {
                 "data" : workingHours 
             }
         );
+        */
     }); 
 }
 
