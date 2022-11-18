@@ -2325,7 +2325,7 @@ exports.workingHours = async (req, res, next) => {
                 $sum:"$user_id"
             },
             working_days: { $sum: 1 }, 
-            /*
+       
             total_working_minutes: { 
                 $sum: { 
                     $add: [ 
@@ -2592,7 +2592,6 @@ exports.workingHours = async (req, res, next) => {
                     ] 
                 } 
             },
-            */
           }
         },
         // Third Stage
