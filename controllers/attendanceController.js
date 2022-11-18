@@ -2303,7 +2303,7 @@ exports.workingHours = async (req, res, next) => {
                     $lte: moment(to).endOf('day').toDate()
                 }
                 */
-                "tram_date_id" : findDate
+                "tran_date_id" : findDate
             }
         },
         // Second Stage
