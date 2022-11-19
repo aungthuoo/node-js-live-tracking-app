@@ -1056,11 +1056,11 @@ exports.updateWorkingHourInterval = async (data) => {
                 WorkingHourInterval.findOneAndUpdate(query, {$set: setQuery }, function(err, doc) {
                     //console.log(doc);
                     //res.status(200).json( {status : true} );
-                    return done(null, null);
+                    //return done(null, null);
                 });
             } catch (err) {
                 console.log(err);
-                return done(err, null)
+                //return done(err, null)
             }
         }
        
