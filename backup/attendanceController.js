@@ -1071,6 +1071,8 @@ exports.updateWorkingHourInterval = async (data) => {
     });
 
 }
+
+
 /*
 exports.updateWorkingHourInterval = async (data) => {
 
