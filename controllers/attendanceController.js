@@ -1057,10 +1057,12 @@ exports.updateWorkingHourInterval = async (data) => {
                     //console.log(doc);
                     //res.status(200).json( {status : true} );
                     //return done(null, null);
+                    done(null, null);
                 });
             } catch (err) {
                 console.log(err);
                 //return done(err, null)
+                done(null, null);
             }
         }
        
