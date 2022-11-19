@@ -1052,11 +1052,16 @@ exports.updateWorkingHourInterval = async (data) => {
             setQuery[inShiftColumn] = inShiftStatus; 
             
             //res.status(200).json( setQuery );
-
-            WorkingHourInterval.findOneAndUpdate(query, {$set: setQuery }, function(err, doc) {
-                //console.log(doc);
-                //res.status(200).json( {status : true} );
-            });
+            try {
+                WorkingHourInterval.findOneAndUpdate(query, {$set: setQuery }, function(err, doc) {
+                    //console.log(doc);
+                    //res.status(200).json( {status : true} );
+                    return done(null, null);
+                });
+            } catch (err) {
+                console.log(err);
+                return done(err, null)
+            }
         }
        
     });
@@ -2636,7 +2641,7 @@ exports.workingHours = async (req, res, next) => {
     }); 
 }
 
-exports.weeklyWorkingHours = async (req, res, next) => {
+exports.WorkingHours = async (req, res, next) => {
 
     var dateFrom = req.query.from ?? ""; 
     var dateTo = req.query.to ?? ""; 
