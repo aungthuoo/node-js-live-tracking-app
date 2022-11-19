@@ -223,7 +223,7 @@ exports.update = async (req, res, next) => {
 
 
 /** New update working  ***/
-/*
+
 exports.updateWorkingHourInterval = async (data) => {
   var _id = data.user_id ?? 0;
   var userId = data.user_id ?? 0;
@@ -1015,16 +1015,17 @@ exports.updateWorkingHourInterval = async (data) => {
   setQuery[inShiftColumn] = inShiftStatus;
 
   try {
-    await WorkingHourInterval.findOneAndUpdate(query, { $set: setQuery });
+    await WorkingHourInterval.findOneAndUpdate(query, { $set: setQuery }, {
+      returnOriginal: false , upsert: false
+    });
     return;
   } catch (error) {
     return;
   }
 };
 
-*/
 
-
+/*
 exports.updateWorkingHourInterval = async (data) => {
     //var userId = req.query.user_id ?? 0; 
 
@@ -1040,12 +1041,7 @@ exports.updateWorkingHourInterval = async (data) => {
     var query = { 
         "user_id": userId, 
         "tran_date_id" : tranDateId
-        /*
-        "created_at": {
-            $gte: today.toDate(),
-            $lte: moment(today).endOf('day').toDate()
-        }
-        */
+
     }; 
     update = {
         //id : userId, 
@@ -1851,12 +1847,7 @@ exports.updateWorkingHourInterval = async (data) => {
             var query = {
                 "user_id" : userId,
                 "tran_date_id" : tranDateId
-                /*
-                "created_at": {
-                    $gte: today.toDate(),
-                    $lte: moment(today).endOf('day').toDate()
-                }
-                */
+
             }; 
 
             
@@ -1886,7 +1877,7 @@ exports.updateWorkingHourInterval = async (data) => {
     });
 
 }
-
+*/
 
 
 
