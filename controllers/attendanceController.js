@@ -2611,18 +2611,26 @@ exports.workingHours = async (req, res, next) => {
         {
           $sort : { total_working_minutes: -1 }
         }
-    ],
-    function(err,results) {
-        
-        if (err) throw err;
+    ]); 
 
+  
+        if(data) {
+            res.status(200).json( 
+                {   
+                    "status" : true, 
+                    "data" : results 
+                }
+            );
+        } else {
+            res.status(200).json( 
+                {   
+                    "status" : false, 
+                    "data" : [] 
+                }
+            );
+        }
         //res.status(200).json( results );
-        res.status(200).json( 
-            {   
-                "status" : true, 
-                "data" : results 
-            }
-        );
+       
         /*
         console.log( results ); 
         workingHours = results.map(function(doc) { 
@@ -2642,7 +2650,6 @@ exports.workingHours = async (req, res, next) => {
             }
         );
         */
-    }); 
 }
 
 exports.WorkingHours = async (req, res, next) => {
