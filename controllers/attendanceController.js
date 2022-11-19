@@ -227,7 +227,7 @@ exports.updateWorkingHourInterval = async (data) => {
   var name = data.username ?? "";
   var inShiftStatus = data.in_shift ?? 1;
 
-  var tranDateId = helper.getTranDateId(new Date());
+  var tranDateId = parseInt(helper.getTranDateId(new Date()));
   var query = {
     user_id: userId,
     tran_date_id: tranDateId,
