@@ -124,7 +124,7 @@ socketIO.on("connection", function (client) {
     //attendanceController.update( data );
     
 // Working hour log  
-    attendanceController.updateWorkingHourInterval( data ); 
+    //attendanceController.updateWorkingHourInterval( data ); 
 
 // Save location tracking 
     //locationController.update( data );

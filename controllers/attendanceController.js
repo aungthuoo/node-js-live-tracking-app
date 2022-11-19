@@ -2618,7 +2618,7 @@ exports.workingHours = async (req, res, next) => {
             res.status(200).json( 
                 {   
                     "status" : true, 
-                    "data" : results 
+                    "data" : data 
                 }
             );
         } else {
