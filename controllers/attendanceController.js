@@ -2652,7 +2652,7 @@ exports.workingHours = async (req, res, next) => {
         */
 }
 
-exports.WorkingHours = async (req, res, next) => {
+exports.WorkingHoursFromTo = async (req, res, next) => {
 
     var dateFrom = req.query.from ?? ""; 
     var dateTo = req.query.to ?? ""; 
