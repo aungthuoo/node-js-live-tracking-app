@@ -223,7 +223,7 @@ exports.update = async (req, res, next) => {
 
 
 /** New update working  ***/
-
+/*
 exports.updateWorkingHourInterval = async (data) => {
   var _id = data.user_id ?? 0;
   var userId = data.user_id ?? 0;
@@ -1023,9 +1023,9 @@ exports.updateWorkingHourInterval = async (data) => {
     return;
   }
 };
+*/
 
 
-/*
 exports.updateWorkingHourInterval = async (data) => {
     //var userId = req.query.user_id ?? 0; 
 
@@ -1877,8 +1877,6 @@ exports.updateWorkingHourInterval = async (data) => {
     });
 
 }
-*/
-
 
 
 /*
