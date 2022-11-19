@@ -1001,7 +1001,7 @@ exports.updateWorkingHourInterval = async (data) => {
                 {$set:{working_hours:  workingHours }},
                 function (err, managerparent) {
                     if (err) throw err;
-                    console.log(managerparent);
+                    //console.log(managerparent);
                     //res.status(200).json( { "status" : "model", "id": doc._id  });
                     return true; 
                 }
