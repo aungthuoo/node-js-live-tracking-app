@@ -5,6 +5,9 @@ const app = express();
 const http = require("http").Server(app);
 const socketIO = require("socket.io")(http);
 const axios = require("axios");
+const mongoose = require("mongoose");
+
+
 require('dotenv').config()  
 
 const cookieParser = require("cookie-parser");
@@ -39,6 +42,13 @@ const attendanceController = require('./controllers/attendanceController');
 const testController = require('./controllers/attendanceController');
 
 const helper = require("./helpers.js");
+const common = require("./common");
+
+
+const dbServerIp = process.env.DB_SERVER_IP;
+const database = process.env.DATABASE;
+
+
 
 
 app.use(function (req, res, next) {
@@ -76,33 +86,38 @@ app.use(
 );
 app.use(cookieParser());
 
+
+
+
+mongoose.connect(
+  `mongodb://${dbServerIp}/${database}`,
+  {
+    useNewUrlParser: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true
+  }
+);
+
+var gracefulExit = function() { 
+  mongoose.connection.close(function () {
+    console.log('Mongoose default connection with DB :' + dbServerIp + ' is disconnected through app termination');
+    process.exit(0);
+  });
+}
+// If the Node process ends, close the Mongoose connection
+process.on('SIGINT', gracefulExit).on('SIGTERM', gracefulExit);
+
+
+
+
+
+
 socketIO.on("connection", function (client) {
   //listens for new messages coming in
   client.on("message", async function name(data) {
 
     var location = JSON.stringify(data);
 
-
-    /* Make mapping */
-    /*
-      id : user_id,
-      u : user_name, 
-      lt : latitude, 
-      lg : longitude, 
-      t : total_count,
-      h : hold_count
-    
-    var id  = parseInt(message.id) ?? 0; 
-    //var status  = parseInt(message.status) ?? 1; 
-    var status  = 1; 
-    var name = message.u ?? ""; 
-    var lat = message.lt ?? 0.0; 
-    var lng = message.lg ?? 0.0; 
-    var totalCount = message.t ?? 0; 
-    var holdCount  = message.h ?? 0; 
-    var orderCount = 0; 
-
-*/
 /* Make mapping */
     data.user_id = data.id; 
     data.username = data.u; 
@@ -118,13 +133,14 @@ socketIO.on("connection", function (client) {
     socketIO.emit('locationUpdate', data);
 
 // Update user info 
-    userController.update( data );
+    //userController.update( data );
     
 // Update attendance  
     //attendanceController.update( data );
     
 // Working hour log  
-    attendanceController.updateWorkingHourInterval( data ); 
+   //attendanceController.updateWorkingHourInterval( data ); 
+   common.saveWorkingHour(data); 
 
 // Save location tracking 
     //locationController.update( data );
