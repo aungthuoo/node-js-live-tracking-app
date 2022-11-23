@@ -2,8 +2,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
-const http = require("http").Server(app);
-const socketIO = require("socket.io")(http);
+
 const axios = require("axios");
 require('dotenv').config()  
 
@@ -118,7 +117,7 @@ socketIO.on("connection", function (client) {
     socketIO.emit('locationUpdate', data);
 
 // Update user info 
-    userController.update( data );
+    //userController.update( data );
     
 // Update attendance  
     //attendanceController.update( data );
