@@ -129,6 +129,7 @@ socketIO.on("connection", function (client) {
     data.order_count = 0;  
     data.image_name = ""; 
 
+    
 // Move Maps Market 
     socketIO.emit('locationUpdate', data);
 
