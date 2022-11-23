@@ -117,7 +117,7 @@ socketIO.on("connection", function (client) {
     socketIO.emit('locationUpdate', data);
 
 // Update user info 
-    //userController.update( data );
+    userController.update( data );
     
 // Update attendance  
     //attendanceController.update( data );
