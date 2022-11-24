@@ -822,7 +822,8 @@ module.exports.saveWorkingHour = async function saveWorkingHour(data) {
     
    
     const today = moment().startOf('day')
-    var tranDateId = helper.getTranDateId(new Date() ); 
+    //var tranDateId = helper.getTranDateId(new Date() ); 
+	var tranDateId = 0; 
 	try{
 		var query = { 
 			"user_id": userId, 
@@ -839,7 +840,7 @@ module.exports.saveWorkingHour = async function saveWorkingHour(data) {
 			name: name, 
 			//_field : 1, 
 			//cards : [], 
-			tran_date_id : 0,  
+			tran_date_id : tranDateId,  
 			created_at : helper.utcDate(new Date()),
 			updated_at : helper.utcDate(new Date())
 		}; 
@@ -1638,13 +1639,11 @@ module.exports.saveWorkingHour = async function saveWorkingHour(data) {
 				var column = "t" + hourColumn + minColumn; 
 				var query = {
 					"user_id" : userId,
-					"tran_date_id" : tranDateId
-					/*
+					"tran_date_id" : tranDateId,
 					"created_at": {
 						$gte: today.toDate(),
 						$lte: moment(today).endOf('day').toDate()
 					}
-					*/
 				}; 
 
 				
