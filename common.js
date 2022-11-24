@@ -1713,7 +1713,7 @@ module.exports.logWorkingHour = async function logWorkingHour(data) {
 		}
 		
 		let column = "t" + hourColumn + minColumn;
-		query = {
+		var query = {
 			user_id: userId,
 			//tran_date_id: tranDateId,
             "createdAt": {
@@ -1731,7 +1731,7 @@ module.exports.logWorkingHour = async function logWorkingHour(data) {
 		setQuery[inShiftColumn] = inShiftStatus;
 
 
-		options = { returnOriginal: false , upsert: true, new: true, setDefaultsOnInsert: true };
+		var options = { returnOriginal: false , upsert: true, new: true, setDefaultsOnInsert: true };
 		await WorkingHour.findOneAndUpdate(query, { $set: setQuery }, options);
 		return;
 	} catch (error) {
