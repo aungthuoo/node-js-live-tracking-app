@@ -1639,7 +1639,7 @@ module.exports.saveWorkingHour = async function saveWorkingHour(data) {
 				var column = "t" + hourColumn + minColumn; 
 				var query = {
 					"user_id" : userId,
-					"tran_date_id" : tranDateId,
+					//"tran_date_id" : tranDateId,
 					"created_at": {
 						$gte: today.toDate(),
 						$lte: moment(today).endOf('day').toDate()
