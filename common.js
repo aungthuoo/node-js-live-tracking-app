@@ -7,7 +7,7 @@ module.exports.echo = function echo(input) {
     process.stdout.write(input);
 }
 
-
+/*
 module.exports.saveWorkingHour = async function saveWorkingHour(data) {
 	debugger; 
 	var userId = data.user_id ?? 0;
@@ -819,8 +819,8 @@ module.exports.saveWorkingHour = async function saveWorkingHour(data) {
 		return;
 	}	
 }  
+*/
 
-/*
 module.exports.saveWorkingHour = async function saveWorkingHour(data) {
     //var userId = req.query.user_id ?? 0; 
 
@@ -1679,5 +1679,4 @@ module.exports.saveWorkingHour = async function saveWorkingHour(data) {
     });
 
 }
-*/
   
