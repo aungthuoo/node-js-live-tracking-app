@@ -1769,7 +1769,13 @@ module.exports.logWorkingHour2 = async function logWorkingHour(data) {
         if(!existRecord ){
 
             WorkingHour(
-                { name: userName, user_id : userId, id : userId }
+                { 
+                    id : userId ,
+                    user_id : userId,
+                    name: userName, 
+                    createdAt: helper.utcDate(new Date()),
+		            updatedAt: helper.utcDate(new Date())
+                }
             )
             .save(function (err, data) {
                 if (err) return console.error(err);
@@ -1807,6 +1813,7 @@ module.exports.logWorkingHour2 = async function logWorkingHour(data) {
             let inShiftColumn = `${column}_in_shift`;
             setQuery[statusColumn] = 1;
             setQuery[inShiftColumn] = inShiftStatus;
+            setQuery["updatedAt"] = helper.utcDate(new Date())
 
             WorkingHour.findByIdAndUpdate(existRecord._id,
                 { $set: setQuery },
