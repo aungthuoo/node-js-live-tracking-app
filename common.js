@@ -1,13 +1,13 @@
 const helper = require("./helpers.js");
 const WorkingHourInterval = require("./models/workingHourInterval");
 let UserModel = require("./models/user");
+const moment = require("moment");
 
 module.exports.echo = function echo(input) {
     process.stdout.write(input);
 }
 
 
-/*
 module.exports.saveWorkingHour = async function saveWorkingHour(data) {
 	debugger; 
 	var userId = data.user_id ?? 0;
@@ -16,11 +16,15 @@ module.exports.saveWorkingHour = async function saveWorkingHour(data) {
 
 	//var tranDateId = data.tran_date_id ?? 0; 
 	//var tranDateId = helper.getTranDateId(new Date());
-	var tranDateId = 20221124; 
-
+	var tranDateId = 0; 
+    const today = moment().startOf('day')
 	var query = {
 		user_id: userId,
-		tran_date_id: tranDateId,
+		//tran_date_id: tranDateId,
+        "created_at": {
+            $gte: today.toDate(),
+            $lte: moment(today).endOf('day').toDate()
+        }
 	};
 	
 	update = {
@@ -37,6 +41,7 @@ module.exports.saveWorkingHour = async function saveWorkingHour(data) {
 	try {
 		// KM
 		let existRecord = await WorkingHourInterval.findOne(query);
+
 		if (!existRecord) {
 			let workingHours = {
 			t6_10: {
@@ -759,12 +764,12 @@ module.exports.saveWorkingHour = async function saveWorkingHour(data) {
 			};
 		
 			await WorkingHourInterval.create({
-			user_id: userId,
-			name: name,
-			tran_date_id: tranDateId,
-			created_at: helper.utcDate(new Date()),
-			updated_at: helper.utcDate(new Date()),
-			working_hours: workingHours,
+                user_id: userId,
+                name: name,
+                tran_date_id: tranDateId,
+                created_at: helper.utcDate(new Date()),
+                updated_at: helper.utcDate(new Date()),
+                working_hours: workingHours,
 			});
 		}
 		
@@ -791,7 +796,11 @@ module.exports.saveWorkingHour = async function saveWorkingHour(data) {
 		let column = "t" + hourColumn + minColumn;
 		query = {
 			user_id: userId,
-			tran_date_id: tranDateId,
+			//tran_date_id: tranDateId,
+            "created_at": {
+                $gte: today.toDate(),
+                $lte: moment(today).endOf('day').toDate()
+            }
 		};
 		
 		var setQuery = {};
@@ -810,9 +819,8 @@ module.exports.saveWorkingHour = async function saveWorkingHour(data) {
 		return;
 	}	
 }  
-*/
 
-
+/*
 module.exports.saveWorkingHour = async function saveWorkingHour(data) {
     //var userId = req.query.user_id ?? 0; 
 
@@ -827,13 +835,12 @@ module.exports.saveWorkingHour = async function saveWorkingHour(data) {
     var tranDateId = helper.getTranDateId(new Date() ); 
     var query = { 
         "user_id": userId, 
-        "tran_date_id" : tranDateId
-        /*
-        "created_at": {
-            $gte: today.toDate(),
-            $lte: moment(today).endOf('day').toDate()
-        }
-        */
+        "tran_date_id" : tranDateId,
+       
+        // "created_at": {
+        //     $gte: today.toDate(),
+        //     $lte: moment(today).endOf('day').toDate()
+        // }
     }; 
     update = {
         //id : userId, 
@@ -1638,13 +1645,11 @@ module.exports.saveWorkingHour = async function saveWorkingHour(data) {
             var column = "t" + hourColumn + minColumn; 
             var query = {
                 "user_id" : userId,
-                "tran_date_id" : tranDateId
-                /*
-                "created_at": {
-                    $gte: today.toDate(),
-                    $lte: moment(today).endOf('day').toDate()
-                }
-                */
+                "tran_date_id" : tranDateId,
+                // "created_at": {
+                //     $gte: today.toDate(),
+                //     $lte: moment(today).endOf('day').toDate()
+                // }
             }; 
 
             
@@ -1674,5 +1679,5 @@ module.exports.saveWorkingHour = async function saveWorkingHour(data) {
     });
 
 }
-
+*/
   

@@ -3,6 +3,7 @@ let WorkingHourInterval = require('../models/workingHourInterval')
 const moment = require('moment-timezone')
 const helper = require("../helpers.js");
 const attendanceController = require('./attendanceController');
+const common = require("../common");
 
 exports.datetime = async (req, res, next) => {
 
@@ -1035,9 +1036,9 @@ exports.saveWorkingHour = async (req, res, next) => {
     data.order_count = 0;  
     data.image_name = ""; 
 
-
-    attendanceController.updateWorkingHourInterval( data ); 
-    
+    common.saveWorkingHour(data); 
+    res.status(200).json( "here" );
+    //return ;
 }
 
 
@@ -1047,7 +1048,8 @@ exports.getWorkingHours = async (req, res, next) => {
    
 
 
-    attendanceController.workingHours(req, res, next ); 
+    //attendanceController.workingHours(req, res, next ); 
+    res.status(200).json( "here" );
     
 }
 
