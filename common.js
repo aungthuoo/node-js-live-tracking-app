@@ -1759,9 +1759,9 @@ module.exports.logWorkingHour2 = async function logWorkingHour(data) {
     try{
         var query = {
             user_id: userId,
-            "createdAt": {
-                $gte: today.toDate(),
-                $lte: moment(today).endOf('day').toDate()
+            createdAt: {
+                $gte:  helper.utcDate(today.toDate()),
+                $lte: helper.utcDate(moment(today).endOf('day').toDate())
             }
         };
 

@@ -1026,7 +1026,7 @@ exports.saveWorkingHour = async (req, res, next) => {
     var userId = req.query.user_id ?? 0;
     //res.status(200).json( "hiere" );
     var data = {}; 
-    data.user_id = 74119; 
+    data.user_id = 25924; 
     data.username = "ato testing"; 
     data.latitude = 16.00;
     data.longitude = 96.00;
