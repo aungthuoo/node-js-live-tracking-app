@@ -1732,7 +1732,10 @@ module.exports.logWorkingHour = async function logWorkingHour(data) {
 
 
 		var options = { returnOriginal: false , upsert: true, new: true, setDefaultsOnInsert: true };
-		await WorkingHour.findOneAndUpdate(query, { $set: setQuery }, options);
+        await WorkingHour.findOneAndUpdate(query, update, options, function(error, result) {
+            if (error) return;
+        }); 
+		//await WorkingHour.findOneAndUpdate(query, { $set: setQuery }, options);
 		return;
 	} catch (error) {
 		return;
