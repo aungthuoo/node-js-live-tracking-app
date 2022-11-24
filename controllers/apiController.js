@@ -1,288 +1,28 @@
 let WorkingHourInterval = require("../models/workingHourInterval");
+let WorkingHour = require("../models/workingHour");
 const moment = require("moment");
 const helper = require("../helpers.js");
 const axios = require("axios");
 
-exports.workingHour = async (req, res, next) => {
-  var _id = req.query.user_id ?? 0;
-  const today = moment().startOf("day");
-
-  var query = {
-    user_id: _id,
-    created_at: {
-      $gte: today.toDate(),
-      $lte: moment(today).endOf("day").toDate(),
-    },
-  };
-
-  res.status(200).json(query);
-
-  WorkingHourInterval.findOne(query, (err, item) => {
-    if (err) console.error(err);
-
-    console.log(item);
-    //res.status(200).json( {"data" : item });
-
-    let totalWorkingHours =
-      item.working_hours.t6_10.status +
-      item.working_hours.t6_20.status +
-      item.working_hours.t6_30.status +
-      item.working_hours.t6_40.status +
-      item.working_hours.t6_50.status +
-      item.working_hours.t6_60.status +
-      item.working_hours.t7_10.status +
-      item.working_hours.t7_20.status +
-      item.working_hours.t7_30.status +
-      item.working_hours.t7_40.status +
-      item.working_hours.t7_50.status +
-      item.working_hours.t7_60.status +
-      item.working_hours.t8_10.status +
-      item.working_hours.t8_20.status +
-      item.working_hours.t8_30.status +
-      item.working_hours.t8_40.status +
-      item.working_hours.t8_50.status +
-      item.working_hours.t8_60.status +
-      item.working_hours.t9_10.status +
-      item.working_hours.t9_20.status +
-      item.working_hours.t9_30.status +
-      item.working_hours.t9_40.status +
-      item.working_hours.t9_50.status +
-      item.working_hours.t9_60.status +
-      item.working_hours.t10_10.status +
-      item.working_hours.t10_20.status +
-      item.working_hours.t10_30.status +
-      item.working_hours.t10_40.status +
-      item.working_hours.t10_50.status +
-      item.working_hours.t10_60.status +
-      item.working_hours.t11_10.status +
-      item.working_hours.t11_20.status +
-      item.working_hours.t11_30.status +
-      item.working_hours.t11_40.status +
-      item.working_hours.t11_50.status +
-      item.working_hours.t11_60.status +
-      item.working_hours.t12_10.status +
-      item.working_hours.t12_20.status +
-      item.working_hours.t12_30.status +
-      item.working_hours.t12_40.status +
-      item.working_hours.t12_50.status +
-      item.working_hours.t12_60.status +
-      item.working_hours.t13_10.status +
-      item.working_hours.t13_20.status +
-      item.working_hours.t13_30.status +
-      item.working_hours.t13_40.status +
-      item.working_hours.t13_50.status +
-      item.working_hours.t13_60.status +
-      item.working_hours.t14_10.status +
-      item.working_hours.t14_20.status +
-      item.working_hours.t14_30.status +
-      item.working_hours.t14_40.status +
-      item.working_hours.t14_50.status +
-      item.working_hours.t14_60.status +
-      item.working_hours.t15_10.status +
-      item.working_hours.t15_20.status +
-      item.working_hours.t15_30.status +
-      item.working_hours.t15_40.status +
-      item.working_hours.t15_50.status +
-      item.working_hours.t15_60.status +
-      item.working_hours.t16_10.status +
-      item.working_hours.t16_20.status +
-      item.working_hours.t16_30.status +
-      item.working_hours.t16_40.status +
-      item.working_hours.t16_50.status +
-      item.working_hours.t16_60.status +
-      item.working_hours.t17_10.status +
-      item.working_hours.t17_20.status +
-      item.working_hours.t17_30.status +
-      item.working_hours.t17_40.status +
-      item.working_hours.t17_50.status +
-      item.working_hours.t17_60.status +
-      item.working_hours.t18_10.status +
-      item.working_hours.t18_20.status +
-      item.working_hours.t18_30.status +
-      item.working_hours.t18_40.status +
-      item.working_hours.t18_50.status +
-      item.working_hours.t18_60.status +
-      item.working_hours.t19_10.status +
-      item.working_hours.t19_20.status +
-      item.working_hours.t19_30.status +
-      item.working_hours.t19_40.status +
-      item.working_hours.t19_50.status +
-      item.working_hours.t19_60.status +
-      item.working_hours.t20_10.status +
-      item.working_hours.t20_20.status +
-      item.working_hours.t20_30.status +
-      item.working_hours.t20_40.status +
-      item.working_hours.t20_50.status +
-      item.working_hours.t20_60.status +
-      item.working_hours.t21_10.status +
-      item.working_hours.t21_20.status +
-      item.working_hours.t21_30.status +
-      item.working_hours.t21_40.status +
-      item.working_hours.t21_50.status +
-      item.working_hours.t21_60.status +
-      item.working_hours.t22_10.status +
-      item.working_hours.t22_20.status +
-      item.working_hours.t22_30.status +
-      item.working_hours.t22_40.status +
-      item.working_hours.t22_50.status +
-      item.working_hours.t22_60.status +
-      item.working_hours.t23_10.status +
-      item.working_hours.t23_20.status +
-      item.working_hours.t23_30.status +
-      item.working_hours.t23_40.status +
-      item.working_hours.t23_50.status +
-      item.working_hours.t23_60.status;
-
-    let shiftWorkingHours =
-      item.working_hours.t6_10.in_shift +
-      item.working_hours.t6_20.in_shift +
-      item.working_hours.t6_30.in_shift +
-      item.working_hours.t6_40.in_shift +
-      item.working_hours.t6_50.in_shift +
-      item.working_hours.t6_60.in_shift +
-      item.working_hours.t7_10.in_shift +
-      item.working_hours.t7_20.in_shift +
-      item.working_hours.t7_30.in_shift +
-      item.working_hours.t7_40.in_shift +
-      item.working_hours.t7_50.in_shift +
-      item.working_hours.t7_60.in_shift +
-      item.working_hours.t8_10.in_shift +
-      item.working_hours.t8_20.in_shift +
-      item.working_hours.t8_30.in_shift +
-      item.working_hours.t8_40.in_shift +
-      item.working_hours.t8_50.in_shift +
-      item.working_hours.t8_60.in_shift +
-      item.working_hours.t9_10.in_shift +
-      item.working_hours.t9_20.in_shift +
-      item.working_hours.t9_30.in_shift +
-      item.working_hours.t9_40.in_shift +
-      item.working_hours.t9_50.in_shift +
-      item.working_hours.t9_60.in_shift +
-      item.working_hours.t10_10.in_shift +
-      item.working_hours.t10_20.in_shift +
-      item.working_hours.t10_30.in_shift +
-      item.working_hours.t10_40.in_shift +
-      item.working_hours.t10_50.in_shift +
-      item.working_hours.t10_60.in_shift +
-      item.working_hours.t11_10.in_shift +
-      item.working_hours.t11_20.in_shift +
-      item.working_hours.t11_30.in_shift +
-      item.working_hours.t11_40.in_shift +
-      item.working_hours.t11_50.in_shift +
-      item.working_hours.t11_60.in_shift +
-      item.working_hours.t12_10.in_shift +
-      item.working_hours.t12_20.in_shift +
-      item.working_hours.t12_30.in_shift +
-      item.working_hours.t12_40.in_shift +
-      item.working_hours.t12_50.in_shift +
-      item.working_hours.t12_60.in_shift +
-      item.working_hours.t13_10.in_shift +
-      item.working_hours.t13_20.in_shift +
-      item.working_hours.t13_30.in_shift +
-      item.working_hours.t13_40.in_shift +
-      item.working_hours.t13_50.in_shift +
-      item.working_hours.t13_60.in_shift +
-      item.working_hours.t14_10.in_shift +
-      item.working_hours.t14_20.in_shift +
-      item.working_hours.t14_30.in_shift +
-      item.working_hours.t14_40.in_shift +
-      item.working_hours.t14_50.in_shift +
-      item.working_hours.t14_60.in_shift +
-      item.working_hours.t15_10.in_shift +
-      item.working_hours.t15_20.in_shift +
-      item.working_hours.t15_30.in_shift +
-      item.working_hours.t15_40.in_shift +
-      item.working_hours.t15_50.in_shift +
-      item.working_hours.t15_60.in_shift +
-      item.working_hours.t16_10.in_shift +
-      item.working_hours.t16_20.in_shift +
-      item.working_hours.t16_30.in_shift +
-      item.working_hours.t16_40.in_shift +
-      item.working_hours.t16_50.in_shift +
-      item.working_hours.t16_60.in_shift +
-      item.working_hours.t17_10.in_shift +
-      item.working_hours.t17_20.in_shift +
-      item.working_hours.t17_30.in_shift +
-      item.working_hours.t17_40.in_shift +
-      item.working_hours.t17_50.in_shift +
-      item.working_hours.t17_60.in_shift +
-      item.working_hours.t18_10.in_shift +
-      item.working_hours.t18_20.in_shift +
-      item.working_hours.t18_30.in_shift +
-      item.working_hours.t18_40.in_shift +
-      item.working_hours.t18_50.in_shift +
-      item.working_hours.t18_60.in_shift +
-      item.working_hours.t19_10.in_shift +
-      item.working_hours.t19_20.in_shift +
-      item.working_hours.t19_30.in_shift +
-      item.working_hours.t19_40.in_shift +
-      item.working_hours.t19_50.in_shift +
-      item.working_hours.t19_60.in_shift +
-      item.working_hours.t20_10.in_shift +
-      item.working_hours.t20_20.in_shift +
-      item.working_hours.t20_30.in_shift +
-      item.working_hours.t20_40.in_shift +
-      item.working_hours.t20_50.in_shift +
-      item.working_hours.t20_60.in_shift +
-      item.working_hours.t21_10.in_shift +
-      item.working_hours.t21_20.in_shift +
-      item.working_hours.t21_30.in_shift +
-      item.working_hours.t21_40.in_shift +
-      item.working_hours.t21_50.in_shift +
-      item.working_hours.t21_60.in_shift +
-      item.working_hours.t22_10.in_shift +
-      item.working_hours.t22_20.in_shift +
-      item.working_hours.t22_30.in_shift +
-      item.working_hours.t22_40.in_shift +
-      item.working_hours.t22_50.in_shift +
-      item.working_hours.t22_60.in_shift +
-      item.working_hours.t23_10.in_shift +
-      item.working_hours.t23_20.in_shift +
-      item.working_hours.t23_30.in_shift +
-      item.working_hours.t23_40.in_shift +
-      item.working_hours.t23_50.in_shift +
-      item.working_hours.t23_60.in_shift;
-
-    res.status(200).json({
-      status: true,
-      user_id: _id,
-      total_working_hours: totalWorkingHours * 10,
-      shift_working_hours: shiftWorkingHours * 10,
-    });
-  }).sort({ name: "ascending" });
-};
 
 exports.workingHours = async (req, res, next) => {
-  //var dateFrom = req.query.from ?? "";
-  //var dateTo = req.query.to ?? "";
+  var dateFrom = req.query.from ?? "";
+  var dateTo = req.query.to ?? "";
 
-  //from = moment(dateFrom, 'YYYY-MM-DD').startOf('day');
-  //to = moment(dateTo, 'YYYY-MM-DD').startOf('day');
-
-  var findDate = req.query.find_date ?? "0";
-  findDate = parseInt(findDate);
-
-  // var findDate = 20221115;
-  // res.status(200).json(
-  //     {
-  //         "status" : true,
-  //         "data" : parseInt(findDate)
-  //     }
-  // );
+  from = moment(dateFrom, 'YYYY-MM-DD').startOf('day');
+  to = moment(dateTo, 'YYYY-MM-DD').startOf('day');
 
   //var findDate = 20221115;
-  //res.status(200).json( {"data" : findDate });
-  const data = await WorkingHourInterval.aggregate([
+  //res.status(200).json( {"data" : from });
+  const data = await WorkingHour.aggregate([
     // First Stage
     {
       $match: {
-        /*
-                "created_at": {
-                    $gte: from.toDate(),
-                    $lte: moment(to).endOf('day').toDate()
-                }
-                */
-        tran_date_id: { $eq: findDate },
+        "createdAt": {
+            $gte: from.toDate(),
+            $lte: moment(to).endOf('day').toDate()
+        }
+        //tran_date_id: { $eq: findDate },
       },
     },
     // Second Stage
@@ -297,262 +37,266 @@ exports.workingHours = async (req, res, next) => {
         total_working_minutes: {
           $sum: {
             $add: [
-              "$working_hours.t6_10.status",
-              "$working_hours.t6_20.status",
-              "$working_hours.t6_30.status",
-              "$working_hours.t6_40.status",
-              "$working_hours.t6_50.status",
-              "$working_hours.t6_60.status",
+              //"$t14_30_status",
+              //"$t14_40_status"
+              "$t6_10_status",
+              "$t6_20_status",
+              "$t6_30_status",
+              "$t6_40_status",
+              "$t6_50_status",
+              "$t6_60_status",
 
-              "$working_hours.t7_10.status",
-              "$working_hours.t7_20.status",
-              "$working_hours.t7_30.status",
-              "$working_hours.t7_40.status",
-              "$working_hours.t7_50.status",
-              "$working_hours.t7_60.status",
+              "$t7_10_status",
+              "$t7_20_status",
+              "$t7_30_status",
+              "$t7_40_status",
+              "$t7_50_status",
+              "$t7_60_status",
 
-              "$working_hours.t8_10.status",
-              "$working_hours.t8_20.status",
-              "$working_hours.t8_30.status",
-              "$working_hours.t8_40.status",
-              "$working_hours.t8_50.status",
-              "$working_hours.t8_60.status",
+              "$t8_10_status",
+              "$t8_20_status",
+              "$t8_30_status",
+              "$t8_40_status",
+              "$t8_50_status",
+              "$t8_60_status",
 
-              "$working_hours.t9_10.status",
-              "$working_hours.t9_20.status",
-              "$working_hours.t9_30.status",
-              "$working_hours.t9_40.status",
-              "$working_hours.t9_50.status",
-              "$working_hours.t9_60.status",
+              "$t9_10_status",
+              "$t9_20_status",
+              "$t9_30_status",
+              "$t9_40_status",
+              "$t9_50_status",
+              "$t9_60_status",
 
-              "$working_hours.t10_10.status",
-              "$working_hours.t10_20.status",
-              "$working_hours.t10_30.status",
-              "$working_hours.t10_40.status",
-              "$working_hours.t10_50.status",
-              "$working_hours.t10_60.status",
+              "$t10_10_status",
+              "$t10_20_status",
+              "$t10_30_status",
+              "$t10_40_status",
+              "$t10_50_status",
+              "$t10_60_status",
 
-              "$working_hours.t11_10.status",
-              "$working_hours.t11_20.status",
-              "$working_hours.t11_30.status",
-              "$working_hours.t11_40.status",
-              "$working_hours.t11_50.status",
-              "$working_hours.t11_60.status",
+              "$t11_10_status",
+              "$t11_20_status",
+              "$t11_30_status",
+              "$t11_40_status",
+              "$t11_50_status",
+              "$t11_60_status",
 
-              "$working_hours.t12_10.status",
-              "$working_hours.t12_20.status",
-              "$working_hours.t12_30.status",
-              "$working_hours.t12_40.status",
-              "$working_hours.t12_50.status",
-              "$working_hours.t12_60.status",
+              "$t12_10_status",
+              "$t12_20_status",
+              "$t12_30_status",
+              "$t12_40_status",
+              "$t12_50_status",
+              "$t12_60_status",
 
-              "$working_hours.t13_10.status",
-              "$working_hours.t13_20.status",
-              "$working_hours.t13_30.status",
-              "$working_hours.t13_40.status",
-              "$working_hours.t13_50.status",
-              "$working_hours.t13_60.status",
+              "$t13_10_status",
+              "$t13_20_status",
+              "$t13_30_status",
+              "$t13_40_status",
+              "$t13_50_status",
+              "$t13_60_status",
 
-              "$working_hours.t14_10.status",
-              "$working_hours.t14_20.status",
-              "$working_hours.t14_30.status",
-              "$working_hours.t14_40.status",
-              "$working_hours.t14_50.status",
-              "$working_hours.t14_60.status",
+              "$t14_10_status",
+              "$t14_20_status",
+              "$t14_30_status",
+              "$t14_40_status",
+              "$t14_50_status",
+              "$t14_60_status",
 
-              "$working_hours.t15_10.status",
-              "$working_hours.t15_20.status",
-              "$working_hours.t15_30.status",
-              "$working_hours.t15_40.status",
-              "$working_hours.t15_50.status",
-              "$working_hours.t15_60.status",
+              "$t15_10_status",
+              "$t15_20_status",
+              "$t15_30_status",
+              "$t15_40_status",
+              "$t15_50_status",
+              "$t15_60_status",
 
-              "$working_hours.t16_10.status",
-              "$working_hours.t16_20.status",
-              "$working_hours.t16_30.status",
-              "$working_hours.t16_40.status",
-              "$working_hours.t16_50.status",
-              "$working_hours.t16_60.status",
+              "$t16_10_status",
+              "$t16_20_status",
+              "$t16_30_status",
+              "$t16_40_status",
+              "$t16_50_status",
+              "$t16_60_status",
 
-              "$working_hours.t17_10.status",
-              "$working_hours.t17_20.status",
-              "$working_hours.t17_30.status",
-              "$working_hours.t17_40.status",
-              "$working_hours.t17_50.status",
-              "$working_hours.t17_60.status",
+              "$t17_10_status",
+              "$t17_20_status",
+              "$t17_30_status",
+              "$t17_40_status",
+              "$t17_50_status",
+              "$t17_60_status",
 
-              "$working_hours.t18_10.status",
-              "$working_hours.t18_20.status",
-              "$working_hours.t18_30.status",
-              "$working_hours.t18_40.status",
-              "$working_hours.t18_50.status",
-              "$working_hours.t18_60.status",
+              "$t18_10_status",
+              "$t18_20_status",
+              "$t18_30_status",
+              "$t18_40_status",
+              "$t18_50_status",
+              "$t18_60_status",
 
-              "$working_hours.t19_10.status",
-              "$working_hours.t19_20.status",
-              "$working_hours.t19_30.status",
-              "$working_hours.t19_40.status",
-              "$working_hours.t19_50.status",
-              "$working_hours.t19_60.status",
+              "$t19_10_status",
+              "$t19_20_status",
+              "$t19_30_status",
+              "$t19_40_status",
+              "$t19_50_status",
+              "$t19_60_status",
 
-              "$working_hours.t20_10.status",
-              "$working_hours.t20_20.status",
-              "$working_hours.t20_30.status",
-              "$working_hours.t20_40.status",
-              "$working_hours.t20_50.status",
-              "$working_hours.t20_60.status",
+              "$t20_10_status",
+              "$t20_20_status",
+              "$t20_30_status",
+              "$t20_40_status",
+              "$t20_50_status",
+              "$t20_60_status",
 
-              "$working_hours.t21_10.status",
-              "$working_hours.t21_20.status",
-              "$working_hours.t21_30.status",
-              "$working_hours.t21_40.status",
-              "$working_hours.t21_50.status",
-              "$working_hours.t21_60.status",
+              "$t21_10_status",
+              "$t21_20_status",
+              "$t21_30_status",
+              "$t21_40_status",
+              "$t21_50_status",
+              "$t21_60_status",
 
-              "$working_hours.t22_10.status",
-              "$working_hours.t22_20.status",
-              "$working_hours.t22_30.status",
-              "$working_hours.t22_40.status",
-              "$working_hours.t22_50.status",
-              "$working_hours.t22_60.status",
+              "$t22_10_status",
+              "$t22_20_status",
+              "$t22_30_status",
+              "$t22_40_status",
+              "$t22_50_status",
+              "$t22_60_status",
 
-              "$working_hours.t23_10.status",
-              "$working_hours.t23_20.status",
-              "$working_hours.t23_30.status",
-              "$working_hours.t23_40.status",
-              "$working_hours.t23_50.status",
-              "$working_hours.t23_60.status",
+              "$t23_10_status",
+              "$t23_20_status",
+              "$t23_30_status",
+              "$t23_40_status",
+              "$t23_50_status",
+              "$t23_60_status",
+              
             ],
           },
         },
         shift_working_minutes: {
           $sum: {
             $add: [
-              "$working_hours.t6_10.in_shift",
-              "$working_hours.t6_20.in_shift",
-              "$working_hours.t6_30.in_shift",
-              "$working_hours.t6_40.in_shift",
-              "$working_hours.t6_50.in_shift",
-              "$working_hours.t6_60.in_shift",
+              "$t6_10_in_shift",
+              "$t6_20_in_shift",
+              "$t6_30_in_shift",
+              "$t6_40_in_shift",
+              "$t6_50_in_shift",
+              "$t6_60_in_shift",
 
-              "$working_hours.t7_10.in_shift",
-              "$working_hours.t7_20.in_shift",
-              "$working_hours.t7_30.in_shift",
-              "$working_hours.t7_40.in_shift",
-              "$working_hours.t7_50.in_shift",
-              "$working_hours.t7_60.in_shift",
+              "$t7_10_in_shift",
+              "$t7_20_in_shift",
+              "$t7_30_in_shift",
+              "$t7_40_in_shift",
+              "$t7_50_in_shift",
+              "$t7_60_in_shift",
 
-              "$working_hours.t8_10.in_shift",
-              "$working_hours.t8_20.in_shift",
-              "$working_hours.t8_30.in_shift",
-              "$working_hours.t8_40.in_shift",
-              "$working_hours.t8_50.in_shift",
-              "$working_hours.t8_60.in_shift",
+              "$t8_10_in_shift",
+              "$t8_20_in_shift",
+              "$t8_30_in_shift",
+              "$t8_40_in_shift",
+              "$t8_50_in_shift",
+              "$t8_60_in_shift",
 
-              "$working_hours.t9_10.in_shift",
-              "$working_hours.t9_20.in_shift",
-              "$working_hours.t9_30.in_shift",
-              "$working_hours.t9_40.in_shift",
-              "$working_hours.t9_50.in_shift",
-              "$working_hours.t9_60.in_shift",
+              "$t9_10_in_shift",
+              "$t9_20_in_shift",
+              "$t9_30_in_shift",
+              "$t9_40_in_shift",
+              "$t9_50_in_shift",
+              "$t9_60_in_shift",
 
-              "$working_hours.t10_10.in_shift",
-              "$working_hours.t10_20.in_shift",
-              "$working_hours.t10_30.in_shift",
-              "$working_hours.t10_40.in_shift",
-              "$working_hours.t10_50.in_shift",
-              "$working_hours.t10_60.in_shift",
+              "$t10_10_in_shift",
+              "$t10_20_in_shift",
+              "$t10_30_in_shift",
+              "$t10_40_in_shift",
+              "$t10_50_in_shift",
+              "$t10_60_in_shift",
 
-              "$working_hours.t11_10.in_shift",
-              "$working_hours.t11_20.in_shift",
-              "$working_hours.t11_30.in_shift",
-              "$working_hours.t11_40.in_shift",
-              "$working_hours.t11_50.in_shift",
-              "$working_hours.t11_60.in_shift",
+              "$t11_10_in_shift",
+              "$t11_20_in_shift",
+              "$t11_30_in_shift",
+              "$t11_40_in_shift",
+              "$t11_50_in_shift",
+              "$t11_60_in_shift",
 
-              "$working_hours.t12_10.in_shift",
-              "$working_hours.t12_20.in_shift",
-              "$working_hours.t12_30.in_shift",
-              "$working_hours.t12_40.in_shift",
-              "$working_hours.t12_50.in_shift",
-              "$working_hours.t12_60.in_shift",
+              "$t12_10_in_shift",
+              "$t12_20_in_shift",
+              "$t12_30_in_shift",
+              "$t12_40_in_shift",
+              "$t12_50_in_shift",
+              "$t12_60_in_shift",
 
-              "$working_hours.t13_10.in_shift",
-              "$working_hours.t13_20.in_shift",
-              "$working_hours.t13_30.in_shift",
-              "$working_hours.t13_40.in_shift",
-              "$working_hours.t13_50.in_shift",
-              "$working_hours.t13_60.in_shift",
+              "$t13_10_in_shift",
+              "$t13_20_in_shift",
+              "$t13_30_in_shift",
+              "$t13_40_in_shift",
+              "$t13_50_in_shift",
+              "$t13_60_in_shift",
 
-              "$working_hours.t14_10.in_shift",
-              "$working_hours.t14_20.in_shift",
-              "$working_hours.t14_30.in_shift",
-              "$working_hours.t14_40.in_shift",
-              "$working_hours.t14_50.in_shift",
-              "$working_hours.t14_60.in_shift",
+              "$t14_10_in_shift",
+              "$t14_20_in_shift",
+              "$t14_30_in_shift",
+              "$t14_40_in_shift",
+              "$t14_50_in_shift",
+              "$t14_60_in_shift",
 
-              "$working_hours.t15_10.in_shift",
-              "$working_hours.t15_20.in_shift",
-              "$working_hours.t15_30.in_shift",
-              "$working_hours.t15_40.in_shift",
-              "$working_hours.t15_50.in_shift",
-              "$working_hours.t15_60.in_shift",
+              "$t15_10_in_shift",
+              "$t15_20_in_shift",
+              "$t15_30_in_shift",
+              "$t15_40_in_shift",
+              "$t15_50_in_shift",
+              "$t15_60_in_shift",
 
-              "$working_hours.t16_10.in_shift",
-              "$working_hours.t16_20.in_shift",
-              "$working_hours.t16_30.in_shift",
-              "$working_hours.t16_40.in_shift",
-              "$working_hours.t16_50.in_shift",
-              "$working_hours.t16_60.in_shift",
+              "$t16_10_in_shift",
+              "$t16_20_in_shift",
+              "$t16_30_in_shift",
+              "$t16_40_in_shift",
+              "$t16_50_in_shift",
+              "$t16_60_in_shift",
 
-              "$working_hours.t17_10.in_shift",
-              "$working_hours.t17_20.in_shift",
-              "$working_hours.t17_30.in_shift",
-              "$working_hours.t17_40.in_shift",
-              "$working_hours.t17_50.in_shift",
-              "$working_hours.t17_60.in_shift",
+              "$t17_10_in_shift",
+              "$t17_20_in_shift",
+              "$t17_30_in_shift",
+              "$t17_40_in_shift",
+              "$t17_50_in_shift",
+              "$t17_60_in_shift",
 
-              "$working_hours.t18_10.in_shift",
-              "$working_hours.t18_20.in_shift",
-              "$working_hours.t18_30.in_shift",
-              "$working_hours.t18_40.in_shift",
-              "$working_hours.t18_50.in_shift",
-              "$working_hours.t18_60.in_shift",
+              "$t18_10_in_shift",
+              "$t18_20_in_shift",
+              "$t18_30_in_shift",
+              "$t18_40_in_shift",
+              "$t18_50_in_shift",
+              "$t18_60_in_shift",
 
-              "$working_hours.t19_10.in_shift",
-              "$working_hours.t19_20.in_shift",
-              "$working_hours.t19_30.in_shift",
-              "$working_hours.t19_40.in_shift",
-              "$working_hours.t19_50.in_shift",
-              "$working_hours.t19_60.in_shift",
+              "$t19_10_in_shift",
+              "$t19_20_in_shift",
+              "$t19_30_in_shift",
+              "$t19_40_in_shift",
+              "$t19_50_in_shift",
+              "$t19_60_in_shift",
 
-              "$working_hours.t20_10.in_shift",
-              "$working_hours.t20_20.in_shift",
-              "$working_hours.t20_30.in_shift",
-              "$working_hours.t20_40.in_shift",
-              "$working_hours.t20_50.in_shift",
-              "$working_hours.t20_60.in_shift",
+              "$t20_10_in_shift",
+              "$t20_20_in_shift",
+              "$t20_30_in_shift",
+              "$t20_40_in_shift",
+              "$t20_50_in_shift",
+              "$t20_60_in_shift",
 
-              "$working_hours.t21_10.in_shift",
-              "$working_hours.t21_20.in_shift",
-              "$working_hours.t21_30.in_shift",
-              "$working_hours.t21_40.in_shift",
-              "$working_hours.t21_50.in_shift",
-              "$working_hours.t21_60.in_shift",
+              "$t21_10_in_shift",
+              "$t21_20_in_shift",
+              "$t21_30_in_shift",
+              "$t21_40_in_shift",
+              "$t21_50_in_shift",
+              "$t21_60_in_shift",
 
-              "$working_hours.t22_10.in_shift",
-              "$working_hours.t22_20.in_shift",
-              "$working_hours.t22_30.in_shift",
-              "$working_hours.t22_40.in_shift",
-              "$working_hours.t22_50.in_shift",
-              "$working_hours.t22_60.in_shift",
+              "$t22_10_in_shift",
+              "$t22_20_in_shift",
+              "$t22_30_in_shift",
+              "$t22_40_in_shift",
+              "$t22_50_in_shift",
+              "$t22_60_in_shift",
 
-              "$working_hours.t23_10.in_shift",
-              "$working_hours.t23_20.in_shift",
-              "$working_hours.t23_30.in_shift",
-              "$working_hours.t23_40.in_shift",
-              "$working_hours.t23_50.in_shift",
-              "$working_hours.t23_60.in_shift",
+              "$t23_10_in_shift",
+              "$t23_20_in_shift",
+              "$t23_30_in_shift",
+              "$t23_40_in_shift",
+              "$t23_50_in_shift",
+              "$t23_60_in_shift"
+     
             ],
           },
         },
@@ -597,3 +341,4 @@ exports.workingHours = async (req, res, next) => {
         );
         */
 };
+

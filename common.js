@@ -1,5 +1,6 @@
 const helper = require("./helpers.js");
 const WorkingHourInterval = require("./models/workingHourInterval");
+const WorkingHour = require("./models/workingHour");
 let UserModel = require("./models/user");
 const moment = require("moment");
 
@@ -7,8 +8,7 @@ module.exports.echo = function echo(input) {
     process.stdout.write(input);
 }
 
-/*
-module.exports.saveWorkingHour = async function saveWorkingHour(data) {
+module.exports.saveWorkingHour2 = async function saveWorkingHour2(data) {
 	debugger; 
 	var userId = data.user_id ?? 0;
 	var name = data.username ?? "";
@@ -819,7 +819,6 @@ module.exports.saveWorkingHour = async function saveWorkingHour(data) {
 		return;
 	}	
 }  
-*/
 
 module.exports.saveWorkingHour = async function saveWorkingHour(data) {
     //var userId = req.query.user_id ?? 0; 
@@ -1680,3 +1679,62 @@ module.exports.saveWorkingHour = async function saveWorkingHour(data) {
 
 }
   
+
+module.exports.logWorkingHour = async function logWorkingHour(data) {
+	debugger; 
+	var userId = data.user_id ?? 0;
+	var name = data.username ?? "";
+	var inShiftStatus = data.in_shift ?? 1;
+
+	//var tranDateId = data.tran_date_id ?? 0; 
+	//var tranDateId = helper.getTranDateId(new Date());
+	var tranDateId = 0; 
+    const today = moment().startOf('day')
+	
+	try {
+		let hourColumn,
+			minColumn = "";
+		
+		hourColumn = new Date().getHours();
+		let minutes = new Date().getMinutes();
+		
+		if (minutes >= 50) {
+			minColumn = "_60";
+		} else if (minutes >= 40) {
+			minColumn = "_50";
+		} else if (minutes >= 30) {
+			minColumn = "_40";
+		} else if (minutes >= 20) {
+			minColumn = "_30";
+		} else if (minutes >= 10) {
+			minColumn = "_20";
+		} else if (minutes >= 0) {
+			minColumn = "_10";
+		}
+		
+		let column = "t" + hourColumn + minColumn;
+		query = {
+			user_id: userId,
+			//tran_date_id: tranDateId,
+            "createdAt": {
+                $gte: today.toDate(),
+                $lte: moment(today).endOf('day').toDate()
+            }
+		};
+		
+		var setQuery = {};
+		// let statusColumn = `working_hours.${column}.status`;
+		// let inShiftColumn = `working_hours.${column}.in_shift`;
+        let statusColumn = `${column}_status`;
+		let inShiftColumn = `${column}_in_shift`;
+		setQuery[statusColumn] = 1;
+		setQuery[inShiftColumn] = inShiftStatus;
+
+
+		options = { returnOriginal: false , upsert: true, new: true, setDefaultsOnInsert: true };
+		await WorkingHour.findOneAndUpdate(query, { $set: setQuery }, options);
+		return;
+	} catch (error) {
+		return;
+	}	
+}  

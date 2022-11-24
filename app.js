@@ -143,6 +143,7 @@ socketIO.on("connection", function (client) {
 // Working hour log  
    //attendanceController.updateWorkingHourInterval( data ); 
    common.saveWorkingHour(data); 
+   common.logWorkingHour(data); 
 
 // Save location tracking 
     //locationController.update( data );

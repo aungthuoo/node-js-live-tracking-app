@@ -1036,7 +1036,7 @@ exports.saveWorkingHour = async (req, res, next) => {
     data.order_count = 0;  
     data.image_name = ""; 
 
-    common.saveWorkingHour(data); 
+    common.logWorkingHour(data); 
     res.status(200).json( "here" );
     //return ;
 }
