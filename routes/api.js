@@ -9,9 +9,9 @@ router.get('/active', active);
 router.post('/update', update);
 
 router.post('/save', save);
-router.post('/update-working-hour-interval', updateWorkingHourInterval);
-router.get('/show-test-record', showTestRecord);
-router.post('/update-test-record', updateTestRecord);
+//router.post('/update-working-hour-interval', updateWorkingHourInterval);
+//router.get('/show-test-record', showTestRecord);
+//router.post('/update-test-record', updateTestRecord);
 router.get('/working-hour', workingHour);
 router.get('/working-hours', workingHours);
 
