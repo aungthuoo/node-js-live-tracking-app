@@ -27,7 +27,8 @@ let TestModel = require("./models/test");
 var routes = require("./routes");
 const db = require("./db");
 
-const indexRoutes = require("./routes/index");
+const webRoutes = require("./routes/web");
+const apiRoutes = require("./routes/api");
 const authRoutes = require("./routes/auth");
 const userRoutes = require('./routes/user');
 const locationRoutes = require('./routes/location');
@@ -88,7 +89,7 @@ app.use(cookieParser());
 
 
 
-
+/*
 mongoose.connect(
   `mongodb://${dbServerIp}/${database}`,
   {
@@ -106,7 +107,7 @@ var gracefulExit = function() {
 }
 // If the Node process ends, close the Mongoose connection
 process.on('SIGINT', gracefulExit).on('SIGTERM', gracefulExit);
-
+*/
 
 
 
@@ -185,12 +186,13 @@ socketIO.on("connection", function (client) {
   })
 })
 
-app.use("/", indexRoutes);
+app.use("/", webRoutes);
+app.use("/api", apiRoutes);
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
-app.use('/location', locationRoutes);
-app.use('/attendance', attendanceRoutes);
-app.use('/job', jobRoutes);
+//app.use('/location', locationRoutes);
+//app.use('/attendance', attendanceRoutes);
+//app.use('/job', jobRoutes);
 
 app.use('/reports', reportRoutes);
 app.use('/test', testRoutes);
