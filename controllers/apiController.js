@@ -19,8 +19,8 @@ exports.workingHours = async (req, res, next) => {
     {
       $match: {
         "createdAt": {
-            $gte: from.toDate(),
-            $lte: moment(to).endOf('day').toDate()
+            $gte: helper.utcDate(from.toDate()),
+            $lte: helper.utcDate(moment(to).endOf('day').toDate())
         }
         //tran_date_id: { $eq: findDate },
       },
