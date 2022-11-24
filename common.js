@@ -1813,7 +1813,9 @@ module.exports.logWorkingHour2 = async function logWorkingHour(data) {
             let inShiftColumn = `${column}_in_shift`;
             setQuery[statusColumn] = 1;
             setQuery[inShiftColumn] = inShiftStatus;
-            setQuery["updatedAt"] = helper.utcDate(new Date())
+            setQuery["id"] = userId;
+            setQuery["user_id"] = userId;
+            //setQuery["updatedAt"] = helper.utcDate(new Date())
 
             WorkingHour.findByIdAndUpdate(existRecord._id,
                 { $set: setQuery },
