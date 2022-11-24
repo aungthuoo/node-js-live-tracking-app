@@ -47,7 +47,8 @@ module.exports.saveWorkingHour = async function saveWorkingHour(data) {
 	var inShiftStatus = data.in_shift ?? 1;
 
 	//var tranDateId = data.tran_date_id ?? 0; 
-	var tranDateId = helper.getTranDateId(new Date());
+	//var tranDateId = helper.getTranDateId(new Date());
+	var tranDateId = 20221124; 
 
 	var query = {
 		user_id: userId,
