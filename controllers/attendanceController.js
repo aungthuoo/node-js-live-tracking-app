@@ -3055,16 +3055,16 @@ exports.workingHour = async (req, res, next) => {
 };
 
 exports.workingHours = async (req, res, next) => {
-  //var dateFrom = req.query.from ?? "";
-  //var dateTo = req.query.to ?? "";
+  var dateFrom = req.query.from ?? "";
+  var dateTo = req.query.to ?? "";
 
-  //from = moment(dateFrom, 'YYYY-MM-DD').startOf('day');
-  //to = moment(dateTo, 'YYYY-MM-DD').startOf('day');
+  from = moment(dateFrom, 'YYYY-MM-DD').startOf('day');
+  to = moment(dateTo, 'YYYY-MM-DD').startOf('day');
 
-  var findDate = req.query.find_date ?? "0";
-  if(typeof findDate === 'string') {
-    findDate = parseInt(findDate);
-  }
+  // var findDate = req.query.find_date ?? "0";
+  // if(typeof findDate === 'string') {
+  //   findDate = parseInt(findDate);
+  // }
 
   
   
@@ -3083,13 +3083,11 @@ exports.workingHours = async (req, res, next) => {
     // First Stage
     {
       $match: {
-        /*
-                "created_at": {
-                    $gte: from.toDate(),
-                    $lte: moment(to).endOf('day').toDate()
-                }
-                */
-        tran_date_id: { $eq: findDate },
+        "created_at": {
+            $gte: from.toDate(),
+            $lte: moment(to).endOf('day').toDate()
+        }
+        //tran_date_id: { $eq: findDate },
       },
     },
     // Second Stage
