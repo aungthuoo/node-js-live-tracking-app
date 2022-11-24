@@ -191,7 +191,7 @@ app.use("/api", apiRoutes);
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
 //app.use('/location', locationRoutes);
-//app.use('/attendance', attendanceRoutes);
+app.use('/attendance', attendanceRoutes);
 //app.use('/job', jobRoutes);
 
 app.use('/reports', reportRoutes);
