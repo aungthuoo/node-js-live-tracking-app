@@ -1671,6 +1671,7 @@ module.exports.saveWorkingHour = async function saveWorkingHour(data) {
         }
        
     });
+	return;
 
 }
 
