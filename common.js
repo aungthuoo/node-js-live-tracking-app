@@ -833,7 +833,7 @@ module.exports.saveWorkingHour = async function saveWorkingHour(data) {
 
 
 		
-		await WorkingHourInterval.findOneAndUpdate(query, { $set: setQuery }, {
+		WorkingHourInterval.findOneAndUpdate(query, { $set: setQuery }, {
 			returnOriginal: false , upsert: false
 		});
 		return;
