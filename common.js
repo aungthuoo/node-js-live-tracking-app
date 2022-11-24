@@ -847,8 +847,8 @@ module.exports.saveWorkingHour = async function saveWorkingHour(data) {
 
 
 
-		//options = { upsert: true, new: true, setDefaultsOnInsert: true };
-		options = { returnOriginal: true , upsert: false }; 
+		options = { upsert: true, new: true, setDefaultsOnInsert: true };
+		//options = { returnOriginal: true , upsert: false }; 
 
 		// Find the document
 		WorkingHourInterval.findOneAndUpdate(query, update, options, function(error, result) {
