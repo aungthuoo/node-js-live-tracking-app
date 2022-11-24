@@ -16,10 +16,10 @@ const timeStamp = new Date(Date.UTC(
 
 
 let userSchema = new mongoose.Schema({
+
     id: {
         type: Number,
         required: true,
-        unique: true,
         //lowercase: true,
     },
     user_id: {

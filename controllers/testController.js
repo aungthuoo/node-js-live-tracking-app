@@ -1026,7 +1026,7 @@ exports.saveWorkingHour = async (req, res, next) => {
     var userId = req.query.user_id ?? 0;
     //res.status(200).json( "hiere" );
     var data = {}; 
-    data.user_id = 74112; 
+    data.user_id = 74119; 
     data.username = "ato testing"; 
     data.latitude = 16.00;
     data.longitude = 96.00;
@@ -1036,8 +1036,8 @@ exports.saveWorkingHour = async (req, res, next) => {
     data.order_count = 0;  
     data.image_name = ""; 
 
-    common.logWorkingHour(data); 
-    //res.status(200).json( "here" );
+    common.logWorkingHour2(data); 
+    res.status(200).json( "here" );
     //return ;
 }
 

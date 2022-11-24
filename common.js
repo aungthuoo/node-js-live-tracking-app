@@ -3,6 +3,8 @@ const WorkingHourInterval = require("./models/workingHourInterval");
 const WorkingHour = require("./models/workingHour");
 let UserModel = require("./models/user");
 const moment = require("moment");
+const { MongoClient } = require("mongodb");
+
 
 module.exports.echo = function echo(input) {
     process.stdout.write(input);
@@ -1715,11 +1717,10 @@ module.exports.logWorkingHour = async function logWorkingHour(data) {
 		let column = "t" + hourColumn + minColumn;
 		var query = {
 			user_id: userId,
-			//tran_date_id: tranDateId,
-            "createdAt": {
-                $gte: today.toDate(),
-                $lte: moment(today).endOf('day').toDate()
-            }
+            // "createdAt": {
+            //     $gte: today.toDate(),
+            //     $lte: moment(today).endOf('day').toDate()
+            // }
 		};
 		
 		var setQuery = {};
@@ -1729,15 +1730,96 @@ module.exports.logWorkingHour = async function logWorkingHour(data) {
 		let inShiftColumn = `${column}_in_shift`;
 		setQuery[statusColumn] = 1;
 		setQuery[inShiftColumn] = inShiftStatus;
-
+        setQuery['user_id'] = userId; 
+ 
+        console.log( "finding..." ); 
 
 		var options = { returnOriginal: false , upsert: true, new: true, setDefaultsOnInsert: true };
-        await WorkingHour.findOneAndUpdate(query, update, options, function(error, result) {
-            if (error) return;
-        }); 
-		//await WorkingHour.findOneAndUpdate(query, { $set: setQuery }, options);
+        // await WorkingHour.findOneAndUpdate(query, { $set: setQuery }, options, function(error, result) {
+        //     if (error) return;
+        //     console.log( result ); 
+        //     console.log( "updated" ); 
+        // }); 
+		await WorkingHour.findOneAndUpdate(query, { $set: setQuery }, options);
 		return;
 	} catch (error) {
 		return;
 	}	
+    
 }  
+
+module.exports.logWorkingHour2 = async function logWorkingHour(data) {
+    
+	var userId = data.user_id ?? 0;
+	var userName = data.username ?? "";
+	var inShiftStatus = data.in_shift ?? 1;
+
+    const today = moment().startOf('day')
+
+    try{
+        var query = {
+            user_id: userId,
+            "createdAt": {
+                $gte: today.toDate(),
+                $lte: moment(today).endOf('day').toDate()
+            }
+        };
+
+        let existRecord = await WorkingHour.findOne(query);
+        if(!existRecord ){
+
+            WorkingHour(
+                { name: userName, user_id : userId, id : userId }
+            )
+            .save(function (err, data) {
+                if (err) return console.error(err);
+                console.log(data + " saved to bookstore collection.");
+
+                return; 
+            });
+
+        }else{
+            let hourColumn, minColumn = "";
+            
+            hourColumn = new Date().getHours();
+            let minutes = new Date().getMinutes();
+            
+            if (minutes >= 50) {
+                minColumn = "_60";
+            } else if (minutes >= 40) {
+                minColumn = "_50";
+            } else if (minutes >= 30) {
+                minColumn = "_40";
+            } else if (minutes >= 20) {
+                minColumn = "_30";
+            } else if (minutes >= 10) {
+                minColumn = "_20";
+            } else if (minutes >= 0) {
+                minColumn = "_10";
+            }
+            
+            let column = "t" + hourColumn + minColumn;
+
+            var setQuery = {};
+            // let statusColumn = `working_hours.${column}.status`;
+            // let inShiftColumn = `working_hours.${column}.in_shift`;
+            let statusColumn = `${column}_status`;
+            let inShiftColumn = `${column}_in_shift`;
+            setQuery[statusColumn] = 1;
+            setQuery[inShiftColumn] = inShiftStatus;
+
+            WorkingHour.findByIdAndUpdate(existRecord._id,
+                { $set: setQuery },
+                function (err, managerparent) {
+                    if (err) throw err;
+                    //console.log(managerparent);
+                    //res.status(200).json( { "status" : "model", "id": doc._id  });
+                    return true; 
+                }
+            );
+
+        }
+    } catch (error) {
+        return;
+    }	
+}
