@@ -391,6 +391,7 @@ exports.saveWorkingHour = async (req, res, next) => {
 
   /* Make mapping */
   var data = {}; 
+  data.id = id; 
   data.user_id = id; 
   data.username = name; 
   data.latitude = latitude;
