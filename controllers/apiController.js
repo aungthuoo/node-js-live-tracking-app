@@ -345,32 +345,29 @@ exports.workingHours = async (req, res, next) => {
 
 
 
-exports.workingHours = async (req, res, next) => {
-  var dateFrom = req.query.from ?? "";
-  var dateTo = req.query.to ?? "";
-
-  from = moment(dateFrom, 'YYYY-MM-DD').startOf('day');
-  to = moment(dateTo, 'YYYY-MM-DD').startOf('day');
-
+exports.workingHours3 = async (req, res, next) => {
+  
   var MongoClient = require('mongodb').MongoClient;
   var url = "mongodb://127.0.0.1:20000/";
+  const cl = new MongoClient("mongodb://localhost:20000");
 
-  MongoClient.connect(url, function(err, db) {
-    if (err) throw err;
-    var dbo = db.db("live_tracking");
-    var myquery = { 
-      "createdAt": {
-          $gte: helper.utcDate(from.toDate()),
-          $lte: helper.utcDate(moment(to).endOf('day').toDate())
-      } 
-    };
-    var newvalues = { $set: {name: "Mickey", address: "Canyon 123" } };
-    dbo.collection("customers").updateOne(myquery, newvalues, function(err, res) {
-      if (err) throw err;
-      console.log("1 document updated");
-      db.close();
-    });
-  });
+  try {
+      await cl.connect();
+      const dbs= cl.db("live_tracking");
+      const coll = dbs.collection("workinghours");
+      const cur = coll.find({}, {});
 
+      let items = [];
+      await cur.forEach(function(doc){
+          items.push(doc);
+      });
+      //console.log( items ); 
+      res.end(JSON.stringify(items));
+  } catch (err){
+      console.warn("ERROR: " + err);
+      if (errCallback) errCallback(err);
+  } finally {
+      await cl.close();
+  }
 }
 

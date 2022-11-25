@@ -1843,19 +1843,6 @@ module.exports.logWorkingHour3 = async function logWorkingHour(data) {
 
     var MongoClient = require('mongodb').MongoClient;
     var url = "mongodb://127.0.0.1:20000/";
-/*
-    MongoClient.connect(url, function(err, db) {
-    if (err) throw err;
-        var dbo = db.db("live_tracking");
-
-        var data = dbo.workinghours.find(
-            {},
-            { id: 1, name: 1, _id: 0 }
-        ); 
-        console.log(data); 
-
-    });
-*/
 
     const cl = new MongoClient("mongodb://localhost:20000");
 
