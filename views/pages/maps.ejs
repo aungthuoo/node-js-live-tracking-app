@@ -446,6 +446,7 @@
         var _that = this; 
 
         this.socket.on('locationUpdate', function(data) {
+          debugger; 
             //var message = JSON.parse(data); 
             _that.moveMarker( data ); 
         });
@@ -461,6 +462,7 @@
         console.log("New value: ", app.authstatus);
       },
       moveMarker(message){
+        debugger; 
 
             //var marker = markers.2342fc7f; // or markers['2342fc7']
             /*

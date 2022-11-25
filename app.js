@@ -62,6 +62,18 @@ app.use(function (req, res, next) {
   next();
 });
 
+
+
+
+
+app.use(function(req, res, next){
+  res.io = socketIO;
+  next();
+});
+
+
+
+
 // creating 24 hours from milliseconds
 const oneDay = 1000 * 60 * 60 * 24;
 
@@ -132,7 +144,7 @@ socketIO.on("connection", function (client) {
 
     
 // Move Maps Market 
-    socketIO.emit('locationUpdate', data);
+    //socketIO.emit('locationUpdate', data);
 
 // Update user info 
     //userController.update( data );
@@ -142,7 +154,7 @@ socketIO.on("connection", function (client) {
     
 // Working hour log  
    //attendanceController.updateWorkingHourInterval( data ); 
-   common.logWorkingHour2(data); 
+   //common.logWorkingHour2(data); 
    //common.saveWorkingHour(data); 
 
 
@@ -150,7 +162,7 @@ socketIO.on("connection", function (client) {
     //locationController.update( data );
 
     //socketIO.emit("message", data);
-    socketIO.emit("m", "d");
+    //socketIO.emit("m", "d");
   });
 
   client.on("lastKnownLocation", function name(data) {

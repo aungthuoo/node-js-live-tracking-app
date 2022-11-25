@@ -4,6 +4,19 @@ const moment = require("moment");
 const helper = require("../helpers.js");
 const axios = require("axios");
 
+const express = require("express");
+const app = express();
+const http = require("http").Server(app);
+const socketIO = require("socket.io")(http);
+
+
+const dbServerIp = process.env.DB_SERVER_IP;
+const database = process.env.DATABASE;
+const common = require("../common");
+
+
+
+var mongoose = require('mongoose');
 
 exports.workingHours = async (req, res, next) => {
   var dateFrom = req.query.from ?? "";
@@ -352,42 +365,55 @@ exports.workingHours3 = async (req, res, next) => {
   from = moment(dateFrom, 'YYYY-MM-DD').startOf('day');
   to = moment(dateTo, 'YYYY-MM-DD').startOf('day');
 
-  
-  var MongoClient = require('mongodb').MongoClient;
-  var url = "mongodb://127.0.0.1:20000/";
-  const cl = new MongoClient("mongodb://localhost:20000");
-
-  try {
-      await cl.connect();
-      const dbs= cl.db("live_tracking");
-      const coll = dbs.collection("workinghours");
-
-
-      var data = dbs.workinghours.find({}, {})
-
-      // var data = coll.aggregate([
-      //   {$group : {_id:"$name", count:{$sum:1}}}
-      // ])
-
-
-/*
-      const cur = coll.find({}, {});
-
-      let data = [];
-      await cur.forEach(function(doc){
-        data.push(doc);
+  mongoose
+      .connect(`mongodb://${dbServerIp}/${database}`)
+      .then(() => {
+        console.log("Database connection successful");
+      })
+      .catch((err) => {
+        console.error("Database connection error");
       });
-
-*/
-
-
-      
-      res.end(JSON.stringify(data));
-  } catch (err){
-      console.warn("ERROR: " + err);
-      if (errCallback) errCallback(err);
-  } finally {
-      await cl.close();
-  }
 }
+
+
+
+
+
+exports.saveWorkingHour = async (req, res, next) => {
+  debugger; 
+  var id = req.body.id ?? 1;
+  var name = req.body.name ?? "";
+  var latitude = req.body.latitude ?? 0.0;
+  var longitude = req.body.longitude ?? 0.0;
+  var totalCount = req.body.total_count ?? 0;
+  var holdCount = req.body.hold_count ?? 0;
+  var inShift = req.body.in_shift ?? 0;
+
+  /* Make mapping */
+  var data = {}; 
+  data.user_id = id; 
+  data.username = name; 
+  data.latitude = latitude;
+  data.longitude = longitude;
+  data.total_count = totalCount; 
+  data.hold_count = holdCount;
+  data.in_shift = inShift ?? 1; 
+  data.order_count = 0;  
+  data.image_name = ""; 
+
+
+  // Move Maps Market 
+  //https://stackoverflow.com/questions/48672924/socket-io-emit-when-someone-call-the-api
+  res.io.emit('locationUpdate', data);
+
+  common.logWorkingHour2(data); 
+
+
+
+  res.status(200).json({
+    status: true,
+    data: {},
+  });
+}
+
 
