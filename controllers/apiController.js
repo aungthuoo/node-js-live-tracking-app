@@ -346,6 +346,12 @@ exports.workingHours = async (req, res, next) => {
 
 
 exports.workingHours3 = async (req, res, next) => {
+  var dateFrom = req.query.from ?? "";
+  var dateTo = req.query.to ?? "";
+
+  from = moment(dateFrom, 'YYYY-MM-DD').startOf('day');
+  to = moment(dateTo, 'YYYY-MM-DD').startOf('day');
+
   
   var MongoClient = require('mongodb').MongoClient;
   var url = "mongodb://127.0.0.1:20000/";
@@ -355,14 +361,28 @@ exports.workingHours3 = async (req, res, next) => {
       await cl.connect();
       const dbs= cl.db("live_tracking");
       const coll = dbs.collection("workinghours");
+
+
+      var data = dbs.workinghours.find({}, {})
+
+      // var data = coll.aggregate([
+      //   {$group : {_id:"$name", count:{$sum:1}}}
+      // ])
+
+
+/*
       const cur = coll.find({}, {});
 
-      let items = [];
+      let data = [];
       await cur.forEach(function(doc){
-          items.push(doc);
+        data.push(doc);
       });
-      //console.log( items ); 
-      res.end(JSON.stringify(items));
+
+*/
+
+
+      
+      res.end(JSON.stringify(data));
   } catch (err){
       console.warn("ERROR: " + err);
       if (errCallback) errCallback(err);
