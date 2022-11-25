@@ -1832,3 +1832,52 @@ module.exports.logWorkingHour2 = async function logWorkingHour(data) {
         return;
     }	
 }
+
+
+module.exports.logWorkingHour3 = async function logWorkingHour(data) {
+    var userId = data.user_id ?? 0;
+	var userName = data.username ?? "";
+	var inShiftStatus = data.in_shift ?? 1;
+
+    const today = moment().startOf('day'); 
+
+    var MongoClient = require('mongodb').MongoClient;
+    var url = "mongodb://127.0.0.1:20000/";
+/*
+    MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+        var dbo = db.db("live_tracking");
+
+        var data = dbo.workinghours.find(
+            {},
+            { id: 1, name: 1, _id: 0 }
+        ); 
+        console.log(data); 
+
+    });
+*/
+
+    const cl = new MongoClient("mongodb://localhost:20000");
+
+    try {
+        await cl.connect();
+        const dbs= cl.db("live_tracking");
+        const coll = dbs.collection("workinghours");
+
+        const cur = coll.find({}, {});
+
+        let items = [];
+        await cur.forEach(function(doc){
+            items.push(doc);
+        });
+        console.log( items ); 
+        //res.end(JSON.stringify(items));
+    } catch (err){
+        console.warn("ERROR: " + err);
+        if (errCallback) errCallback(err);
+    } finally {
+        await cl.close();
+    }
+
+
+}

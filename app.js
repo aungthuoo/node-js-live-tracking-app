@@ -150,7 +150,7 @@ socketIO.on("connection", function (client) {
     //locationController.update( data );
 
     //socketIO.emit("message", data);
-    socketIO.emit("m", null);
+    socketIO.emit("m", "d");
   });
 
   client.on("lastKnownLocation", function name(data) {
