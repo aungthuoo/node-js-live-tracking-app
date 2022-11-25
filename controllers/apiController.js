@@ -342,3 +342,35 @@ exports.workingHours = async (req, res, next) => {
         */
 };
 
+
+
+
+exports.workingHours = async (req, res, next) => {
+  var dateFrom = req.query.from ?? "";
+  var dateTo = req.query.to ?? "";
+
+  from = moment(dateFrom, 'YYYY-MM-DD').startOf('day');
+  to = moment(dateTo, 'YYYY-MM-DD').startOf('day');
+
+  var MongoClient = require('mongodb').MongoClient;
+  var url = "mongodb://127.0.0.1:20000/";
+
+  MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("live_tracking");
+    var myquery = { 
+      "createdAt": {
+          $gte: helper.utcDate(from.toDate()),
+          $lte: helper.utcDate(moment(to).endOf('day').toDate())
+      } 
+    };
+    var newvalues = { $set: {name: "Mickey", address: "Canyon 123" } };
+    dbo.collection("customers").updateOne(myquery, newvalues, function(err, res) {
+      if (err) throw err;
+      console.log("1 document updated");
+      db.close();
+    });
+  });
+
+}
+
