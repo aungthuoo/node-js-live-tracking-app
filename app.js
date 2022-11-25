@@ -142,7 +142,6 @@ socketIO.on("connection", function (client) {
     
 // Working hour log  
    //attendanceController.updateWorkingHourInterval( data ); 
-   socketIO.emit("m", "d");
    common.logWorkingHour2(data); 
    //common.saveWorkingHour(data); 
 
@@ -151,7 +150,7 @@ socketIO.on("connection", function (client) {
     //locationController.update( data );
 
     //socketIO.emit("message", data);
-    
+    socketIO.emit("m", "d");
   });
 
   client.on("lastKnownLocation", function name(data) {
