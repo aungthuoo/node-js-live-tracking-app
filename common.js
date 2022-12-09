@@ -1,6 +1,7 @@
 const helper = require("./helpers.js");
 const WorkingHourInterval = require("./models/workingHourInterval");
 const WorkingHour = require("./models/workingHour");
+const WorkHour = require("./models/workHour");
 let UserModel = require("./models/user");
 const moment = require("moment");
 const { MongoClient } = require("mongodb");
