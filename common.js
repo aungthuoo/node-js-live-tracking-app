@@ -1876,6 +1876,7 @@ module.exports.logWorkHour = async function logWorkHour(data) {
 
     //const today = moment().startOf('day')
     var tranId = helper.getTranId(new Date(), userId ); 
+    var tranDateId = helper.getTranDateId(new Date() );
 
     try{
         var query = {
@@ -1893,6 +1894,7 @@ module.exports.logWorkHour = async function logWorkHour(data) {
                 { 
                     id : userId ,
                     tran_id: tranId,
+                    tran_date_id: tranDateId,
                     user_id : userId,
                     name: userName, 
                     createdAt: helper.utcDate(new Date()),
@@ -1937,6 +1939,7 @@ module.exports.logWorkHour = async function logWorkHour(data) {
             setQuery[inShiftColumn] = inShiftStatus;
             setQuery["id"] = userId;
             setQuery["user_id"] = userId;
+            setQuery["tran_date_id"] = tranDateId;
             //setQuery["updatedAt"] = helper.utcDate(new Date())
 
             WorkHour.findByIdAndUpdate(existRecord._id,

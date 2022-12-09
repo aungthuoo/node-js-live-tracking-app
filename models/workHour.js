@@ -25,6 +25,10 @@ let userSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    tran_date_id: {
+        type: Number,
+        required: true
+    },
     user_id: {
         type: Number,
         required: true,

@@ -125,3 +125,36 @@ exports.workingHour = async (req, res, next) => {
 }
 
 
+exports.workHour = async (req, res, next) => {
+    debugger; 
+
+    let searchFor = req.query.date; 
+    
+    var parsed = new Date(searchFor );
+    var tranDateId =  helper.getTranDateId( parsed  ); 
+
+
+
+    var query = { 
+        "tran_date_id" : tranDateId  
+    };
+    WorkingHourInterval.find(query, (err, items) => {
+        debugger; 
+        if (err) console.error(err);
+        //console.log( items); 
+        //res.status(200).json( items );
+    
+        res.render("pages/reports/working_hour", {
+            root: __dirname,
+            id : 123456,
+            items : items,
+            query : query, 
+            searchFor : searchFor 
+        });
+        //res.status(200).json( items );
+    }).sort({ name: 'ascending' })
+    .limit(100);
+
+}
+
+
