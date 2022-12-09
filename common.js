@@ -1938,7 +1938,7 @@ module.exports.logWorkHour = async function logWorkHour(data) {
             setQuery["user_id"] = userId;
             //setQuery["updatedAt"] = helper.utcDate(new Date())
 
-            WorkingHour.findByIdAndUpdate(existRecord._id,
+            WorkHour.findByIdAndUpdate(existRecord._id,
                 { $set: setQuery },
                 function (err, managerparent) {
                     if (err) throw err;
