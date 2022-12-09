@@ -1864,3 +1864,92 @@ module.exports.logWorkingHour3 = async function logWorkingHour(data) {
         await cl.close();
     }
 }
+
+
+
+module.exports.logWorkHour = async function logWorkHour(data) {
+    
+	var userId = data.user_id ?? 0;
+	var userName = data.username ?? "";
+	var inShiftStatus = data.in_shift ?? 1;
+
+    //const today = moment().startOf('day')
+    var tranId = helper.getTranId(new Date(), userId ); 
+
+    try{
+        var query = {
+            tran_id: tranId,
+            // createdAt: {
+            //     $gte:  helper.utcDate(today.toDate()),
+            //     $lte: helper.utcDate(moment(today).endOf('day').toDate())
+            // }
+        };
+
+        let existRecord = await WorkHour.findOne(query);
+        if(!existRecord ){
+
+            WorkHour(
+                { 
+                    id : userId ,
+                    tran_id: tranId,
+                    user_id : userId,
+                    name: userName, 
+                    createdAt: helper.utcDate(new Date()),
+		            updatedAt: helper.utcDate(new Date())
+                }
+            )
+            .save(function (err, data) {
+                if (err) return console.error(err);
+                console.log(data + " saved to bookstore collection.");
+
+                return; 
+            });
+
+        }else{
+            let hourColumn, minColumn = "";
+            
+            hourColumn = new Date().getHours();
+            let minutes = new Date().getMinutes();
+            
+            if (minutes >= 50) {
+                minColumn = "_60";
+            } else if (minutes >= 40) {
+                minColumn = "_50";
+            } else if (minutes >= 30) {
+                minColumn = "_40";
+            } else if (minutes >= 20) {
+                minColumn = "_30";
+            } else if (minutes >= 10) {
+                minColumn = "_20";
+            } else if (minutes >= 0) {
+                minColumn = "_10";
+            }
+            
+            let column = "t" + hourColumn + minColumn;
+
+            var setQuery = {};
+            // let statusColumn = `working_hours.${column}.status`;
+            // let inShiftColumn = `working_hours.${column}.in_shift`;
+            let statusColumn = `${column}_status`;
+            let inShiftColumn = `${column}_in_shift`;
+            setQuery[statusColumn] = 1;
+            setQuery[inShiftColumn] = inShiftStatus;
+            setQuery["id"] = userId;
+            setQuery["user_id"] = userId;
+            //setQuery["updatedAt"] = helper.utcDate(new Date())
+
+            WorkingHour.findByIdAndUpdate(existRecord._id,
+                { $set: setQuery },
+                function (err, managerparent) {
+                    if (err) throw err;
+                    //console.log(managerparent);
+                    //res.status(200).json( { "status" : "model", "id": doc._id  });
+                    return true; 
+                }
+            );
+
+        }
+    } catch (error) {
+        return;
+    }	
+}

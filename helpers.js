@@ -102,7 +102,14 @@ module.exports.getTranDateId = function getTranDateId(dateObj) {
 	const joined = [ year, month, day ].join('');
 	return joined; 
 }
+module.exports.getTranId = function getTranId(dateObj, userId) {
 
+	const year = dateObj.getUTCFullYear();
+	const month = String(dateObj.getUTCMonth() + 1).padStart(2, '0');
+	const day = String(dateObj.getUTCDate()).padStart(2, '0');
+	const joined = [ year, month, day, userId ].join('');
+	return joined; 
+}
 
 
 module.exports.getTranDateIdFromDate = function utcDate(date) {
