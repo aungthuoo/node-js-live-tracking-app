@@ -82,19 +82,6 @@ exports.workingHour = async (req, res, next) => {
 
     let searchFor = req.query.date; 
     
-    // let today = moment().startOf('day')
-    // res.status(200).json( { "status" : today });
-    // if(searchFor)
-    //     today = moment(searchFor, 'YYYY-MM-DD').startOf('day');
-
-
-    //var tranDateId =  helper.getTranDateId( today  ); 
-
-
-    //let parsed = moment(searchFor, "YYYY-MM-DD"); 
-    //var tranDateId =  helper.getTranDateId( parsed  ); 
-
-
 
     var parsed = new Date(searchFor );
     var tranDateId =  helper.getTranDateId( parsed  ); 
@@ -105,15 +92,14 @@ exports.workingHour = async (req, res, next) => {
     var query = { 
         "tran_date_id" : tranDateId  
     };
-    WorkingHourInterval.find(query, (err, items) => {
+    WorkHour.find(query, (err, items) => {
         debugger; 
         if (err) console.error(err);
         //console.log( items); 
         //res.status(200).json( items );
     
-        res.render("pages/reports/working_hour", {
+        res.render("pages/reports/work_hour", {
             root: __dirname,
-            id : 123456,
             items : items,
             query : query, 
             searchFor : searchFor 
