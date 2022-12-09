@@ -1,5 +1,6 @@
 let AttendanceModel = require('../models/attendance')
 let WorkingHourInterval = require('../models/workingHourInterval')
+let WorkHour = require('../models/workHour')
 let UserModel = require('../models/user')
 const moment = require('moment')
 const helper = require("../helpers.js");
