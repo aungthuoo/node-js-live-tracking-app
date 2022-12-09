@@ -403,12 +403,14 @@ exports.saveWorkingHour = async (req, res, next) => {
   data.image_name = ""; 
 
 
+  common.logWorkHour(data);
+
   // Move Maps Market 
   //https://stackoverflow.com/questions/48672924/socket-io-emit-when-someone-call-the-api
   res.io.emit('locationUpdate', data);
 
   //common.logWorkingHour2(data); 
-  common.logWorkHour(data);
+
 
   res.status(200).json({
     status: true,
